@@ -1,6 +1,11 @@
 package com.codearena.codearena.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "test_cases")
@@ -10,16 +15,18 @@ public class TestCase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "problemId")
     private Long problemId;
 
     @Column(columnDefinition = "TEXT")
     private String input;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(name = "expectedOutput", columnDefinition = "TEXT")
     private String expectedOutput;
 
     private Boolean hidden;
 
+    @Column(name = "timeLimitOverride")
     private Integer timeLimitOverride;
 
     public TestCase() {
