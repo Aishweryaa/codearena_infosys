@@ -1,6 +1,11 @@
 package com.codearena.codearena.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "problems")
@@ -12,11 +17,10 @@ public class Problem {
 
     private String title;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(name = "descriptionMd", columnDefinition = "TEXT")
     private String descriptionMd;
 
-    @Enumerated(EnumType.STRING)
-    private Difficulty difficulty;
+    private String difficulty;
 
     private String tags;
 
@@ -47,11 +51,11 @@ public class Problem {
         this.descriptionMd = descriptionMd;
     }
 
-    public Difficulty getDifficulty() {
+    public String getDifficulty() {
         return difficulty;
     }
 
-    public void setDifficulty(Difficulty difficulty) {
+    public void setDifficulty(String difficulty) {
         this.difficulty = difficulty;
     }
 
