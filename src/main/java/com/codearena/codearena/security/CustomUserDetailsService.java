@@ -1,31 +1,33 @@
 package com.codearena.codearena.security;
 
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import com.codearena.codearena.repository.UserRepository;
+import java.util.Collections;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
+    private final UserRepository userRepository;
 
+    public CustomUserDetailsService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        com.codearena.codearena.model.User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
 
-
-        if ("admin@codearena.com".equals(username) || "user@codearena.com".equals(username)) {
-            return new org.springframework.security.core.userdetails.User(
-                    username,
-                    "$2a$10$8K1p/aP9WbU.gZ8rFf6pzeS9K09Z4zYhU6vE0bK1A6N2w7C3v9m1m",
-                    new ArrayList<>()
-            );
-        }
-
-
-
-        throw new UsernameNotFoundException("User not found with email: " + username);
+        // 🌟 PERMANENT FIX: Pre-format the core identity parameters cleanly with "ROLE_" convention prefixing!
+        return new org.springframework.security.core.userdetails.User(
+                user.getEmail(),
+                user.getPassword(),
+                Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()))
+        );
     }
 }

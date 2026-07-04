@@ -17,18 +17,25 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final CustomUserDetailsService userDetailsService;
-    // Inject Member 1's JWT Utility class here to validate and extract username
-    // private final JwtUtils jwtUtils;
-
-    public JwtAuthenticationFilter(CustomUserDetailsService userDetailsService) {
+    private final JwtUtils jwtUtils;
+    
+    // Constructor injection for both required services
+    public JwtAuthenticationFilter(CustomUserDetailsService userDetailsService, JwtUtils jwtUtils) {
         this.userDetailsService = userDetailsService;
+        this.jwtUtils = jwtUtils;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-
+    	
+    	    String path = request.getServletPath();
+    	    
+        if (path.startsWith("/api/v1/auth")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
         final String userEmail;
@@ -42,17 +49,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // 2. Extract the token
         jwt = authHeader.substring(7);
 
-        // 3. Extract username/email using Member 1's utility class
-        // userEmail = jwtUtils.extractUsername(jwt);
-        userEmail = "placeholder_extract_from_member_1"; // Replace this when Member 1 completes their task
+        // 3. Extract username/email using your JwtUtils class
+        userEmail = jwtUtils.extractUsername(jwt);
 
         // 4. Validate token and set authentication context
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
 
-            // Check validity using Member 1's utility method
-            // if (jwtUtils.isTokenValid(jwt, userDetails)) {
-            if (true) { // Temporary placeholder for validation logic
+            // Check validity using your utility validation method
+            if (jwtUtils.isTokenValid(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,
