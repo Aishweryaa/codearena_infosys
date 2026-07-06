@@ -1,5 +1,6 @@
 package com.codearena.codearena.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties; // Added missing import
 import jakarta.persistence.*;
 
 @Entity
@@ -12,6 +13,7 @@ public class SubmissionResult {
 
     @ManyToOne
     @JoinColumn(name = "submission_id")
+    @JsonIgnoreProperties("results") // 🌟 Added to stop the infinite Postman loop
     private Submission submission;
 
     @ManyToOne
