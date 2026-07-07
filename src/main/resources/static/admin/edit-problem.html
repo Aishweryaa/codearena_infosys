@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Problem | CodeArena</title>
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <style>
+        .form-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 32px;
+        }
+        .form-card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+        }
+        .form-group {
+            margin-bottom: 24px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+        .form-control {
+            width: 100%;
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 12px 16px;
+            color: var(--text-main);
+            font-family: var(--font-main);
+            font-size: 0.95rem;
+        }
+        textarea.form-control {
+            resize: vertical;
+            min-height: 160px;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Admin Navigation Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-brand">CodeArena<span>.</span></div>
+            <ul class="sidebar-menu">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li class="active"><a href="problems.html">Manage Problems</a></li>
+                <li><a href="users.html">Manage Users</a></li>
+                <li><a href="submissions.html">Submissions</a></li>
+                <li style="margin-top: auto;"><a href="../login.html" style="color: var(--danger);">Logout</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Spec Content Panel Area -->
+        <main class="main-content">
+            <div class="page-header">
+                <div class="page-title">
+                    <h1>Modify Challenge Specs: #PR-101</h1>
+                    <p>Alter problem structural definitions, configurations, or sandbox evaluation parameters.</p>
+                </div>
+            </div>
+
+            <!-- Prefilled Revision Form Controls System -->
+            <form class="form-grid" onsubmit="event.preventDefault();">
+                <div class="form-card">
+                    <div class="form-group">
+                        <label>Problem Title</label>
+                        <input type="text" class="form-control" value="Two Sum Problem Engine">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Problem Statement (Markdown Supported)</label>
+                        <textarea class="form-control">Given an array of integers `nums` and an integer `target`, return indices of the two numbers such that they add up to `target`.</textarea>
+                    </div>
+
+                    <!-- 🌟 Pre-filled Evaluation Sandbox Test Cases Added Securely Below -->
+                    <div class="form-group">
+                        <label>Standard Evaluation Test Input (Hidden from Candidates)</label>
+                        <textarea class="form-control" id="target-test-input" style="font-family: monospace; min-height: 100px;" placeholder="e.g. [2, 7, 11, 15]&#10;9">[2, 7, 11, 15]
+9</textarea>
+                    </div>
+                    
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label>Expected System Evaluation Output Matcher</label>
+                        <textarea class="form-control" id="target-test-output" style="font-family: monospace; min-height: 100px;" placeholder="e.g. [0, 1]">[0, 1]</textarea>
+                    </div>
+                </div>
+
+                <!-- Right Side Sandbox Target Constraints Column -->
+                <div style="display:flex; flex-direction:column; gap:24px;">
+                    <div class="form-card">
+                        <div class="form-group">
+                            <label>Difficulty Tier</label>
+                            <select class="form-control">
+                                <option selected>Easy Tier</option>
+                                <option>Medium Tier</option>
+                                <option>Hard Tier</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label>Execution Time Limit (ms)</label>
+                            <input type="number" class="form-control" value="1000">
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 16px; justify-content: flex-end;">
+                        <a href="problems.html" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Save Specs</button>
+                    </div>
+                </div>
+            </form>
+        </main>
+    </div>
+    
+    <!-- Core Client Scripts System Configuration -->
+    <script src="../js/config.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+</body>
+</html>

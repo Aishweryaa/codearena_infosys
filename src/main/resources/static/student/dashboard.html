@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Dashboard | CodeArena</title>
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <style>
+        .welcome-banner {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(6, 182, 212, 0.05) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            margin-bottom: 32px;
+        }
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+        }
+        .challenge-card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Student Sidebar Navigation Component -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-brand">CodeArena<span>.</span></div>
+            <ul class="sidebar-menu">
+                <li class="active"><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="problems.html">Problems</a></li>
+                <li><a href="submissions.html">My Submissions</a></li>
+                <li><a href="leaderboard.html">Leaderboard</a></li>
+                <li><a href="profile.html">Profile</a></li>
+                <li style="margin-top: auto;"><a href="../login.html" style="color: var(--danger);">Logout</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Workspace Contents -->
+        <main class="main-content animate-fade-up">
+            <div class="welcome-banner">
+                <h1 style="font-size: 1.75rem; margin-bottom: 8px;">Welcome back, <span style="color: var(--color-accent);">alex_coder</span>! 👋</h1>
+                <p style="color: var(--text-muted); max-width: 600px;">Your ranking increased by 4 spots today. Keep the streak active by checking out today's recommended challenges.</p>
+            </div>
+
+            <div class="dashboard-grid">
+                <!-- Main Flow Workspace Column -->
+                <div>
+                    <h2 style="font-size: 1.2rem; margin-bottom: 16px; font-weight: 600;">Recommended Challenges</h2>
+                    
+                    <div class="challenge-card interactive-card">
+                        <div>
+                            <span class="badge badge-success" style="margin-bottom: 8px; display: inline-block;">Easy</span>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 4px;">Two Sum Problem Engine</h3>
+                            <p style="color: var(--text-muted); font-size: 0.85rem;">Find index coordinates matching specific data limits.</p>
+                        </div>
+                        <a href="problem.html" class="btn btn-primary">Solve Problem</a>
+                    </div>
+
+                    <div class="challenge-card interactive-card">
+                        <div>
+                            <span class="badge badge-warning" style="margin-bottom: 8px; display: inline-block;">Medium</span>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 4px;">LRU Cache Structure Design</h3>
+                            <p style="color: var(--text-muted); font-size: 0.85rem;">Design and implement high performance custom memory arrays.</p>
+                        </div>
+                        <a href="problem.html" class="btn btn-primary">Solve Problem</a>
+                    </div>
+                </div>
+
+                <!-- Sideline Analytics Widgets Column -->
+                <div>
+                    <h2 style="font-size: 1.2rem; margin-bottom: 16px; font-weight: 600;">Your Progress Overview</h2>
+                    <div class="content-card" style="padding: 24px;">
+                        <div style="text-align: center; margin-bottom: 20px;">
+                            <div style="font-size: 2.5rem; font-weight: 700; color: var(--color-primary);">84</div>
+                            <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 4px;">Problems Completely Solved</p>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.85rem; padding: 8px 0; border-bottom: 1px solid var(--border-color);">
+                            <span style="color: var(--success);">Easy</span>
+                            <strong>50 / 60</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.85rem; padding: 8px 0; border-bottom: 1px solid var(--border-color);">
+                            <span style="color: var(--warning);">Medium</span>
+                            <strong>30 / 50</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.85rem; padding: 8px 0;">
+                            <span style="color: var(--danger);">Hard</span>
+                            <strong>4 / 32</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <!-- Core Client Scripts System Configuration -->
+    <script src="../js/config.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+</body>
+</html>

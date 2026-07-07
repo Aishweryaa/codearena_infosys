@@ -1,0 +1,74 @@
+@media (max-width: 1024px) {
+    :root {
+        --sidebar-width: 80px;
+    }
+    
+    /* Minimize textual sidebar layers to only icons */
+    .sidebar-brand span, 
+    .sidebar-menu a span {
+        display: none;
+    }
+    
+    .sidebar-brand {
+        text-align: center;
+        padding: 20px 0;
+    }
+    
+    .sidebar-menu a {
+        justify-content: center;
+        padding: 12px;
+    }
+
+    .dashboard-split {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .ide-container {
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        flex-direction: column;
+    }
+    
+    .admin-sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+    }
+    
+    .sidebar-menu {
+        flex-direction: row;
+        overflow-x: auto;
+        padding: 10px;
+    }
+    
+    .sidebar-menu li {
+        white-space: nowrap;
+    }
+    
+    .main-content {
+        margin-left: 0 !important;
+        padding: 20px;
+    }
+    
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+    
+    .form-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Wrap complex dense data tables gracefully */
+    .table-container {
+        overflow-x: auto;
+    }
+}

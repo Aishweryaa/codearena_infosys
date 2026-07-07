@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Users | CodeArena</title>
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body>
+    <div class="admin-container">
+        <aside class="admin-sidebar">
+            <div class="sidebar-brand">CodeArena<span>.</span></div>
+            <ul class="sidebar-menu">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="problems.html">Manage Problems</a></li>
+                <li class="active"><a href="users.html">Manage Users</a></li>
+                <li><a href="submissions.html">Submissions</a></li>
+                <li style="margin-top: auto;"><a href="../login.html" style="color: var(--danger);">Logout</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <div class="page-header">
+                <div class="page-title">
+                    <h1>User Directory Management</h1>
+                    <p>View student engagement profile analytics metrics and toggle authentication roles.</p>
+                </div>
+            </div>
+
+            
+            <div class="table-container">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th>Candidate User</th>
+                            <th>Email Identifier Address</th>
+                            <th>Role Scope</th>
+                            <th>Problems Solved</th>
+                            <th>Action Controls</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-weight: 600;">alex_coder</td>
+                            <td>alex.johnson@university.edu</td>
+                            <td><span class="badge badge-success" style="background: rgba(99, 102, 241, 0.15); color: var(--color-primary);">Student</span></td>
+                            <td>84 Problems</td>
+                            <td><button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.85rem; color: var(--danger); border-color: rgba(239,68,68,0.2);">Deactivate Account</button></td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 600;">sarah_k</td>
+                            <td>s.kerrigan@datacorp.com</td>
+                            <td><span class="badge badge-success" style="background: rgba(99, 102, 241, 0.15); color: var(--color-primary);">Student</span></td>
+                            <td>112 Problems</td>
+                            <td><button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.85rem; color: var(--danger); border-color: rgba(239,68,68,0.2);">Deactivate Account</button></td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 600;">admin_root</td>
+                            <td>system.admin@codearena.com</td>
+                            <td><span class="badge badge-warning">Global Admin</span></td>
+                            <td>--</td>
+                            <td><button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.85rem;" disabled>System Lock</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Core Client Scripts System Configuration -->
+    <script src="../js/config.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    
+</body>
+</html>
