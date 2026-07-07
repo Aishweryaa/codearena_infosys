@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Global Rank Leaderboard | CodeArena</title>
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <style>
+        .podium-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            align-items: flex-end;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        .podium-card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 32px 24px;
+        }
+        .podium-card.rank-1 {
+            height: 240px;
+            border-color: var(--color-accent);
+            background: linear-gradient(180deg, rgba(6, 182, 212, 0.1) 0%, var(--bg-surface) 100%);
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <aside class="admin-sidebar">
+            <div class="sidebar-brand">CodeArena<span>.</span></div>
+            <ul class="sidebar-menu">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="problems.html">Problems</a></li>
+                <li><a href="submissions.html">My Submissions</a></li>
+                <li class="active"><a href="leaderboard.html">Leaderboard</a></li>
+                <li><a href="profile.html">Profile</a></li>
+                <li style="margin-top: auto;"><a href="../login.html" style="color: var(--danger);">Logout</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content animate-fade-up">
+            <div class="page-header">
+                <div class="page-title">
+                    <h1>Global System Leaderboard Rankings</h1>
+                    <p>Track elite user profile scores based on challenge execution efficiency scores.</p>
+                </div>
+            </div>
+
+            <!-- Visual Podium Widget Architecture -->
+            <div class="podium-grid">
+                <div class="podium-card" style="height: 180px;">
+                    <div style="font-size: 1.5rem; font-weight:700; color: #cbd5e1;">2nd</div>
+                    <div style="font-weight: 600; margin: 8px 0;">sarah_k</div>
+                    <div style="color: var(--color-primary); font-size: 0.9rem;">2,840 pts</div>
+                </div>
+                <div class="podium-card rank-1">
+                    <div style="font-size: 2rem; font-weight:800; color: var(--color-accent);">👑 1st</div>
+                    <div style="font-weight: 700; margin: 8px 0; font-size: 1.2rem;">elite_coder</div>
+                    <div style="color: var(--color-accent); font-weight:600;">3,120 pts</div>
+                </div>
+                <div class="podium-card" style="height: 160px;">
+                    <div style="font-size: 1.3rem; font-weight:700; color: #b45309;">3rd</div>
+                    <div style="font-weight: 600; margin: 8px 0;">dev_rahul</div>
+                    <div style="color: var(--color-primary); font-size: 0.9rem;">2,510 pts</div>
+                </div>
+            </div>
+
+            <!-- List Matrix Ranking Rows Extension -->
+            <div class="table-container">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Handle Identity</th>
+                            <th>Global Score</th>
+                            <th>Problems Complete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="background: rgba(99,102,241,0.04);">
+                            <td><strong>#4</strong></td>
+                            <td style="font-weight: 600; color: var(--color-primary);">alex_coder (You)</td>
+                            <td><strong>2,490 pts</strong></td>
+                            <td>84 Solved</td>
+                        </tr>
+                        <tr>
+                            <td>#5</td>
+                            <td style="font-weight: 600;">coder_ghost</td>
+                            <td>2,100 pts</td>
+                            <td>76 Solved</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+    <!-- Core Client Scripts System Configuration -->
+    <script src="../js/config.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+</body>
+</html>

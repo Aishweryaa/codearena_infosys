@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CodeArena · practice code</title>
+  <!-- Font Awesome 6 (free) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* ----- RESET & VARIABLES (dark theme default) ----- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+    :root {
+      --bg-main: #090d16;
+      --bg-surface: #0f172a;
+      --bg-surface-hover: #1e293b;
+      --text-main: #e8edf5;
+      --text-muted: #94a3b8;
+      --text-inverse: #f0f4ff;
+      --border-color: rgba(255,255,255,0.05);
+      --color-primary: #ff5e3a;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --shadow: 0 20px 40px -12px rgba(0,0,0,0.7);
+      --navbar-bg: rgba(9, 13, 22, 0.88);
+      --editor-bg: #05070f;
+      --editor-canvas-bg: #080c16;
+      --cta-bg: #0f172a;
+    }
+    /* ----- LIGHT THEME VARIABLES ----- */
+    [data-theme="light"] {
+      --bg-main: #f1f5f9;
+      --bg-surface: #ffffff;
+      --bg-surface-hover: #f0f4ff;
+      --text-main: #0b1b33;
+      --text-muted: #475569;
+      --text-inverse: #0b1b33;
+      --border-color: rgba(0,0,0,0.08);
+      --color-primary: #e04e2a;
+      --shadow: 0 20px 40px -12px rgba(0,0,0,0.1);
+      --navbar-bg: rgba(255,255,255,0.92);
+      --editor-bg: #f8fafc;
+      --editor-canvas-bg: #ffffff;
+      --cta-bg: #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg-main);
+      color: var(--text-main);
+      padding-top: 64px;
+      line-height: 1.6;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+    a { text-decoration: none; color: inherit; }
+
+    /* ----- FIXED NAVBAR ----- */
+    .global-navbar {
+      width: 100%;
+      background: var(--navbar-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      z-index: 1000;
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+    .navbar-brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text-inverse);
+      letter-spacing: -0.5px;
+      transition: color 0.3s ease;
+    }
+    .navbar-brand-logo span { color: var(--color-primary); }
+    .navbar-links-group {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+    .nav-anchor-item {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: color 0.2s ease;
+      cursor: pointer;
+    }
+    .nav-anchor-item:hover { color: var(--color-primary); }
+    .navbar-auth-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .nav-btn-login {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-inverse);
+      padding: 8px 16px;
+      border-radius: var(--radius-md);
+      font-size: 0.85rem;
+      font-weight: 700;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .nav-btn-login:hover {
+      background: rgba(255,255,255,0.05);
+      border-color: var(--color-primary);
+    }
+    .nav-btn-register {
+      background: var(--color-primary);
+      color: #ffffff;
+      border: none;
+      padding: 8px 18px;
+      border-radius: var(--radius-md);
+      font-size: 0.85rem;
+      font-weight: 700;
+      transition: opacity 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 14px rgba(255, 94, 58, 0.3);
+      cursor: pointer;
+    }
+    .nav-btn-register:hover {
+      opacity: 0.9;
+      box-shadow: 0 6px 20px rgba(255, 94, 58, 0.4);
+    }
+    /* ----- THEME TOGGLE BUTTON ----- */
+    .theme-toggle-btn {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      color: var(--text-inverse);
+    }
+    .theme-toggle-btn:hover {
+      border-color: var(--color-primary);
+      transform: rotate(20deg);
+    }
+    [data-theme="light"] .theme-toggle-btn {
+      color: #f59e0b;
+    }
+    [data-theme="dark"] .theme-toggle-btn {
+      color: #94a3b8;
+    }
+
+    /* ----- HERO SECTION ----- */
+    .landing-hero-section {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 140px 40px 60px 40px;
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      min-height: calc(100vh - 64px);
+    }
+    .hero-text-side { animation: fadeInUp 0.4s ease forwards; }
+    .brand-pill {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--color-primary);
+      background: rgba(255, 94, 58, 0.08);
+      border: 1px solid rgba(255, 94, 58, 0.15);
+      padding: 6px 14px;
+      border-radius: 30px;
+      margin-bottom: 24px;
+      display: inline-block;
+    }
+    .hero-title {
+      font-size: 3.6rem;
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      line-height: 1.05;
+      margin-bottom: 24px;
+      color: #ffffff;
+      transition: color 0.3s ease;
+    }
+    [data-theme="light"] .hero-title {
+      color: #0b1b33;
+    }
+    .hero-title span { color: var(--color-primary); }
+    .hero-description {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 40px;
+      max-width: 540px;
+    }
+
+    /* ----- STATS ROW ----- */
+    .tuf-stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 48px;
+      border-top: 1px solid var(--border-color);
+      padding-top: 32px;
+    }
+    .stat-item h3 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text-inverse);
+      margin-bottom: 4px;
+      transition: color 0.3s ease;
+    }
+    [data-theme="light"] .stat-item h3 {
+      color: #0b1b33;
+    }
+    .stat-item h3 span { color: var(--color-primary); }
+    .stat-item p {
+      font-size: 0.85rem;
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    /* ----- LANGUAGE TABS (matrix) ----- */
+    .language-tabs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+    .lang-tab {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .lang-tab:hover, .lang-tab.active-tab {
+      border-color: var(--color-primary);
+      color: var(--text-inverse);
+      transform: translateY(-2px);
+      background: var(--bg-surface-hover);
+    }
+
+    /* ----- RIGHT COLUMN (editor mock) ----- */
+    .hero-graphic-side {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      position: relative;
+      z-index: 10;
+    }
+    .mock-editor-window {
+      background: var(--editor-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+    .editor-top-bar {
+      background: rgba(255,255,255,0.02);
+      border-bottom: 1px solid var(--border-color);
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .window-dots { display: flex; gap: 6px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .code-canvas {
+      padding: 24px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: var(--text-main);
+      min-height: 200px;
+      white-space: pre-wrap;
+      transition: opacity 0.2s ease, background 0.3s ease, color 0.3s ease;
+      background: var(--editor-canvas-bg);
+    }
+    .editor-meta {
+      display: flex;
+      gap: 16px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+    }
+
+    /* ----- SECTION CONTAINERS ----- */
+    .content-section-container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 80px 40px;
+    }
+    .section-header h2 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 12px;
+      color: var(--text-inverse);
+      transition: color 0.3s ease;
+    }
+    [data-theme="light"] .section-header h2 {
+      color: #0b1b33;
+    }
+    .section-header p {
+      color: var(--text-muted);
+      font-size: 1rem;
+      margin-bottom: 40px;
+    }
+
+    /* ----- FEATURES GRID (4 cols) ----- */
+    .feature-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+    .feature-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 28px 24px;
+      transition: border-color 0.2s, transform 0.2s, background 0.3s ease;
+    }
+    .feature-card:hover {
+      border-color: var(--color-primary);
+      transform: translateY(-4px);
+    }
+    .feature-card .icon {
+      font-size: 2rem;
+      color: var(--color-primary);
+      margin-bottom: 12px;
+    }
+    .feature-card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-inverse);
+      margin-bottom: 6px;
+      transition: color 0.3s ease;
+    }
+    [data-theme="light"] .feature-card h3 {
+      color: #0b1b33;
+    }
+    .feature-card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* ----- LANGUAGES SUPPORT GRID ----- */
+    .lang-support-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px 32px;
+      margin-top: 16px;
+    }
+    .lang-support-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--bg-surface);
+      padding: 10px 24px;
+      border-radius: 40px;
+      border: 1px solid var(--border-color);
+      font-weight: 600;
+      color: var(--text-inverse);
+      font-size: 0.95rem;
+      transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+    [data-theme="light"] .lang-support-item {
+      color: #0b1b33;
+    }
+    .lang-support-item i { font-size: 1.4rem; }
+
+    /* ----- HOW IT WORKS (3 steps) ----- */
+    .how-it-works-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      margin-top: 20px;
+    }
+    .step-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      text-align: center;
+      transition: border-color 0.2s, background 0.3s ease;
+    }
+    .step-card:hover { border-color: var(--color-primary); }
+    .step-number {
+      display: inline-block;
+      background: rgba(255, 94, 58, 0.12);
+      color: var(--color-primary);
+      font-weight: 800;
+      font-size: 1.4rem;
+      width: 52px;
+      height: 52px;
+      line-height: 52px;
+      border-radius: 60px;
+      margin-bottom: 16px;
+    }
+    .step-card h4 {
+      color: var(--text-inverse);
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+      transition: color 0.3s ease;
+    }
+    [data-theme="light"] .step-card h4 {
+      color: #0b1b33;
+    }
+    .step-card p { color: var(--text-muted); font-size: 0.9rem; }
+
+    /* ----- PROBLEMS TABLE ----- */
+    .problems-listing-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-top: 40px;
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+    .tuf-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+    .tuf-table th {
+      background: rgba(255,255,255,0.02);
+      padding: 16px 24px;
+      color: #64748b;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .tuf-table td {
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-main);
+      font-size: 0.95rem;
+      transition: color 0.3s ease;
+    }
+    .tuf-table tr:hover td { background: rgba(255,255,255,0.01); }
+    .badge-easy { background: rgba(16, 185, 129, 0.1); color: #10b981; padding: 4px 12px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+    .badge-medium { background: rgba(245, 158, 11, 0.1); color: #f59e0b; padding: 4px 12px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+    .badge-hard { background: rgba(239, 68, 68, 0.1); color: #ef4444; padding: 4px 12px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+
+    /* ----- CTA SECTION ----- */
+    .cta-section-block {
+      background: var(--cta-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 48px 40px;
+      margin-top: 40px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+    .cta-text h2 {
+      color: var(--text-inverse);
+      font-size: 1.8rem;
+      font-weight: 700;
+      transition: color 0.3s ease;
+    }
+    [data-theme="light"] .cta-text h2 {
+      color: #0b1b33;
+    }
+    .cta-text p { color: var(--text-muted); margin-top: 4px; }
+    .cta-buttons-group {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .btn-cta-primary {
+      background: var(--color-primary);
+      border: none;
+      color: #fff;
+      padding: 12px 28px;
+      border-radius: 40px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .btn-cta-primary:hover { opacity: 0.9; transform: translateY(-2px); }
+    .btn-cta-outline {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-inverse);
+      padding: 12px 28px;
+      border-radius: 40px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .btn-cta-outline:hover { border-color: var(--color-primary); }
+
+    /* ----- FOOTER ----- */
+    .footer-main {
+      border-top: 1px solid var(--border-color);
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 48px 40px 24px;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 40px;
+    }
+    .footer-col h5 {
+      color: var(--text-inverse);
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      transition: color 0.3s ease;
+    }
+    [data-theme="light"] .footer-col h5 {
+      color: #0b1b33;
+    }
+    .footer-col a {
+      display: block;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-bottom: 8px;
+      transition: color 0.2s;
+    }
+    .footer-col a:hover { color: var(--color-primary); }
+    .footer-col p {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+    .footer-bottom {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 16px 40px 32px;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+
+    /* ----- animations ----- */
+    @keyframes fadeInUp {
+      0% { opacity: 0; transform: translateY(24px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ----- responsive ----- */
+    @media (max-width: 1150px) {
+      .global-navbar { padding: 0 24px; }
+      .navbar-links-group { gap: 16px; }
+      .landing-hero-section {
+        grid-template-columns: 1fr;
+        padding-top: 100px;
+        text-align: center;
+      }
+      .hero-description { margin-left: auto; margin-right: auto; }
+      .feature-grid-4 { grid-template-columns: 1fr 1fr; }
+      .how-it-works-grid { grid-template-columns: 1fr; }
+      .footer-main { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 700px) {
+      .global-navbar { padding: 0 16px; height: 60px; }
+      body { padding-top: 60px; }
+      .landing-hero-section { padding: 80px 20px 40px; }
+      .hero-title { font-size: 2.4rem; }
+      .content-section-container { padding: 40px 20px; }
+      .feature-grid-4 { grid-template-columns: 1fr; }
+      .cta-section-block { flex-direction: column; gap: 20px; align-items: flex-start; }
+      .footer-main { grid-template-columns: 1fr; }
+      .navbar-links-group { display: none; }
+      .theme-toggle-btn { width: 36px; height: 36px; font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ========== FIXED NAVBAR ========== -->
+<header class="global-navbar">
+  <a href="#" class="navbar-brand-logo">
+    <i class="fas fa-code" style="color:var(--color-primary);"></i> Code<span>Arena</span>
+  </a>
+  <ul class="navbar-links-group">
+    <li><a href="#features" class="nav-anchor-item">Features</a></li>
+    <li><a href="#languages" class="nav-anchor-item">Languages</a></li>
+    <li><a href="#how-it-works" class="nav-anchor-item">How it works</a></li>
+    <li><a href="#problems" class="nav-anchor-item">Problems</a></li>
+  </ul>
+  <div class="navbar-auth-actions">
+    <button class="theme-toggle-btn" id="themeToggle" aria-label="Toggle theme">
+      🌙
+    </button>
+    <a href="#" class="nav-btn-login"><i class="fas fa-sign-in-alt"></i> Login</a>
+    <a href="#" class="nav-btn-register"><i class="fas fa-user-plus"></i> Register</a>
+  </div>
+</header>
+
+<!-- ========== HERO SECTION ========== -->
+<section class="landing-hero-section">
+  <div class="hero-text-side">
+    <div class="brand-pill"><i class="fas fa-bolt" style="margin-right:6px;"></i>  Practice · Evaluate · Improve</div>
+    <h1 class="hero-title">Forge Your <span>Software</span> Architecture</h1>
+    <p class="hero-description">
+      From algorithms to system design — sharpen your skills with real‑time feedback,
+      sandboxed execution, and a community that pushes you forward.
+    </p>
+
+    <!-- Language Tabs (matrix) -->
+    <div id="languages" style="scroll-margin-top: 80px;">
+      <div style="font-weight:700; margin-bottom:12px; color:var(--text-muted);"><i class="fas fa-code"></i>  Language Matrix</div>
+      <div class="language-tabs-grid" id="langTabsContainer">
+        <div class="lang-tab active-tab" data-lang="python"><span>🐍</span> Python</div>
+        <div class="lang-tab" data-lang="java17"><span>☕</span> Java 17</div>
+        <div class="lang-tab" data-lang="cpp"><span>🔵</span> C++</div>
+        <div class="lang-tab" data-lang="c"><span>💼</span> C</div>
+        <div class="lang-tab" data-lang="csharp"><span>🟣</span> C#</div>
+        <div class="lang-tab" data-lang="mysql"><span>📊</span> SQL</div>
+        <div class="lang-tab" data-lang="typescript"><span>🔷</span> TS</div>
+        <div class="lang-tab" data-lang="go"><span>🐹</span> Go</div>
+        <div class="lang-tab" data-lang="rust"><span>⚙️</span> Rust</div>
+      </div>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="tuf-stats-row">
+      <div class="stat-item"><h3>10<span>+</span></h3><p>Languages supported</p></div>
+      <div class="stat-item"><h3>120<span>+</span></h3><p>Problems curated</p></div>
+      <div class="stat-item"><h3>98<span>%</span></h3><p>Sandbox uptime</p></div>
+    </div>
+  </div>
+
+  <!-- RIGHT COLUMN: Editor Mock -->
+  <div class="hero-graphic-side" id="editor">
+    <div class="mock-editor-window">
+      <div class="editor-top-bar">
+        <div class="window-dots">
+          <span class="dot" style="background:#ef4444;"></span>
+          <span class="dot" style="background:#f59e0b;"></span>
+          <span class="dot" style="background:#22c55e;"></span>
+        </div>
+        <div class="editor-meta">
+          <span><i class="far fa-file-code"></i> <span id="mock-filename">solution.py</span></span>
+          <span>⚡ <span id="mock-latency">0.02 ms</span></span>
+        </div>
+      </div>
+      <div class="code-canvas" id="editor-canvas">
+def evaluate_challenge(candidate_code):
+    context = Sandbox.initialize()
+    result = context.execute(candidate_code)
+    if result.status == "ACCEPTED":
+        return score_multiplier()
+    return retry_compilation()
+      </div>
+    </div>
+    <!-- Mini terminal activity -->
+    <div style="background:var(--bg-surface); border:1px solid var(--border-color); border-radius:var(--radius-lg); padding:16px 20px; font-family:monospace; font-size:0.85rem; color:var(--text-muted); transition: background 0.3s ease, border-color 0.3s ease;">
+      <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+        <span><i class="fas fa-satellite-dish" style="color:var(--color-primary);"></i>  Live Stream</span>
+        <span style="color:#22c55e; font-size:0.7rem;">● Active</span>
+      </div>
+      <div id="activity-stream">
+        <div style="display:flex; justify-content:space-between; padding:3px 0; border-bottom:1px solid var(--border-color);">
+          <span>&gt; Python sandbox initialized</span><span style="color:#4a5a7a;">now</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; padding:3px 0; border-bottom:1px solid var(--border-color);">
+          <span>&gt; Java 17 environment loaded</span><span style="color:#4a5a7a;">2s ago</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; padding:3px 0;">
+          <span>&gt; Rust compiler ready (memory-safe)</span><span style="color:#4a5a7a;">5s ago</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FEATURES SECTION ========== -->
+<section id="features" class="content-section-container" style="scroll-margin-top: 80px;">
+  <div class="section-header">
+    <h2>Why CodeArena <span style="color:var(--color-primary);">⚡</span></h2>
+    <p>Everything you need to get sharper at code — one quiet place to practice, review, and improve.</p>
+  </div>
+  <div class="feature-grid-4">
+    <div class="feature-card">
+      <div class="icon"><i class="fas fa-code"></i></div>
+      <h3>Multi-language practice</h3>
+      <p>Write and run solutions in Java, Python, C, C++, and more — switch languages without switching tools.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon"><i class="fas fa-chart-simple"></i></div>
+      <h3>Medium to hard difficulty</h3>
+      <p>Problems curated for real growth — past the basics, closer to what interviews and real projects demand.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon"><i class="fas fa-flask"></i></div>
+      <h3>Instant test feedback</h3>
+      <p>Every submission runs against real test cases so you know exactly what passed — and what didn't.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon"><i class="fas fa-calendar-check"></i></div>
+      <h3>Practice on your time</h3>
+      <p>No fixed schedule. Log in, pick a problem, and practice whenever it fits your day.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== LANGUAGES SECTION ========== -->
+<section id="languages" class="content-section-container" style="padding-top: 20px; scroll-margin-top: 80px;">
+  <div class="section-header">
+    <h2>Supported Languages <span style="color:var(--color-primary);">📚</span></h2>
+    <p>Practice in the language you're learning — more languages added as the practice set grows.</p>
+  </div>
+  <div class="lang-support-grid">
+    <span class="lang-support-item"><i class="fab fa-java" style="color:#007396;"></i> Java</span>
+    <span class="lang-support-item"><i class="fab fa-python" style="color:#3776AB;"></i> Python</span>
+    <span class="lang-support-item"><i class="fas fa-code" style="color:#00599C;"></i> C++</span>
+    <span class="lang-support-item"><i class="fab fa-js" style="color:#F7DF1E;"></i> JavaScript</span>
+    <span class="lang-support-item"><i class="fas fa-database" style="color:#00758F;"></i> SQL</span>
+    <span class="lang-support-item"><i class="fas fa-code" style="color:#A8B9CC;"></i> C#</span>
+    <span class="lang-support-item"><i class="fas fa-code" style="color:#00ADD8;"></i> Go</span>
+    <span class="lang-support-item"><i class="fas fa-code" style="color:#CE412B;"></i> Rust</span>
+  </div>
+</section>
+
+<!-- ========== HOW IT WORKS SECTION ========== -->
+<section id="how-it-works" class="content-section-container" style="padding-top: 20px; scroll-margin-top: 80px;">
+  <div class="section-header">
+    <h2>How it works <span style="color:var(--color-primary);">🔧</span></h2>
+    <p>From problem to verdict in three simple steps.</p>
+  </div>
+  <div class="how-it-works-grid">
+    <div class="step-card">
+      <div class="step-number">1</div>
+      <h4>Pick a problem</h4>
+      <p>Browse by difficulty, topic, or language. Read the description and sample cases.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-number">2</div>
+      <h4>Write & run</h4>
+      <p>Code in the Monaco editor, run against sample tests, then submit for full evaluation.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-number">3</div>
+      <h4>Get verdict</h4>
+      <p>See per-test-case results, execution time, memory usage — and track your progress.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== PROBLEMS SECTION ========== -->
+<section id="problems" class="content-section-container" style="padding-top: 20px; scroll-margin-top: 80px;">
+  <div class="section-header">
+    <h2>Practice Problems <span style="color:var(--color-primary);">📝</span></h2>
+    <p>Curated challenges to sharpen your problem-solving skills.</p>
+  </div>
+  <div class="problems-listing-card">
+    <table class="tuf-table">
+      <thead>
+        <tr><th>#</th><th>Title</th><th>Difficulty</th><th>Acceptance</th><th>Action</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>Two Sum</td><td><span class="badge-easy">Easy</span></td><td>78%</td><td><button style="background:var(--color-primary); border:none; color:white; padding:4px 16px; border-radius:6px; font-weight:600; cursor:pointer;">Solve</button></td></tr>
+        <tr><td>2</td><td>Valid Parentheses</td><td><span class="badge-easy">Easy</span></td><td>65%</td><td><button style="background:var(--color-primary); border:none; color:white; padding:4px 16px; border-radius:6px; font-weight:600; cursor:pointer;">Solve</button></td></tr>
+        <tr><td>3</td><td>Merge Intervals</td><td><span class="badge-medium">Medium</span></td><td>52%</td><td><button style="background:var(--color-primary); border:none; color:white; padding:4px 16px; border-radius:6px; font-weight:600; cursor:pointer;">Solve</button></td></tr>
+        <tr><td>4</td><td>LRU Cache</td><td><span class="badge-hard">Hard</span></td><td>38%</td><td><button style="background:var(--color-primary); border:none; color:white; padding:4px 16px; border-radius:6px; font-weight:600; cursor:pointer;">Solve</button></td></tr>
+        <tr><td>5</td><td>Course Schedule</td><td><span class="badge-medium">Medium</span></td><td>44%</td><td><button style="background:var(--color-primary); border:none; color:white; padding:4px 16px; border-radius:6px; font-weight:600; cursor:pointer;">Solve</button></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ========== CTA SECTION ========== -->
+<section class="content-section-container" style="padding-top: 20px;">
+  <div class="cta-section-block">
+    <div class="cta-text">
+      <h2>Ready to start practicing?</h2>
+      <p>Join for free and get access to the full problem set today.</p>
+    </div>
+    <div class="cta-buttons-group">
+      <button class="btn-cta-primary"><i class="fas fa-user-plus"></i> Create free account</button>
+      <button class="btn-cta-outline"><i class="fas fa-sign-in-alt"></i> I already have an account</button>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer>
+  <div class="footer-main">
+    <div class="footer-col">
+      <h5><i class="fas fa-code" style="color:var(--color-primary);"></i> CodeArena</h5>
+      <p>A practice ground for students and professionals to get sharper at writing real code, in the languages they already use.</p>
+    </div>
+    <div class="footer-col">
+      <h5>PRACTICE</h5>
+      <a href="#">Languages</a>
+      <a href="#">Problem set</a>
+      <a href="#">Features</a>
+    </div>
+    <div class="footer-col">
+      <h5>ACCOUNT</h5>
+      <a href="#">Log In</a>
+      <a href="#">Register</a>
+      <a href="#">Reset password</a>
+    </div>
+    <div class="footer-col">
+      <h5>ABOUT</h5>
+      <a href="#">For educators</a>
+      <a href="#">For teams</a>
+      <a href="#">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 CodeArena. Built for practice, not pressure.</span>
+    <span>Made for students learning to code.</span>
+  </div>
+</footer>
+
+<!-- ========== SCRIPTS ========== -->
+<script>
+  (function() {
+    // ----- THEME TOGGLE -----
+    const themeToggle = document.getElementById('themeToggle');
+    const htmlElement = document.documentElement;
+    
+    // Check saved theme or default to dark
+    let currentTheme = localStorage.getItem('theme') || 'dark';
+    htmlElement.setAttribute('data-theme', currentTheme);
+    themeToggle.textContent = currentTheme === 'dark' ? '🌙' : '☀️';
+
+    themeToggle.addEventListener('click', function() {
+      const isDark = htmlElement.getAttribute('data-theme') === 'dark';
+      const newTheme = isDark ? 'light' : 'dark';
+      htmlElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      themeToggle.textContent = newTheme === 'dark' ? '🌙' : '☀️';
+    });
+
+    // ----- LANGUAGE SNIPPETS -----
+    const codeSnippets = {
+      java17: { file: 'Solution.java', latency: '0.08 ms', code: 'public class Solution {\n    public static void main(String[] args) {\n        System.out.println("Java 17 Sandboxed Engine Online");\n    }\n}' },
+      python: { file: 'solution.py', latency: '0.02 ms', code: 'def evaluate_challenge(candidate_code):\n    context = Sandbox.initialize()\n    result = context.execute(candidate_code)\n    if result.status == "ACCEPTED":\n        return score_multiplier()\n    return retry_compilation()' },
+      cpp: { file: 'solution.cpp', latency: '0.01 ms', code: '#include <iostream>\nint main() {\n    std::cout << "C++20 High Performance Judge" << std::endl;\n    return 0;\n}' },
+      c: { file: 'solution.c', latency: '0.01 ms', code: '#include <stdio.h>\nint main() {\n    printf("C Runtime Isolated Matrix\\n");\n    return 0;\n}' },
+      csharp: { file: 'Program.cs', latency: '0.07 ms', code: 'using System;\nclass Program {\n    static void Main() {\n        Console.WriteLine(".NET 8 Sandbox Init");\n    }\n}' },
+      mysql: { file: 'query.sql', latency: '0.12 ms', code: 'SELECT user_id, max(score) \nFROM evaluation_ledger \nWHERE status = "ACCEPTED" \nGROUP BY user_id;' },
+      typescript: { file: 'index.ts', latency: '0.04 ms', code: 'const evaluate = (code: string): boolean => {\n    console.log("TS execution matrix active");\n    return true;\n};' },
+      go: { file: 'main.go', latency: '0.02 ms', code: 'package main\nimport "fmt"\nfunc main() {\n    fmt.Println("Go Concurrent Sandbox Polling...")\n}' },
+      rust: { file: 'main.rs', latency: '0.01 ms', code: 'fn main() {\n    println!("Rust Memory-Safe Compiler Online");\n}' }
+    };
+
+    const tabs = document.querySelectorAll('.lang-tab');
+    const canvas = document.getElementById('editor-canvas');
+    const filenameDisplay = document.getElementById('mock-filename');
+    const latencyDisplay = document.getElementById('mock-latency');
+    const activityStream = document.getElementById('activity-stream');
+
+    if (canvas && codeSnippets.python) {
+      canvas.textContent = codeSnippets.python.code;
+    }
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', function() {
+        tabs.forEach(t => t.classList.remove('active-tab'));
+        this.classList.add('active-tab');
+        const lang = this.getAttribute('data-lang');
+        if (codeSnippets[lang] && canvas) {
+          canvas.style.opacity = '0';
+          setTimeout(() => {
+            filenameDisplay.textContent = codeSnippets[lang].file;
+            latencyDisplay.textContent = codeSnippets[lang].latency;
+            canvas.textContent = codeSnippets[lang].code;
+            canvas.style.opacity = '1';
+            if (activityStream) {
+              const entry = document.createElement('div');
+              entry.style.display = 'flex';
+              entry.style.justifyContent = 'space-between';
+              entry.style.padding = '3px 0';
+              entry.style.borderBottom = '1px solid var(--border-color)';
+              const now = new Date();
+              const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+              entry.innerHTML = `<span>&gt; Loaded ${codeSnippets[lang].file}</span><span style="color:#4a5a7a;">${time}</span>`;
+              if (activityStream.children.length >= 4) activityStream.removeChild(activityStream.children[0]);
+              activityStream.appendChild(entry);
+            }
+          }, 180);
+        }
+      });
+    });
+
+    // Smooth scroll for nav anchors
+    document.querySelectorAll('.nav-anchor-item').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        if (targetId && targetId.startsWith('#')) {
+          const targetEl = document.querySelector(targetId);
+          if (targetEl) {
+            targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }
+      });
+    });
+  })();
+</script>
+</body>
+</html>

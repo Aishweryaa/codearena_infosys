@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Problem | CodeArena</title>
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <style>
+        .form-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 32px;
+        }
+        .form-card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+        }
+        .form-group {
+            margin-bottom: 24px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+        .form-control {
+            width: 100%;
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 12px 16px;
+            color: var(--text-main);
+            font-family: var(--font-main);
+            font-size: 0.95rem;
+            transition: border-color 0.2s;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
+        textarea.form-control {
+            resize: vertical;
+            min-height: 160px;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Admin Panel Navigation Sidebar Component -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-brand">CodeArena<span>.</span></div>
+            <ul class="sidebar-menu">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li class="active"><a href="problems.html">Manage Problems</a></li>
+                <li><a href="users.html">Manage Users</a></li>
+                <li><a href="submissions.html">Submissions</a></li>
+                <li style="margin-top: auto;"><a href="../login.html" style="color: var(--danger);">Logout</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Workspace Flow Contents -->
+        <main class="main-content">
+            <div class="page-header">
+                <div class="page-title">
+                    <h1>Create Algorithmic Challenge</h1>
+                    <p>Deploy a new coding scenario with automated structural testing constraints.</p>
+                </div>
+            </div>
+
+            <!-- Creation Input Matrix Block Architecture -->
+            <form class="form-grid" onsubmit="event.preventDefault();">
+                <div class="form-card">
+                    <div class="form-group">
+                        <label>Problem Title</label>
+                        <input type="text" class="form-control" placeholder="e.g. Reverse Binary Tree Matrix">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Problem Statement (Markdown Supported)</label>
+                        <textarea class="form-control" placeholder="Write comprehensive description guidelines..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Input Specifications Format</label>
+                        <textarea class="form-control" style="min-height: 80px;" placeholder="Describe input payload dimensions..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Output Specifications Format</label>
+                        <textarea class="form-control" style="min-height: 80px;" placeholder="Describe expected output system behavior..."></textarea>
+                    </div>
+
+                    <!-- 🌟 New Test Case Structural Evaluation Inputs Integrated Below -->
+                    <div class="form-group">
+                        <label>Standard Evaluation Test Input (Hidden from Candidates)</label>
+                        <textarea class="form-control" id="target-test-input" style="font-family: monospace; min-height: 100px;" placeholder="e.g. [2, 7, 11, 15]&#10;9"></textarea>
+                    </div>
+                    
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label>Expected System Evaluation Output Matcher</label>
+                        <textarea class="form-control" id="target-test-output" style="font-family: monospace; min-height: 100px;" placeholder="e.g. [0, 1]"></textarea>
+                    </div>
+                </div>
+
+                <!-- Sideline Compilation Rules Parameters Column -->
+                <div style="display:flex; flex-direction:column; gap:24px;">
+                    <div class="form-card">
+                        <div class="form-group">
+                            <label>Difficulty Tier</label>
+                            <select class="form-control">
+                                <option>Easy Tier</option>
+                                <option>Medium Tier</option>
+                                <option>Hard Tier</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Execution Time Limit (ms)</label>
+                            <input type="number" class="form-control" value="1000">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label>Memory Limit Check (MB)</label>
+                            <input type="number" class="form-control" value="256">
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 16px; justify-content: flex-end;">
+                        <a href="problems.html" class="btn btn-secondary">Discard</a>
+                        <button type="submit" class="btn btn-primary">Publish Problem</button>
+                    </div>
+                </div>
+            </form>
+        </main>
+    </div>
+    
+    <!-- Core Client Scripts System Configuration -->
+    <script src="../js/config.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+</body>
+</html>

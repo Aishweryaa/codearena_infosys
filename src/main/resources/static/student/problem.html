@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Coding Workspace Arena | CodeArena</title>
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Student Module Navigation Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-brand">CodeArena<span>.</span></div>
+            <ul class="sidebar-menu">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li class="active"><a href="problems.html">Problems</a></li>
+                <li><a href="submissions.html">My Submissions</a></li>
+                <li><a href="leaderboard.html">Leaderboard</a></li>
+                <li><a href="profile.html">Profile</a></li>
+                <li style="margin-top: auto;"><a href="../login.html" style="color: var(--danger);">Logout</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Workspace Viewport -->
+        <main class="main-content animate-fade-up" style="max-width: 100%;">
+            <!-- Split IDE Development Interface Core -->
+            <div class="ide-container">
+                
+                <!-- Left Narrative Pane Panel Details -->
+                <div class="ide-panel-left">
+                    <span class="badge badge-success" style="margin-bottom: 12px; display: inline-block;">Easy</span>
+                    <h1 style="font-size: 1.5rem; margin-bottom: 16px;">101. Two Sum Problem Engine</h1>
+                    
+                    <p style="font-size: 0.95rem; line-height: 1.6; margin-bottom: 16px; color: #cbd5e1;">
+                        Given an array of integers <code style="background: rgba(255,255,255,0.08); padding: 2px 6px; border-radius: 4px;">nums</code> and an integer <code style="background: rgba(255,255,255,0.08); padding: 2px 6px; border-radius: 4px;">target</code>, return indices of the two numbers such that they add up to <code style="background: rgba(255,255,255,0.08); padding: 2px 6px; border-radius: 4px;">target</code>.
+                    </p>
+                    
+                    <h3 style="font-size: 0.95rem; font-weight:600; margin-bottom: 8px;">Example Mockup Input Matrix:</h3>
+                    <pre style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); padding: 12px; border-radius: var(--radius-md); font-family: monospace; font-size: 0.85rem; color: var(--text-muted); line-height:1.4;">
+Input: nums =, target = 9
+Output: [0, 1]
+Explanation: Because nums[0] + nums[1] == 9, we return [0, 1].</pre>
+                </div>
+
+                <!-- Right Code Editor Workspace Layout Panel Container -->
+                <div class="ide-panel-right">
+                    <div class="code-editor-mock">
+                        <!-- Upgraded Language Selection Dropdown Banner -->
+                        <div class="editor-header-bar">
+                            <select id="editor-lang-select" style="background: var(--bg-main); border: 1px solid var(--border-color); color: var(--text-main); padding: 6px 12px; border-radius: 4px; font-weight: 500; font-family: var(--font-main); outline: none; cursor: pointer;">
+                                <option value="java-17">Java (OpenJDK 17)</option>
+                                <option value="java-21">Java (OpenJDK 21)</option>
+                                <option value="python">Python (3.10)</option>
+                                <option value="cpp">C++ (GCC 20)</option>
+                                <option value="c">C Language</option>
+                                <option value="csharp">C# (.NET 8)</option>
+                                <option value="mysql">MySQL</option>
+                                <option value="postgresql">PostgreSQL</option>
+                                <option value="typescript">TypeScript</option>
+                                <option value="go">Go Lang</option>
+                                <option value="rust">Rust</option>
+                            </select>
+                            <span style="font-size: 0.8rem; color: var(--text-muted);">Workspace Auto-Saved</span>
+                        </div>
+                        
+                        <div style="font-size: 0.9rem; line-height: 1.6; color: #e2e8f0; font-family: monospace;">
+                            <p><span style="color: #ff79c6;">class</span> <span style="color: #50fa7b;">Solution</span> {</p>
+                            <p>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #ff79c6;">public</span> <span style="color: #8be9fd;">int</span>[] <span style="color: #50fa7b;">twoSum</span>(<span style="color: #8be9fd;">int</span>[] nums, <span style="color: #8be9fd;">int</span> target) {</p>
+                            <p style="background: rgba(99,102,241,0.1);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6272a4;">// Write your implementation log here...</span></p>
+                            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #ff79c6;">return</span> <span style="color: #ff79c6;">new</span> <span style="color: #8be9fd;">int</span>[] {};</p>
+                            <p>&nbsp;&nbsp;&nbsp;&nbsp;}</p>
+                            <p>}</p>
+                        </div>
+                    </div>
+
+                    <!-- Expandable Client Console Diagnostic Panel Workbench -->
+                    <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 20px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                            <h4 style="font-size:0.9rem; font-weight:700; color:var(--text-main);">Custom Local Test Parameters Console</h4>
+                            <span style="font-size:0.75rem; color:var(--text-muted);">Provide data layers for testing</span>
+                        </div>
+                        <textarea id="custom-console-input" style="width: 100%; height: 80px; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 12px; color: var(--text-main); font-family: monospace; font-size: 0.9rem; resize: none; outline: none;" placeholder="Type custom input values here... (e.g. nums =, target = 9)"></textarea>
+                    </div>
+
+                    <!-- Sandbox Workspace Actions Footers Bar -->
+                    <div style="display: flex; justify-content: flex-end; gap: 12px; background: var(--bg-surface); padding: 16px; border: 1px solid var(--border-color); border-radius: var(--radius-lg);">
+                        <button class="btn btn-secondary">Run Local Tests</button>
+                        <a href="result.html" class="btn btn-primary" style="background: var(--success);">Submit Architecture</a>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+    
+    <!-- Core Client Scripts System Configuration -->
+    <script src="../js/config.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+</body>
+</html>

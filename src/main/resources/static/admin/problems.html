@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Problems | CodeArena</title>
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body>
+    <div class="admin-container">
+        <aside class="admin-sidebar">
+            <div class="sidebar-brand">CodeArena<span>.</span></div>
+            <ul class="sidebar-menu">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li class="active"><a href="problems.html">Manage Problems</a></li>
+                <li><a href="users.html">Manage Users</a></li>
+                <li><a href="submissions.html">Submissions</a></li>
+                <li style="margin-top: auto;"><a href="../login.html" style="color: var(--danger);">Logout</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <div class="page-header">
+                <div class="page-title">
+                    <h1>Problem Bank Management</h1>
+                    <p>Create, update, toggle visibility status, or edit coding algorithmic challenges.</p>
+                </div>
+                <a href="create-problem.html" class="btn btn-primary">+ Create New Problem</a>
+            </div>
+
+            <!-- Problem Matrix Datatable -->
+            <div class="table-container">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Difficulty</th>
+                            <th>Success Rate</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#PR-101</td>
+                            <td style="font-weight: 600;">Two Sum Problem Engine</td>
+                            <td><span class="badge badge-success">Easy</span></td>
+                            <td>68.4%</td>
+                            <td>
+                                <a href="edit-problem.html" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.85rem;">Edit Data</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#PR-102</td>
+                            <td style="font-weight: 600;">Matrix Shortest Path Router</td>
+                            <td><span class="badge badge-danger">Hard</span></td>
+                            <td>12.1%</td>
+                            <td>
+                                <a href="edit-problem.html" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.85rem;">Edit Data</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#PR-103</td>
+                            <td style="font-weight: 600;">LRU Cache Structure Design</td>
+                            <td><span class="badge badge-warning">Medium</span></td>
+                            <td>41.8%</td>
+                            <td>
+                                <a href="edit-problem.html" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.85rem;">Edit Data</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Core Client Scripts System Configuration -->
+    <script src="../js/config.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    
+</body>
+</html>

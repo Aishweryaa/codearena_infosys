@@ -1,0 +1,77 @@
+/* Metric Stats Row Extensions */
+.metrics-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+/* Internal Layout Cards mapping modern web layouts */
+.content-card {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    margin-bottom: 24px;
+}
+
+/* Structured lists (e.g., Problem Feed List items) */
+.list-item-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    background-color: rgba(255, 255, 255, 0.01);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    margin-bottom: 12px;
+    transition: all 0.2s ease;
+}
+
+.list-item-row:hover {
+    background-color: var(--bg-surface-hover);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Split Programming Sandbox IDE environment styling */
+.ide-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    height: calc(100vh - 140px);
+}
+
+.ide-panel-left {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    overflow-y: auto;
+}
+
+.ide-panel-right {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.code-editor-mock {
+    flex-grow: 1;
+    background-color: #05070f;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    font-family: 'Courier New', Courier, monospace;
+    padding: 20px;
+    color: #a9b2c3;
+    position: relative;
+}
+
+.editor-header-bar {
+    background-color: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid var(--border-color);
+    padding: 10px 16px;
+    margin: -20px -20px 20px -20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

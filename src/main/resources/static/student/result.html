@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Evaluation Grade Diagnostics | CodeArena</title>
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <style>
+        .result-container {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            text-align: center;
+            max-width: 680px;
+            margin: 40px auto 0 auto;
+            box-shadow: var(--shadow);
+        }
+        .metric-badge-box {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin: 32px 0;
+        }
+        .metric-mini-pill {
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+            padding: 12px 24px;
+            border-radius: var(--radius-md);
+        }
+        
+        /* 🌟 Continuous circular spinning animation rule */
+        @keyframes spin { 
+            to { transform: rotate(360deg); } 
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Student Sidebar Navigation Component -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-brand">CodeArena<span>.</span></div>
+            <ul class="sidebar-menu">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li class="active"><a href="problems.html">Problems</a></li>
+                <li><a href="submissions.html">My Submissions</a></li>
+                <li><a href="leaderboard.html">Leaderboard</a></li>
+                <li><a href="profile.html">Profile</a></li>
+                <li style="margin-top: auto;"><a href="../login.html" style="color: var(--danger);">Logout</a></li>
+            </ul>
+        </aside>
+
+        <!-- 🎯 Core Split Panel Main Viewport Container Layout -->
+        <main class="main-content animate-fade-up">
+            
+            <!-- ⏳ 1. Live Job Queue Evaluation Processing Panel -->
+            <div id="queue-loading-state" class="result-container" style="display: block; padding: 60px 40px;">
+                <!-- Circular Animated CSS Core Spinner -->
+                <div style="width: 50px; height: 50px; border: 4px solid var(--border-color); border-top-color: var(--color-primary); border-radius: 50%; margin: 0 auto 24px auto; animation: spin 1s linear infinite;"></div>
+                <h1 style="font-size: 1.75rem; font-weight: 800; margin-bottom: 8px;">Compiling Solution...</h1>
+                <p style="color: var(--text-muted); font-size: 0.95rem;">Your code has been allocated to a secure sandbox judge worker cluster queue node.</p>
+            </div>
+
+            <!-- 🎉 2. Success Status Screen Panel (Initially Hidden, Toggled by JS) -->
+            <div id="evaluation-success-state" class="result-container" style="display: none;">
+                <div style="font-size: 4rem; margin-bottom: 16px;">🎉</div>
+                <h1 style="color: var(--success); font-size: 2.25rem; font-weight:800; margin-bottom: 8px;">Success: Solution Accepted!</h1>
+                <p style="color: var(--text-muted);">Your architectural code passed all 45 sandboxed system validation blocks successfully.</p>
+
+                <div class="metric-badge-box">
+                    <div class="metric-mini-pill">
+                        <span style="display:block; font-size: 0.8rem; color: var(--text-muted); margin-bottom:4px;">Execution Time</span>
+                        <strong style="font-size: 1.2rem; color: var(--color-accent);">42 ms</strong>
+                    </div>
+                    <div class="metric-mini-pill">
+                        <span style="display:block; font-size: 0.8rem; color: var(--text-muted); margin-bottom:4px;">Memory Score</span>
+                        <strong style="font-size: 1.2rem; color: var(--color-accent);">14.2 MB</strong>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 16px; justify-content: center;">
+                    <a href="problems.html" class="btn btn-secondary">Back to Problems</a>
+                    <a href="leaderboard.html" class="btn btn-primary">Check Leaderboard Rank</a>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Core Client Scripts System Configuration -->
+    <script src="../js/config.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+
+    <!-- 🌟 Simulation script to test the visual state shift after compilation finishes -->
+    <script>
+        setTimeout(() => {
+            const loadingState = document.getElementById('queue-loading-state');
+            const successState = document.getElementById('evaluation-success-state');
+            
+            if (loadingState && successState) {
+                loadingState.style.display = 'none';
+                successState.style.display = 'block';
+                // Trigger a nice toast to celebrate passing the grading sandbox
+                if (typeof Utils !== 'undefined' && Utils.showToast) {
+                    Utils.showToast('Evaluation Complete: Accepted!', 'success');
+                }
+            }
+        }, 2000); // Transitions seamlessly after exactly 2 seconds of simulation time
+    </script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Submissions | CodeArena</title>
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body>
+    <div class="admin-container">
+        <aside class="admin-sidebar">
+            <div class="sidebar-brand">CodeArena<span>.</span></div>
+            <ul class="sidebar-menu">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="problems.html">Manage Problems</a></li>
+                <li><a href="users.html">Manage Users</a></li>
+                <li class="active"><a href="submissions.html">Submissions</a></li>
+                <li style="margin-top: auto;"><a href="../login.html" style="color: var(--danger);">Logout</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <div class="page-header">
+                <div class="page-title">
+                    <h1>Global System Submissions</h1>
+                    <p>Audit and track real-time script code compilation files pushed by runtime candidates.</p>
+                </div>
+            </div>
+
+            <!-- Global Logs Pipeline Infrastructure -->
+            <div class="table-container">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th>Run ID</th>
+                            <th>Candidate</th>
+                            <th>Target Task</th>
+                            <th>Language Used</th>
+                            <th>Status Badge</th>
+                            <th>Runtime Execution</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#RUN-9082</td>
+                            <td style="font-weight: 500;">alex_coder</td>
+                            <td>Two Sum Engine</td>
+                            <td style="font-family: monospace; color: var(--text-muted);">Java 17</td>
+                            <td><span class="badge badge-success">Accepted</span></td>
+                            <td>42 ms</td>
+                        </tr>
+                        <tr>
+                            <td>#RUN-9081</td>
+                            <td style="font-weight: 500;">sarah_k</td>
+                            <td>Matrix Shortest Path</td>
+                            <td style="font-family: monospace; color: var(--text-muted);">C++ 20</td>
+                            <td><span class="badge badge-danger">Runtime Error</span></td>
+                            <td>--</td>
+                        </tr>
+                        <tr>
+                            <td>#RUN-9080</td>
+                            <td style="font-weight: 500;">dev_rahul</td>
+                            <td>LRU Cache Design</td>
+                            <td style="font-family: monospace; color: var(--text-muted);">Python 3.10</td>
+                            <td><span class="badge badge-warning">Time Limit Exceeded</span></td>
+                            <td>1000 ms</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Core Client Scripts System Configuration -->
+    <script src="../js/config.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    
+</body>
+</html>

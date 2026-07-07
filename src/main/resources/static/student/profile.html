@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Profile Portfolio | CodeArena</title>
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <style>
+        .profile-grid-box {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 32px;
+        }
+        .heatmap-matrix-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 6px;
+            margin-top: 16px;
+        }
+        .heatmap-box-cell {
+            background-color: var(--border-color);
+            aspect-ratio: 1;
+            border-radius: 2px;
+        }
+        .heatmap-box-cell.active-low { background-color: #312e81; }
+        .heatmap-box-cell.active-medium { background-color: #4338ca; }
+        .heatmap-box-cell.active-high { background-color: #6366f1; }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <aside class="admin-sidebar">
+            <div class="sidebar-brand">CodeArena<span>.</span></div>
+            <ul class="sidebar-menu">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="problems.html">Problems</a></li>
+                <li><a href="submissions.html">My Submissions</a></li>
+                <li><a href="leaderboard.html">Leaderboard</a></li>
+                <li class="active"><a href="profile.html">Profile</a></li>
+                <li style="margin-top: auto;"><a href="../login.html" style="color: var(--danger);">Logout</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content animate-fade-up">
+            <div class="profile-grid-box">
+                
+                
+                <div class="content-card" style="text-align: center; padding: 32px 24px;">
+                    <div style="width: 96px; height: 96px; background: var(--border-color); border-radius: 50%; margin: 0 auto 16px auto; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; border: 2px solid var(--color-primary);">👨‍💻</div>
+                    <h2 style="font-size: 1.3rem; margin-bottom: 4px;">alex_coder</h2>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px;">alex.johnson@university.edu</p>
+                    <div style="background: rgba(255,255,255,0.02); padding: 12px; border-radius: var(--radius-md); text-align: left; font-size: 0.85rem;">
+                        <p style="margin-bottom: 6px; color: var(--text-muted);">Global Badge Rank: <strong style="color: var(--text-main); float: right;">#4</strong></p>
+                        <p>Total Coding Points: <strong style="color: var(--color-accent); float: right;">2,490 pts</strong></p>
+                    </div>
+                </div>
+
+                <!-- Right Hand Contributions Activity Analytics Matrix -->
+                <div>
+                    <div class="content-card">
+                        <h3 style="font-size: 1.1rem; font-weight:600; margin-bottom: 4px;">Coding Activity Ledger</h3>
+                        <p style="color: var(--text-muted); font-size: 0.85rem;">Tracking algorithmic compilation trends over the last few active weeks.</p>
+                        
+                        <!-- Activity Grid Simulation Block Row -->
+                        <div class="heatmap-matrix-grid">
+                            <div class="heatmap-box-cell active-high"></div>
+                            <div class="heatmap-box-cell active-low"></div>
+                            <div class="heatmap-box-cell"></div>
+                            <div class="heatmap-box-cell active-medium"></div>
+                            <div class="heatmap-box-cell active-high"></div>
+                            <div class="heatmap-box-cell"></div>
+                            <div class="heatmap-box-cell active-low"></div>
+                            <div class="heatmap-box-cell active-medium"></div>
+                            <div class="heatmap-box-cell active-high"></div>
+                            <div class="heatmap-box-cell"></div>
+                            <div class="heatmap-box-cell active-low"></div>
+                            <div class="heatmap-box-cell active-high"></div>
+                            <!-- Extra padding blocks to balance layout design grids -->
+                            <div class="heatmap-box-cell active-medium"></div>
+                            <div class="heatmap-box-cell"></div>
+                            <div class="heatmap-box-cell active-low"></div>
+                            <div class="heatmap-box-cell active-high"></div>
+                            <div class="heatmap-box-cell active-high"></div>
+                            <div class="heatmap-box-cell active-low"></div>
+                            <div class="heatmap-box-cell"></div>
+                            <div class="heatmap-box-cell active-medium"></div>
+                            <div class="heatmap-box-cell active-high"></div>
+                            <div class="heatmap-box-cell"></div>
+                            <div class="heatmap-box-cell active-low"></div>
+                            <div class="heatmap-box-cell active-medium"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+    
+    <!-- Core Client Scripts System Configuration -->
+    <script src="../js/config.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    
+</body>
+</html>

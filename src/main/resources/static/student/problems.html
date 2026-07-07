@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Problem Repository | CodeArena</title>
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+<body>
+    <div class="admin-container">
+        <aside class="admin-sidebar">
+            <div class="sidebar-brand">CodeArena<span>.</span></div>
+            <ul class="sidebar-menu">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li class="active"><a href="problems.html">Problems</a></li>
+                <li><a href="submissions.html">My Submissions</a></li>
+                <li><a href="leaderboard.html">Leaderboard</a></li>
+                <li><a href="profile.html">Profile</a></li>
+                <li style="margin-top: auto;"><a href="../login.html" style="color: var(--danger);">Logout</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content animate-fade-up">
+            <div class="page-header">
+                <div class="page-title">
+                    <h1>Problem Practice Repository</h1>
+                    <p>Hone your software architectural engineering skillsets against programmatic edge cases.</p>
+                </div>
+            </div>
+
+            <!-- Dynamic Problems Catalogue Table Row -->
+            <div class="table-container">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th>Status Scope</th>
+                            <th>Problem Identifier Title</th>
+                            <th>Difficulty Tier</th>
+                            <th>Success Metrics</th>
+                            <th>Action Trigger</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="color: var(--success); font-weight: bold;">✔ Solved</td>
+                            <td style="font-weight: 600;">Two Sum Problem Engine</td>
+                            <td><span class="badge badge-success">Easy</span></td>
+                            <td>68.4%</td>
+                            <td><a href="problem.html" class="btn btn-secondary" style="padding: 6px 14px; font-size: 0.85rem;">Practice Again</a></td>
+                        </tr>
+                        <tr>
+                            <td style="color: var(--text-muted);">-- Unsolved</td>
+                            <td style="font-weight: 600;">Matrix Shortest Path Router</td>
+                            <td><span class="badge badge-danger">Hard</span></td>
+                            <td>12.1%</td>
+                            <td><a href="problem.html" class="btn btn-primary" style="padding: 6px 14px; font-size: 0.85rem;">Attempt Task</a></td>
+                        </tr>
+                        <tr>
+                            <td style="color: var(--warning); font-weight: bold;">⌛ Attempted</td>
+                            <td style="font-weight: 600;">LRU Cache Structure Design</td>
+                            <td><span class="badge badge-warning">Medium</span></td>
+                            <td>41.8%</td>
+                            <td><a href="problem.html" class="btn btn-primary" style="padding: 6px 14px; font-size: 0.85rem;">Resume Code</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+    <!-- Core Client Scripts System Configuration -->
+    <script src="../js/config.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+</body>
+</html>
