@@ -2,107 +2,1266 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Global Rank Leaderboard | CodeArena</title>
-    <link rel="stylesheet" href="../css/variables.css">
-    <link rel="stylesheet" href="../css/common.css">
-    <link rel="stylesheet" href="../css/animations.css">
-    <link rel="stylesheet" href="../css/dashboard.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Rank Leaderboard · CodeArena</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <style>
+        /* ===== RESET & VARIABLES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-main: #0a0e17;
+            --bg-surface: #111827;
+            --bg-surface-hover: #1e293b;
+            --bg-card: #141c2b;
+            --text-main: #e8edf5;
+            --text-muted: #8b9bb5;
+            --text-dim: #4a5a7a;
+            --text-inverse: #f0f4ff;
+            --border-color: rgba(255, 255, 255, 0.05);
+            --border-hover: rgba(255, 255, 255, 0.08);
+            --color-primary: #ff5e3a;
+            --color-primary-dim: rgba(255, 94, 58, 0.12);
+            --color-accent: #ff7a5a;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+            --sidebar-width: 220px;
+            --success: #22c55e;
+            --success-dim: rgba(34, 197, 94, 0.12);
+            --warning: #f59e0b;
+            --warning-dim: rgba(245, 158, 11, 0.12);
+            --danger: #ef4444;
+            --danger-dim: rgba(239, 68, 68, 0.12);
+            --blue: #3b82f6;
+            --blue-dim: rgba(59, 130, 246, 0.12);
+            --purple: #8b5cf6;
+            --purple-dim: rgba(139, 92, 246, 0.12);
+            --gold: #f59e0b;
+            --silver: #94a3b8;
+            --bronze: #cd7f32;
+        }
+
+        [data-theme="light"] {
+            --bg-main: #f1f5f9;
+            --bg-surface: #ffffff;
+            --bg-surface-hover: #e8edf5;
+            --bg-card: #f8fafc;
+            --text-main: #0b1b33;
+            --text-muted: #475569;
+            --text-dim: #94a3b8;
+            --text-inverse: #1e293b;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --border-hover: rgba(0, 0, 0, 0.12);
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.5;
+            min-height: 100vh;
+            display: flex;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-main);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--text-dim);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+
+        /* ===== SIDEBAR ===== */
+        .admin-sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: var(--bg-surface);
+            border-right: 1px solid var(--border-color);
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease, border-color 0.3s ease;
+        }
+
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0 8px 20px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        .sidebar-brand .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--color-primary), #e0452a);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            color: #fff;
+        }
+
+        .sidebar-brand .brand-text {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.3px;
+        }
+
+        .sidebar-brand .brand-text span {
+            color: var(--color-primary);
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            padding: 0 4px;
+        }
+
+        .sidebar-menu li a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.85rem;
+            border-radius: var(--radius-sm);
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .sidebar-menu li a i {
+            width: 18px;
+            text-align: center;
+            font-size: 0.95rem;
+            flex-shrink: 0;
+        }
+
+        .sidebar-menu li a .menu-label {
+            flex: 1;
+        }
+
+        .sidebar-menu li a .menu-badge {
+            background: var(--color-primary-dim);
+            color: var(--color-primary);
+            font-size: 0.6rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 20px;
+        }
+
+        .sidebar-menu li:hover a {
+            color: #ffffff;
+            background: var(--bg-surface-hover);
+        }
+
+        .sidebar-menu li.active a {
+            color: var(--color-primary);
+            background: var(--color-primary-dim);
+            font-weight: 600;
+        }
+
+        .sidebar-menu li.active a::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 20px;
+            background: var(--color-primary);
+            border-radius: 0 4px 4px 0;
+        }
+
+        .sidebar-menu .divider {
+            height: 1px;
+            background: var(--border-color);
+            margin: 8px 8px;
+        }
+
+        .sidebar-menu .logout-item {
+            margin-top: auto;
+            border-top: 1px solid var(--border-color);
+            padding-top: 12px;
+        }
+
+        .sidebar-menu .logout-item a {
+            color: var(--text-muted);
+        }
+
+        .sidebar-menu .logout-item a:hover {
+            color: var(--danger);
+            background: var(--danger-dim);
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            padding: 28px 36px 40px;
+            min-height: 100vh;
+            transition: background 0.3s ease;
+        }
+
+        /* ===== TOP NAV BAR ===== */
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 0 24px 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .top-bar .page-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .top-bar .page-title i {
+            color: var(--color-primary);
+        }
+
+        .top-bar .page-title span {
+            color: var(--text-muted);
+            font-weight: 400;
+            font-size: 0.85rem;
+        }
+
+        .top-bar .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* ===== THEME TOGGLE BUTTON ===== */
+        .theme-toggle-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            color: var(--text-inverse);
+        }
+        .theme-toggle-btn:hover {
+            border-color: var(--color-primary);
+            transform: rotate(20deg);
+        }
+        [data-theme="light"] .theme-toggle-btn {
+            color: #f59e0b;
+        }
+        [data-theme="dark"] .theme-toggle-btn {
+            color: #94a3b8;
+        }
+
+        .top-bar .user-actions .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 4px 12px 4px 4px;
+            border-radius: var(--radius-md);
+            transition: background 0.2s ease;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+        }
+
+        .top-bar .user-actions .user-profile:hover {
+            background: var(--bg-surface-hover);
+        }
+
+        .top-bar .user-actions .user-profile .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--color-primary), #e0452a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: #fff;
+        }
+
+        .top-bar .user-actions .user-profile .user-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .top-bar .user-actions .user-profile i {
+            color: var(--text-dim);
+            font-size: 0.8rem;
+        }
+
+        /* ===== PAGE HEADER ===== */
+        .page-header {
+            margin-bottom: 24px;
+        }
+
+        .page-header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+
+        .page-header p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* ===== STATS ROW ===== */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 28px;
+        }
+
+        .stat-mini {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 14px 16px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-mini:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-2px);
+        }
+
+        .stat-mini .stat-number {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-main);
+            line-height: 1.2;
+        }
+
+        .stat-mini .stat-label {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 2px;
+        }
+
+        .stat-mini .stat-number.gold {
+            color: var(--gold);
+        }
+        .stat-mini .stat-number.silver {
+            color: var(--silver);
+        }
+        .stat-mini .stat-number.bronze {
+            color: var(--bronze);
+        }
+        .stat-mini .stat-number.blue {
+            color: var(--blue);
+        }
+
+        /* ===== PODIUM ===== */
+        .podium-section {
+            margin-bottom: 32px;
+        }
+
+        .podium-section .podium-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .podium-section .podium-title i {
+            color: var(--color-primary);
+        }
+
         .podium-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 20px;
             align-items: flex-end;
-            margin-bottom: 40px;
             text-align: center;
         }
+
         .podium-card {
-            background-color: var(--bg-surface);
+            background: var(--bg-surface);
             border: 1px solid var(--border-color);
             border-radius: var(--radius-lg);
-            padding: 32px 24px;
+            padding: 24px 20px;
+            transition: all 0.3s ease;
+            position: relative;
         }
+
+        .podium-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-4px);
+        }
+
+        .podium-card .rank-badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 12px;
+            border-radius: 20px;
+            margin-bottom: 8px;
+        }
+
+        .podium-card .rank-badge.gold {
+            background: rgba(245, 158, 11, 0.12);
+            color: var(--gold);
+            border: 1px solid rgba(245, 158, 11, 0.15);
+        }
+
+        .podium-card .rank-badge.silver {
+            background: rgba(148, 163, 184, 0.12);
+            color: var(--silver);
+            border: 1px solid rgba(148, 163, 184, 0.15);
+        }
+
+        .podium-card .rank-badge.bronze {
+            background: rgba(205, 127, 50, 0.12);
+            color: var(--bronze);
+            border: 1px solid rgba(205, 127, 50, 0.15);
+        }
+
+        .podium-card .rank-icon {
+            font-size: 2.2rem;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .podium-card .user-handle {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin: 4px 0;
+        }
+
+        .podium-card .user-score {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--color-primary);
+        }
+
+        .podium-card .user-solved {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            margin-top: 2px;
+        }
+
         .podium-card.rank-1 {
-            height: 240px;
-            border-color: var(--color-accent);
-            background: linear-gradient(180deg, rgba(6, 182, 212, 0.1) 0%, var(--bg-surface) 100%);
+            border-color: rgba(245, 158, 11, 0.2);
+            background: linear-gradient(180deg, rgba(245, 158, 11, 0.06) 0%, var(--bg-surface) 100%);
+            padding-top: 32px;
+        }
+
+        .podium-card.rank-1 .rank-icon {
+            font-size: 2.8rem;
+        }
+
+        .podium-card.rank-2 {
+            padding-top: 20px;
+        }
+
+        .podium-card.rank-3 {
+            padding-top: 16px;
+        }
+
+        /* ===== FILTER BAR ===== */
+        .filter-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-bar .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 6px 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .filter-bar .filter-group:focus-within {
+            border-color: var(--color-primary);
+        }
+
+        .filter-bar .filter-group i {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+        }
+
+        .filter-bar .filter-group select {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text-main);
+            font-size: 0.85rem;
+            font-family: 'Inter', sans-serif;
+            padding: 4px 0;
+            cursor: pointer;
+        }
+
+        .filter-bar .filter-group select option {
+            background: var(--bg-surface);
+            color: var(--text-main);
+        }
+
+        /* ===== TABLE ===== */
+        .table-container {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .table-container:hover {
+            border-color: var(--border-hover);
+        }
+
+        .custom-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .custom-table thead {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .custom-table th {
+            padding: 14px 20px;
+            text-align: left;
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .custom-table td {
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-main);
+            font-size: 0.9rem;
+            vertical-align: middle;
+        }
+
+        .custom-table tbody tr {
+            transition: background 0.2s ease;
+            cursor: default;
+        }
+
+        .custom-table tbody tr:hover {
+            background: var(--bg-surface-hover);
+        }
+
+        .custom-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .custom-table tbody tr.current-user {
+            background: rgba(255, 94, 58, 0.06);
+            border-left: 3px solid var(--color-primary);
+        }
+
+        .custom-table tbody tr.current-user td:first-child {
+            padding-left: 17px;
+        }
+
+        .custom-table .rank-number {
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        .custom-table .rank-number.top-1 {
+            color: var(--gold);
+        }
+        .custom-table .rank-number.top-2 {
+            color: var(--silver);
+        }
+        .custom-table .rank-number.top-3 {
+            color: var(--bronze);
+        }
+
+        /* ===== PAGINATION ===== */
+        .pagination-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px 16px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .pagination-bar .info {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .pagination-bar .info .count {
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .pagination-bar .pagination {
+            display: flex;
+            gap: 6px;
+        }
+
+        .pagination-bar .pagination button {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 4px 12px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .pagination-bar .pagination button:hover {
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+        }
+
+        .pagination-bar .pagination button.active {
+            background: var(--color-primary);
+            border-color: var(--color-primary);
+            color: #fff;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .stats-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .admin-sidebar {
+                transform: translateX(-100%);
+                width: 260px;
+            }
+
+            .admin-sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 16px;
+            }
+
+            .top-bar {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+
+            .top-bar .user-actions {
+                flex-wrap: wrap;
+            }
+
+            .stats-row {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .stat-mini {
+                padding: 10px 12px;
+            }
+
+            .stat-mini .stat-number {
+                font-size: 1.2rem;
+            }
+
+            .podium-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .podium-card.rank-1 {
+                order: -1;
+                grid-column: 1 / -1;
+            }
+
+            .filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-bar .filter-group {
+                width: 100%;
+            }
+
+            .custom-table {
+                font-size: 0.75rem;
+            }
+
+            .custom-table th,
+            .custom-table td {
+                padding: 8px 10px;
+            }
+
+            .pagination-bar {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .mobile-toggle {
+                display: flex !important;
+            }
+
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.6);
+                z-index: 99;
+                backdrop-filter: blur(4px);
+            }
+
+            .sidebar-overlay.active {
+                display: block;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 12px;
+            }
+
+            .page-header h1 {
+                font-size: 1.2rem;
+            }
+
+            .stats-row {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            .stat-mini {
+                padding: 8px 10px;
+            }
+
+            .stat-mini .stat-number {
+                font-size: 1rem;
+            }
+
+            .stat-mini .stat-label {
+                font-size: 0.55rem;
+            }
+
+            .podium-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .podium-card.rank-1 {
+                grid-column: 1;
+            }
+
+            .custom-table th,
+            .custom-table td {
+                padding: 6px 8px;
+                font-size: 0.65rem;
+            }
+        }
+
+        /* ===== MOBILE TOGGLE ===== */
+        .mobile-toggle {
+            display: none;
+            position: fixed;
+            top: 14px;
+            left: 14px;
+            z-index: 200;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            color: #ffffff;
+            padding: 8px 12px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-toggle:hover {
+            border-color: var(--color-primary);
+        }
+
+        /* ===== TOAST ===== */
+        .custom-toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            padding: 12px 24px;
+            border-radius: var(--radius-md);
+            color: var(--text-main);
+            font-size: 0.9rem;
+            z-index: 9999;
+            animation: slideUp 0.4s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            font-family: 'Inter', sans-serif;
+            backdrop-filter: blur(12px);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
 <body>
-    <div class="admin-container">
-        <aside class="admin-sidebar">
-            <div class="sidebar-brand">CodeArena<span>.</span></div>
-            <ul class="sidebar-menu">
-                <li><a href="dashboard.html">Dashboard</a></li>
-                <li><a href="problems.html">Problems</a></li>
-                <li><a href="submissions.html">My Submissions</a></li>
-                <li class="active"><a href="leaderboard.html">Leaderboard</a></li>
-                <li><a href="profile.html">Profile</a></li>
-                <li style="margin-top: auto;"><a href="../login.html" style="color: var(--danger);">Logout</a></li>
-            </ul>
-        </aside>
+<aside class="admin-sidebar">
+    <div class="sidebar-brand">CodeArena<span>.</span></div>
+    <ul class="sidebar-menu">
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="problems.html">Problems</a></li>
+        <li><a href="submissions.html">My Submissions</a></li>
+        <li class="active"><a href="leaderboard.html">Leaderboard</a></li>
+        <li><a href="profile.html">Profile</a></li>
+        <li style="margin-top: auto;"><a href="../login.html" style="color: var(--danger);">Logout</a></li>
+    </ul>
+</aside>
+    <!-- ===== MOBILE TOGGLE ===== -->
+    <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle sidebar">
+        <i class="fas fa-bars"></i>
+    </button>
 
-        <main class="main-content animate-fade-up">
-            <div class="page-header">
-                <div class="page-title">
-                    <h1>Global System Leaderboard Rankings</h1>
-                    <p>Track elite user profile scores based on challenge execution efficiency scores.</p>
+    <!-- ===== OVERLAY ===== -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="admin-sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <div class="logo-icon"><i class="fas fa-code"></i></div>
+            <div class="brand-text">Code<span>Arena</span></div>
+        </div>
+        <ul class="sidebar-menu">
+            <li>
+                <a href="dashboard.html">
+                    <i class="fas fa-th-large"></i>
+                    <span class="menu-label">Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="problems.html">
+                    <i class="fas fa-code"></i>
+                    <span class="menu-label">Problems</span>
+                    <span class="menu-badge">120</span>
+                </a>
+            </li>
+            <li>
+                <a href="submissions.html">
+                    <i class="fas fa-paper-plane"></i>
+                    <span class="menu-label">My Submissions</span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="leaderboard.html">
+                    <i class="fas fa-trophy"></i>
+                    <span class="menu-label">Leaderboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="profile.html">
+                    <i class="fas fa-user"></i>
+                    <span class="menu-label">Profile</span>
+                </a>
+            </li>
+            <li>
+                <a href="bookmarks.html">
+                    <i class="fas fa-bookmark"></i>
+                    <span class="menu-label">Bookmarks</span>
+                    <span class="menu-badge">4</span>
+                </a>
+            </li>
+            <li>
+                <a href="study-plan.html">
+                    <i class="fas fa-road"></i>
+                    <span class="menu-label">Study Plan</span>
+                </a>
+            </li>
+            <li class="divider"></li>
+            <li class="logout-item">
+                <a href="../login.html">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span class="menu-label">Logout</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main-content">
+
+        <!-- ===== TOP BAR ===== -->
+        <div class="top-bar">
+            <div class="page-title">
+                <i class="fas fa-trophy"></i>
+                Leaderboard
+                <span>/ Global Rankings</span>
+            </div>
+            <div class="user-actions">
+                <button class="theme-toggle-btn" id="themeToggle" aria-label="Toggle theme">
+                    🌙
+                </button>
+                <div class="user-profile">
+                    <div class="avatar">A</div>
+                    <span class="user-name">alex_coder</span>
+                    <i class="fas fa-chevron-down"></i>
                 </div>
             </div>
+        </div>
 
-            <!-- Visual Podium Widget Architecture -->
+        <!-- ===== PAGE HEADER ===== -->
+        <div class="page-header">
+            <h1>Global System Leaderboard Rankings</h1>
+            <p>Track elite user profile scores based on challenge execution efficiency scores.</p>
+        </div>
+
+        <!-- ===== STATS ROW ===== -->
+        <div class="stats-row">
+            <div class="stat-mini">
+                <div class="stat-number gold">3,120</div>
+                <div class="stat-label">Top Score</div>
+            </div>
+            <div class="stat-mini">
+                <div class="stat-number silver">2,490</div>
+                <div class="stat-label">Your Score</div>
+            </div>
+            <div class="stat-mini">
+                <div class="stat-number blue">1,284</div>
+                <div class="stat-label">Avg Score</div>
+            </div>
+            <div class="stat-mini">
+                <div class="stat-number bronze">#4</div>
+                <div class="stat-label">Your Rank</div>
+            </div>
+        </div>
+
+        <!-- ===== PODIUM SECTION ===== -->
+        <div class="podium-section">
+            <div class="podium-title">
+                <i class="fas fa-crown"></i> Top Performers
+            </div>
             <div class="podium-grid">
-                <div class="podium-card" style="height: 180px;">
-                    <div style="font-size: 1.5rem; font-weight:700; color: #cbd5e1;">2nd</div>
-                    <div style="font-weight: 600; margin: 8px 0;">sarah_k</div>
-                    <div style="color: var(--color-primary); font-size: 0.9rem;">2,840 pts</div>
+                <!-- 2nd Place -->
+                <div class="podium-card rank-2">
+                    <span class="rank-badge silver">🥈 2nd</span>
+                    <span class="rank-icon">🥈</span>
+                    <div class="user-handle">sarah_k</div>
+                    <div class="user-score">2,840 pts</div>
+                    <div class="user-solved">92 problems solved</div>
                 </div>
-                <div class="podium-card rank-1">
-                    <div style="font-size: 2rem; font-weight:800; color: var(--color-accent);">👑 1st</div>
-                    <div style="font-weight: 700; margin: 8px 0; font-size: 1.2rem;">elite_coder</div>
-                    <div style="color: var(--color-accent); font-weight:600;">3,120 pts</div>
-                </div>
-                <div class="podium-card" style="height: 160px;">
-                    <div style="font-size: 1.3rem; font-weight:700; color: #b45309;">3rd</div>
-                    <div style="font-weight: 600; margin: 8px 0;">dev_rahul</div>
-                    <div style="color: var(--color-primary); font-size: 0.9rem;">2,510 pts</div>
-                </div>
-            </div>
 
-            <!-- List Matrix Ranking Rows Extension -->
-            <div class="table-container">
-                <table class="custom-table">
-                    <thead>
-                        <tr>
-                            <th>Rank</th>
-                            <th>Handle Identity</th>
-                            <th>Global Score</th>
-                            <th>Problems Complete</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr style="background: rgba(99,102,241,0.04);">
-                            <td><strong>#4</strong></td>
-                            <td style="font-weight: 600; color: var(--color-primary);">alex_coder (You)</td>
-                            <td><strong>2,490 pts</strong></td>
-                            <td>84 Solved</td>
-                        </tr>
-                        <tr>
-                            <td>#5</td>
-                            <td style="font-weight: 600;">coder_ghost</td>
-                            <td>2,100 pts</td>
-                            <td>76 Solved</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <!-- 1st Place -->
+                <div class="podium-card rank-1">
+                    <span class="rank-badge gold">👑 1st</span>
+                    <span class="rank-icon">👑</span>
+                    <div class="user-handle" style="font-size: 1.3rem;">elite_coder</div>
+                    <div class="user-score" style="font-size: 1.1rem; color: var(--gold);">3,120 pts</div>
+                    <div class="user-solved">108 problems solved</div>
+                </div>
+
+                <!-- 3rd Place -->
+                <div class="podium-card rank-3">
+                    <span class="rank-badge bronze">🥉 3rd</span>
+                    <span class="rank-icon">🥉</span>
+                    <div class="user-handle">dev_rahul</div>
+                    <div class="user-score">2,510 pts</div>
+                    <div class="user-solved">78 problems solved</div>
+                </div>
             </div>
-        </main>
-    </div>
-    <!-- Core Client Scripts System Configuration -->
-    <script src="../js/config.js"></script>
-    <script src="../js/utils.js"></script>
-    <script src="../js/api.js"></script>
-    <script src="../js/auth.js"></script>
+        </div>
+
+        <!-- ===== FILTER BAR ===== -->
+        <div class="filter-bar">
+            <div class="filter-group">
+                <i class="fas fa-filter"></i>
+                <select id="timeFilter">
+                    <option value="all-time">All Time</option>
+                    <option value="this-month">This Month</option>
+                    <option value="this-week">This Week</option>
+                    <option value="today">Today</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <i class="fas fa-code"></i>
+                <select id="langFilter">
+                    <option value="all">All Languages</option>
+                    <option value="java">Java</option>
+                    <option value="python">Python</option>
+                    <option value="cpp">C++</option>
+                    <option value="js">JavaScript</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- ===== TABLE ===== -->
+        <div class="table-container">
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th style="width: 10%;">Rank</th>
+                        <th style="width: 35%;">Handle</th>
+                        <th style="width: 25%;">Score</th>
+                        <th style="width: 20%;">Problems Solved</th>
+                        <th style="width: 10%;">Accuracy</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="rank-number top-1">#1</span></td>
+                        <td style="font-weight: 600;">elite_coder</td>
+                        <td style="color: var(--gold); font-weight: 700;">3,120 pts</td>
+                        <td>108</td>
+                        <td>94%</td>
+                    </tr>
+                    <tr>
+                        <td><span class="rank-number top-2">#2</span></td>
+                        <td style="font-weight: 600;">sarah_k</td>
+                        <td style="font-weight: 600;">2,840 pts</td>
+                        <td>92</td>
+                        <td>89%</td>
+                    </tr>
+                    <tr>
+                        <td><span class="rank-number top-3">#3</span></td>
+                        <td style="font-weight: 600;">dev_rahul</td>
+                        <td style="font-weight: 600;">2,510 pts</td>
+                        <td>78</td>
+                        <td>85%</td>
+                    </tr>
+                    <tr class="current-user">
+                        <td><span class="rank-number" style="color: var(--color-primary); font-weight: 700;">#4</span></td>
+                        <td style="font-weight: 600; color: var(--color-primary);">alex_coder <span style="font-size: 0.7rem; color: var(--text-dim);">(You)</span></td>
+                        <td style="font-weight: 600;">2,490 pts</td>
+                        <td>84</td>
+                        <td>92%</td>
+                    </tr>
+                    <tr>
+                        <td><span class="rank-number">#5</span></td>
+                        <td style="font-weight: 600;">coder_ghost</td>
+                        <td>2,100 pts</td>
+                        <td>76</td>
+                        <td>81%</td>
+                    </tr>
+                    <tr>
+                        <td><span class="rank-number">#6</span></td>
+                        <td style="font-weight: 600;">tech_wizard</td>
+                        <td>1,980 pts</td>
+                        <td>71</td>
+                        <td>78%</td>
+                    </tr>
+                    <tr>
+                        <td><span class="rank-number">#7</span></td>
+                        <td style="font-weight: 600;">byte_master</td>
+                        <td>1,850 pts</td>
+                        <td>65</td>
+                        <td>76%</td>
+                    </tr>
+                    <tr>
+                        <td><span class="rank-number">#8</span></td>
+                        <td style="font-weight: 600;">code_ninja</td>
+                        <td>1,720 pts</td>
+                        <td>59</td>
+                        <td>72%</td>
+                    </tr>
+                    <tr>
+                        <td><span class="rank-number">#9</span></td>
+                        <td style="font-weight: 600;">binary_brain</td>
+                        <td>1,580 pts</td>
+                        <td>53</td>
+                        <td>68%</td>
+                    </tr>
+                    <tr>
+                        <td><span class="rank-number">#10</span></td>
+                        <td style="font-weight: 600;">algo_ace</td>
+                        <td>1,450 pts</td>
+                        <td>48</td>
+                        <td>65%</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- ===== PAGINATION ===== -->
+            <div class="pagination-bar">
+                <span class="info">Showing <span class="count">1-10</span> of <span class="count">248</span> users</span>
+                <div class="pagination" id="pagination">
+                    <button><i class="fas fa-chevron-left"></i></button>
+                    <button class="active">1</button>
+                    <button>2</button>
+                    <button>3</button>
+                    <button>...</button>
+                    <button>25</button>
+                    <button><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script>
+        // ===== MOBILE SIDEBAR =====
+        const mobileToggle = document.getElementById('mobileToggle');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+            const icon = mobileToggle.querySelector('i');
+            icon.className = sidebar.classList.contains('open') ? 'fas fa-times' : 'fas fa-bars';
+        }
+
+        mobileToggle.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+
+        document.querySelectorAll('.sidebar-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    sidebar.classList.remove('open');
+                    overlay.classList.remove('active');
+                    mobileToggle.querySelector('i').className = 'fas fa-bars';
+                }
+            });
+        });
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
+                mobileToggle.querySelector('i').className = 'fas fa-bars';
+            }
+        });
+
+        // ===== THEME TOGGLE =====
+        const themeToggle = document.getElementById('themeToggle');
+        let currentTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        themeToggle.textContent = currentTheme === 'dark' ? '🌙' : '☀️';
+
+        themeToggle.addEventListener('click', function() {
+            const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            themeToggle.textContent = newTheme === 'dark' ? '🌙' : '☀️';
+        });
+
+        // ===== TOAST =====
+        function showToast(message) {
+            const existing = document.querySelector('.custom-toast');
+            if (existing) existing.remove();
+
+            const toast = document.createElement('div');
+            toast.className = 'custom-toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.4s ease';
+                setTimeout(() => toast.remove(), 400);
+            }, 2500);
+        }
+
+        // ===== FILTER =====
+        document.getElementById('timeFilter').addEventListener('change', function() {
+            showToast(`📊 Showing ${this.options[this.selectedIndex].text} rankings`);
+        });
+
+        document.getElementById('langFilter').addEventListener('change', function() {
+            showToast(`🔍 Filtering by ${this.options[this.selectedIndex].text}`);
+        });
+
+        // ===== PAGINATION =====
+        document.querySelectorAll('.pagination button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (this.querySelector('i')) return;
+                document.querySelectorAll('.pagination button').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                showToast(`📄 Showing page ${this.textContent}`);
+            });
+        });
+
+        // ===== ADD TOAST STYLE =====
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideUp {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
 </body>
 </html>

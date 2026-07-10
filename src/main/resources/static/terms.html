@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeArena · Terms of Service</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #090d16;
+            min-height: 100vh;
+            padding: 20px;
+            color: #e8edf5;
+            overflow-x: hidden;
+        }
+
+        /* ===== ANIMATED BACKGROUND ===== */
+        .bg-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 94, 58, 0.05);
+            animation: floatParticle linear infinite;
+        }
+
+        .particle:nth-child(1) { width: 350px; height: 350px; top: -120px; left: -120px; animation-duration: 28s; }
+        .particle:nth-child(2) { width: 250px; height: 250px; bottom: -80px; right: -80px; animation-duration: 22s; animation-delay: 2s; }
+        .particle:nth-child(3) { width: 180px; height: 180px; top: 35%; right: -40px; animation-duration: 20s; animation-delay: 4s; }
+        .particle:nth-child(4) { width: 130px; height: 130px; bottom: 25%; left: -50px; animation-duration: 24s; animation-delay: 1s; }
+        .particle:nth-child(5) { width: 280px; height: 280px; top: 5%; left: 45%; animation-duration: 30s; animation-delay: 3s; }
+
+        @keyframes floatParticle {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 0.3; }
+            25% { transform: translate(120px, -90px) scale(1.15) rotate(90deg); opacity: 0.6; }
+            50% { transform: translate(-60px, 140px) scale(0.85) rotate(180deg); opacity: 0.4; }
+            75% { transform: translate(90px, -70px) scale(1.1) rotate(270deg); opacity: 0.7; }
+            100% { transform: translate(0, 0) scale(1) rotate(360deg); opacity: 0.3; }
+        }
+
+        .glow-orb {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 94, 58, 0.08), transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            animation: pulseGlow 6s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+            50% { transform: translate(-50%, -50%) scale(1.15); opacity: 0.8; }
+        }
+
+        /* ===== FLOATING SHAPES ===== */
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            border: 2px solid rgba(255, 94, 58, 0.05);
+            border-radius: 50%;
+            animation: floatShape 15s ease-in-out infinite;
+        }
+
+        .shape:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+            border-color: rgba(255, 94, 58, 0.08);
+        }
+        .shape:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            bottom: 15%;
+            right: 8%;
+            animation-delay: 3s;
+            border-color: rgba(255, 94, 58, 0.06);
+            border-radius: 30% 70% 50% 50% / 50% 40% 60% 50%;
+        }
+        .shape:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            top: 60%;
+            left: 3%;
+            animation-delay: 6s;
+            border-color: rgba(255, 94, 58, 0.1);
+            border-radius: 40% 60% 30% 70% / 50% 40% 60% 50%;
+        }
+        .shape:nth-child(4) {
+            width: 90px;
+            height: 90px;
+            top: 20%;
+            right: 5%;
+            animation-delay: 9s;
+            border-color: rgba(255, 94, 58, 0.07);
+            border-radius: 60% 40% 70% 30% / 30% 60% 40% 70%;
+        }
+
+        @keyframes floatShape {
+            0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            33% { transform: translate(30px, -40px) rotate(120deg) scale(1.1); }
+            66% { transform: translate(-20px, 30px) rotate(240deg) scale(0.9); }
+        }
+
+        /* ===== CONTENT WRAPPER ===== */
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 920px;
+            margin: 30px auto;
+            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        @keyframes slideUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== PROGRESS BAR ===== */
+        .reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            z-index: 9999;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .reading-progress .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #ff5e3a, #ff7a5a, #ff5e3a);
+            background-size: 200% 100%;
+            width: 0%;
+            transition: width 0.1s ease;
+            animation: shimmer 2s linear infinite;
+            border-radius: 0 2px 2px 0;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* ===== HEADER CARD ===== */
+        .header-card {
+            background: rgba(15, 23, 42, 0.88);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 28px;
+            padding: 50px 40px 35px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(255, 94, 58, 0.03), transparent, rgba(255, 94, 58, 0.03), transparent);
+            animation: rotateBorder 10s linear infinite;
+        }
+
+        @keyframes rotateBorder {
+            to { transform: rotate(360deg); }
+        }
+
+        .header-card .brand-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #ff5e3a, #e0452a);
+            border-radius: 18px;
+            font-size: 1.8rem;
+            color: #fff;
+            margin-bottom: 14px;
+            box-shadow: 0 8px 32px rgba(255, 94, 58, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-card .brand-icon:hover {
+            transform: scale(1.1) rotate(-5deg);
+            box-shadow: 0 12px 40px rgba(255, 94, 58, 0.4);
+        }
+
+        .header-card .brand-icon .pulse-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 18px;
+            border: 2px solid rgba(255, 94, 58, 0.3);
+            animation: pulseRing 2s ease-out infinite;
+        }
+
+        @keyframes pulseRing {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+
+        .header-card h1 {
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-card h1 span {
+            color: #ff5e3a;
+            position: relative;
+        }
+
+        .header-card h1 span::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #ff5e3a, transparent);
+            border-radius: 2px;
+        }
+
+        .header-card .last-updated {
+            color: #94a3b8;
+            font-size: 0.85rem;
+            margin-top: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-card .last-updated i {
+            color: #ff5e3a;
+            animation: blink 2s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* ===== CONTENT CARDS ===== */
+        .content-card {
+            background: rgba(15, 23, 42, 0.88);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 28px;
+            padding: 40px 45px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+            margin-bottom: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .content-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.7);
+        }
+
+        /* ===== SECTION ITEMS ===== */
+        .section-item {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: sectionReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            transition: background 0.3s ease, padding-left 0.3s ease;
+            border-radius: 12px;
+            padding-left: 0;
+        }
+
+        .section-item:hover {
+            background: rgba(255, 94, 58, 0.03);
+            padding-left: 16px;
+        }
+
+        .section-item:last-child {
+            border-bottom: none;
+        }
+
+        .section-item:nth-child(1) { animation-delay: 0.1s; }
+        .section-item:nth-child(2) { animation-delay: 0.15s; }
+        .section-item:nth-child(3) { animation-delay: 0.2s; }
+        .section-item:nth-child(4) { animation-delay: 0.25s; }
+        .section-item:nth-child(5) { animation-delay: 0.3s; }
+        .section-item:nth-child(6) { animation-delay: 0.35s; }
+        .section-item:nth-child(7) { animation-delay: 0.4s; }
+        .section-item:nth-child(8) { animation-delay: 0.45s; }
+        .section-item:nth-child(9) { animation-delay: 0.5s; }
+        .section-item:nth-child(10) { animation-delay: 0.55s; }
+
+        @keyframes sectionReveal {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-item h2 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-item h2 .icon-wrapper {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 94, 58, 0.12);
+            border-radius: 10px;
+            color: #ff5e3a;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .section-item:hover h2 .icon-wrapper {
+            background: rgba(255, 94, 58, 0.2);
+            transform: scale(1.1) rotate(-5deg);
+        }
+
+        .section-item h2 .section-number {
+            color: #ff5e3a;
+            font-size: 0.7rem;
+            background: rgba(255, 94, 58, 0.1);
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-left: auto;
+        }
+
+        .section-item p {
+            color: #c8d0dc;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            padding-left: 48px;
+        }
+
+        .section-item ul {
+            list-style: none;
+            padding: 0 0 0 48px;
+            margin: 6px 0 0;
+        }
+
+        .section-item ul li {
+            color: #c8d0dc;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            padding: 4px 0 4px 24px;
+            position: relative;
+            transition: transform 0.2s ease, color 0.2s ease;
+        }
+
+        .section-item ul li:hover {
+            transform: translateX(6px);
+            color: #ffffff;
+        }
+
+        .section-item ul li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: #ff5e3a;
+            font-weight: 700;
+            transition: transform 0.2s ease;
+        }
+
+        .section-item ul li:hover::before {
+            transform: scale(1.2);
+        }
+
+        /* ===== ACTION BUTTONS ===== */
+        .action-card {
+            text-align: center;
+            background: rgba(15, 23, 42, 0.88);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 28px;
+            padding: 40px 45px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 94, 58, 0.03), transparent);
+            animation: shimmerSlide 4s ease-in-out infinite;
+        }
+
+        @keyframes shimmerSlide {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .action-card p {
+            color: #94a3b8;
+            margin-bottom: 20px;
+            font-size: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+
+        .accept-btn {
+            background: linear-gradient(135deg, #ff5e3a, #e0452a);
+            border: none;
+            color: #fff;
+            padding: 16px 44px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(255, 94, 58, 0.3);
+            font-family: 'Inter', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .accept-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .accept-btn:hover::before {
+            left: 100%;
+        }
+
+        .accept-btn:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 8px 40px rgba(255, 94, 58, 0.4);
+        }
+
+        .accept-btn:active {
+            transform: scale(0.95);
+        }
+
+        .accept-btn .btn-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .accept-btn:hover .btn-icon {
+            transform: translateX(4px) rotate(-5deg);
+        }
+
+        .decline-btn {
+            background: transparent;
+            border: 1.5px solid rgba(255, 255, 255, 0.08);
+            color: #94a3b8;
+            padding: 16px 44px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .decline-btn:hover {
+            border-color: #ef4444;
+            color: #ef4444;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(239, 68, 68, 0.1);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 94, 58, 0.08);
+            color: #ff5e3a;
+            padding: 14px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 94, 58, 0.1);
+            margin-top: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .back-link:hover {
+            background: rgba(255, 94, 58, 0.15);
+            transform: translateX(-6px);
+            border-color: #ff5e3a;
+            box-shadow: 0 4px 20px rgba(255, 94, 58, 0.15);
+        }
+
+        .back-link i {
+            transition: transform 0.3s ease;
+        }
+
+        .back-link:hover i {
+            transform: translateX(-4px);
+        }
+
+        .footer-bar {
+            text-align: center;
+            color: #64748b;
+            font-size: 0.8rem;
+            padding: 10px 0 20px;
+        }
+
+        /* ===== TOAST ===== */
+        @keyframes toastUp {
+            from { opacity: 0; transform: translateX(-50%) translateY(30px) scale(0.9); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-12px); }
+            40% { transform: translateX(12px); }
+            60% { transform: translateX(-6px); }
+            80% { transform: translateX(6px); }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .content-card {
+                padding: 24px 20px;
+            }
+            .header-card {
+                padding: 30px 20px;
+            }
+            .header-card h1 {
+                font-size: 1.8rem;
+            }
+            .section-item h2 {
+                font-size: 1rem;
+            }
+            .section-item p,
+            .section-item ul {
+                padding-left: 0;
+            }
+            .section-item ul {
+                padding-left: 0;
+            }
+            .btn-group {
+                flex-direction: column;
+                align-items: center;
+            }
+            .accept-btn,
+            .decline-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            .action-card {
+                padding: 30px 20px;
+            }
+            .section-item:hover {
+                padding-left: 0;
+            }
+            .section-item h2 .section-number {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Reading Progress -->
+    <div class="reading-progress">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Animated Background -->
+    <div class="bg-particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <div class="glow-orb"></div>
+
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <div class="content-wrapper">
+        <!-- Header -->
+        <div class="header-card">
+            <div class="brand-icon">
+                <div class="pulse-ring"></div>
+                <i class="fas fa-code"></i>
+            </div>
+            <h1>Terms of <span>Service</span></h1>
+            <p class="last-updated"><i class="far fa-calendar-alt"></i> Last Updated: July 2026</p>
+        </div>
+
+        <!-- Content -->
+        <div class="content-card">
+            <div class="section-item">
+                <h2>
+                    <span class="icon-wrapper"><i class="fas fa-handshake"></i></span>
+                    Acceptance of Terms
+                    <span class="section-number">01</span>
+                </h2>
+                <p>By creating an account and using CodeArena, you agree to be bound by these Terms of Service. If you do not agree, please do not use our platform.</p>
+            </div>
+
+            <div class="section-item">
+                <h2>
+                    <span class="icon-wrapper"><i class="fas fa-user-plus"></i></span>
+                    Account Registration
+                    <span class="section-number">02</span>
+                </h2>
+                <ul>
+                    <li>You must provide accurate and complete information when creating an account</li>
+                    <li>You are responsible for maintaining the security of your account credentials</li>
+                    <li>You must be at least 13 years old to create an account</li>
+                    <li>You are solely responsible for all activities that occur under your account</li>
+                </ul>
+            </div>
+
+            <div class="section-item">
+                <h2>
+                    <span class="icon-wrapper"><i class="fas fa-code"></i></span>
+                    User Content
+                    <span class="section-number">03</span>
+                </h2>
+                <ul>
+                    <li>You retain ownership of all code and content you submit to CodeArena</li>
+                    <li>By submitting code, you grant CodeArena a license to store, display, and execute your code</li>
+                    <li>You are responsible for ensuring your code does not violate any laws or third-party rights</li>
+                    <li>Malicious code, viruses, or any harmful content is strictly prohibited</li>
+                </ul>
+            </div>
+
+            <div class="section-item">
+                <h2>
+                    <span class="icon-wrapper"><i class="fas fa-gavel"></i></span>
+                    Prohibited Activities
+                    <span class="section-number">04</span>
+                </h2>
+                <ul>
+                    <li>Attempting to gain unauthorized access to the platform or other users' accounts</li>
+                    <li>Using the platform to distribute malware or harmful code</li>
+                    <li>Engaging in any activity that disrupts the platform's functionality</li>
+                    <li>Impersonating other users or entities</li>
+                    <li>Using automated scripts to submit solutions without genuine effort</li>
+                </ul>
+            </div>
+
+            <div class="section-item">
+                <h2>
+                    <span class="icon-wrapper"><i class="fas fa-shield-alt"></i></span>
+                    Intellectual Property
+                    <span class="section-number">05</span>
+                </h2>
+                <p>All content on CodeArena, including but not limited to problem statements, design elements, and platform code, is the intellectual property of CodeArena and protected by copyright laws. You may use the platform solely for learning and practice purposes.</p>
+            </div>
+
+            <div class="section-item">
+                <h2>
+                    <span class="icon-wrapper"><i class="fas fa-ban"></i></span>
+                    Termination
+                    <span class="section-number">06</span>
+                </h2>
+                <p>We reserve the right to suspend or terminate your account at our discretion if you violate these terms. You may also delete your account at any time through your account settings.</p>
+            </div>
+
+            <div class="section-item">
+                <h2>
+                    <span class="icon-wrapper"><i class="fas fa-exclamation-triangle"></i></span>
+                    Disclaimer of Warranties
+                    <span class="section-number">07</span>
+                </h2>
+                <p>CodeArena is provided "as is" without any warranties. We do not guarantee that the platform will be error-free or uninterrupted. Your use of the platform is at your own risk.</p>
+            </div>
+
+            <div class="section-item">
+                <h2>
+                    <span class="icon-wrapper"><i class="fas fa-balance-scale"></i></span>
+                    Limitation of Liability
+                    <span class="section-number">08</span>
+                </h2>
+                <p>CodeArena shall not be liable for any indirect, incidental, or consequential damages arising from your use of the platform. Our total liability shall not exceed the amount paid (if any) for using the service.</p>
+            </div>
+
+            <div class="section-item">
+                <h2>
+                    <span class="icon-wrapper"><i class="fas fa-sync-alt"></i></span>
+                    Changes to Terms
+                    <span class="section-number">09</span>
+                </h2>
+                <p>We may update these Terms of Service from time to time. We will notify you of significant changes via email or through the platform. Continued use of CodeArena constitutes acceptance of the updated terms.</p>
+            </div>
+
+            <div class="section-item">
+                <h2>
+                    <span class="icon-wrapper"><i class="fas fa-envelope"></i></span>
+                    Contact Us
+                    <span class="section-number">10</span>
+                </h2>
+                <p>If you have any questions about these Terms of Service, please contact us at <span style="color: #ff5e3a; font-weight: 600;">support@codearena.com</span></p>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-card">
+            <p><i class="fas fa-check-circle" style="color: #ff5e3a;"></i> Do you agree to these terms?</p>
+            <div class="btn-group">
+                <button class="accept-btn" id="acceptTerms">
+                    <span class="btn-icon"><i class="fas fa-check-circle"></i></span>
+                    I Accept
+                </button>
+                <button class="decline-btn" id="declineTerms">
+                    <i class="fas fa-times-circle"></i>
+                    Decline
+                </button>
+            </div>
+            <a href="register.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back to Registration
+            </a>
+        </div>
+
+        <div class="footer-bar">
+            <p>© 2026 CodeArena. All rights reserved.</p>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ===== READING PROGRESS =====
+            const progressBar = document.getElementById('progressBar');
+            window.addEventListener('scroll', function() {
+                const scrollTop = window.scrollY;
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const progress = (scrollTop / docHeight) * 100;
+                progressBar.style.width = progress + '%';
+            });
+
+            // ===== TOAST NOTIFICATION =====
+            function showToast(message, type = 'info') {
+                const colors = {
+                    success: '#22c55e',
+                    error: '#ef4444',
+                    info: '#ff5e3a',
+                    warning: '#f59e0b'
+                };
+                const icons = {
+                    success: 'fa-check-circle',
+                    error: 'fa-times-circle',
+                    info: 'fa-info-circle',
+                    warning: 'fa-exclamation-circle'
+                };
+
+                const toast = document.createElement('div');
+                toast.style.cssText = `
+                    position: fixed;
+                    bottom: 30px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: rgba(15, 23, 42, 0.95);
+                    backdrop-filter: blur(16px);
+                    padding: 16px 36px;
+                    border-radius: 16px;
+                    border: 1px solid ${colors[type]}44;
+                    color: #e8edf5;
+                    font-size: 0.95rem;
+                    z-index: 9999;
+                    animation: toastUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+                    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+                    font-family: 'Inter', sans-serif;
+                    border-left: 4px solid ${colors[type]};
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    max-width: 90%;
+                `;
+                toast.innerHTML = `<i class="fas ${icons[type]}" style="color:${colors[type]}; font-size:1.2rem;"></i> ${message}`;
+                document.body.appendChild(toast);
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateX(-50%) translateY(-20px)';
+                    toast.style.transition = 'all 0.4s ease';
+                    setTimeout(() => toast.remove(), 400);
+                }, 3500);
+            }
+
+            // ===== ACCEPT TERMS =====
+            document.getElementById('acceptTerms').addEventListener('click', function() {
+                const originalHTML = this.innerHTML;
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+                this.style.opacity = '0.7';
+                this.style.pointerEvents = 'none';
+
+                // Confetti effect
+                createConfetti();
+
+                setTimeout(() => {
+                    showToast('✅ Terms accepted successfully! Redirecting...', 'success');
+                    localStorage.setItem('termsAccepted', 'true');
+
+                    setTimeout(() => {
+                        window.location.href = 'register.html';
+                    }, 1500);
+                }, 1200);
+            });
+
+            // ===== DECLINE TERMS =====
+            document.getElementById('declineTerms').addEventListener('click', function() {
+                const originalHTML = this.innerHTML;
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+                this.style.opacity = '0.7';
+                this.style.pointerEvents = 'none';
+
+                setTimeout(() => {
+                    showToast('⚠️ You must accept the terms to continue.', 'error');
+                    this.innerHTML = originalHTML;
+                    this.style.opacity = '1';
+                    this.style.pointerEvents = 'auto';
+                    this.style.animation = 'shake 0.5s ease';
+                    setTimeout(() => {
+                        this.style.animation = '';
+                    }, 500);
+                }, 1000);
+            });
+
+            // ===== CONFETTI EFFECT =====
+            function createConfetti() {
+                const colors = ['#ff5e3a', '#ff7a5a', '#ff9a7a', '#ff3a1a', '#ffffff'];
+                for (let i = 0; i < 80; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.style.cssText = `
+                        position: fixed;
+                        width: ${Math.random() * 10 + 4}px;
+                        height: ${Math.random() * 6 + 4}px;
+                        background: ${colors[Math.floor(Math.random() * colors.length)]};
+                        left: ${Math.random() * 100}%;
+                        top: -20px;
+                        z-index: 9999;
+                        opacity: 0.8;
+                        border-radius: 2px;
+                        pointer-events: none;
+                        animation: confettiFall ${Math.random() * 2 + 2}s ease-in forwards;
+                        animation-delay: ${Math.random() * 0.5}s;
+                    `;
+                    document.body.appendChild(confetti);
+
+                    // Remove after animation
+                    setTimeout(() => confetti.remove(), 3000);
+                }
+
+                // Add keyframe if not exists
+                if (!document.getElementById('confettiStyle')) {
+                    const style = document.createElement('style');
+                    style.id = 'confettiStyle';
+                    style.textContent = `
+                        @keyframes confettiFall {
+                            0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+                            100% { transform: translateY(110vh) rotate(720deg) scale(0.5); opacity: 0; }
+                        }
+                    `;
+                    document.head.appendChild(style);
+                }
+            }
+
+            // ===== BACK LINK =====
+            document.querySelector('.back-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                this.style.opacity = '0.6';
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    window.location.href = this.getAttribute('href');
+                }, 300);
+            });
+
+            // ===== WELCOME TOAST =====
+            setTimeout(() => {
+                showToast('📋 Please review our Terms of Service', 'info');
+            }, 600);
+
+            // ===== SECTION HOVER EFFECT =====
+            document.querySelectorAll('.section-item').forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    const icon = this.querySelector('.icon-wrapper');
+                    if (icon) {
+                        icon.style.transform = 'scale(1.15) rotate(-5deg)';
+                        icon.style.background = 'rgba(255, 94, 58, 0.2)';
+                    }
+                });
+                item.addEventListener('mouseleave', function() {
+                    const icon = this.querySelector('.icon-wrapper');
+                    if (icon) {
+                        icon.style.transform = 'scale(1) rotate(0deg)';
+                        icon.style.background = 'rgba(255, 94, 58, 0.12)';
+                    }
+                });
+            });
+
+        })();
+    </script>
+
+</body>
+</html>

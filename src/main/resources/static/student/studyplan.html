@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Plan · CodeArena</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <style>
+        /* ===== RESET & VARIABLES ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg-main: #0a0e17; --bg-surface: #111827; --bg-surface-hover: #1e293b;
+            --bg-card: #141c2b; --text-main: #e8edf5; --text-muted: #8b9bb5;
+            --text-dim: #4a5a7a; --text-inverse: #f0f4ff;
+            --border-color: rgba(255, 255, 255, 0.05);
+            --border-hover: rgba(255, 255, 255, 0.08);
+            --color-primary: #ff5e3a; --color-primary-dim: rgba(255, 94, 58, 0.12);
+            --color-accent: #ff7a5a; --radius-sm: 8px; --radius-md: 12px;
+            --radius-lg: 16px; --radius-xl: 20px; --shadow: 0 4px 24px rgba(0,0,0,0.3);
+            --sidebar-width: 220px; --success: #22c55e; --success-dim: rgba(34,197,94,0.12);
+            --warning: #f59e0b; --warning-dim: rgba(245,158,11,0.12);
+            --danger: #ef4444; --danger-dim: rgba(239,68,68,0.12);
+            --blue: #3b82f6; --blue-dim: rgba(59,130,246,0.12);
+            --purple: #8b5cf6; --purple-dim: rgba(139,92,246,0.12);
+            --gold: #f59e0b; --silver: #94a3b8; --bronze: #cd7f32;
+        }
+
+        [data-theme="light"] {
+            --bg-main: #f1f5f9; --bg-surface: #ffffff; --bg-surface-hover: #e8edf5;
+            --bg-card: #f8fafc; --text-main: #0b1b33; --text-muted: #475569;
+            --text-dim: #94a3b8; --text-inverse: #1e293b;
+            --border-color: rgba(0,0,0,0.08); --border-hover: rgba(0,0,0,0.12);
+            --shadow: 0 4px 24px rgba(0,0,0,0.08);
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg-main); color: var(--text-main);
+            line-height: 1.5; min-height: 100vh; display: flex;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-main); }
+        ::-webkit-scrollbar-thumb { background: var(--text-dim); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+        /* ===== SIDEBAR ===== */
+        .admin-sidebar {
+            position: fixed; top: 0; left: 0; width: var(--sidebar-width); height: 100vh;
+            background: var(--bg-surface); border-right: 1px solid var(--border-color);
+            padding: 24px 16px; display: flex; flex-direction: column; z-index: 100;
+            transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), background 0.3s ease, border-color 0.3s ease;
+        }
+
+        .sidebar-brand {
+            display: flex; align-items: center; gap: 10px;
+            padding: 0 8px 20px; border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        .sidebar-brand .logo-icon {
+            width: 36px; height: 36px;
+            background: linear-gradient(135deg, var(--color-primary), #e0452a);
+            border-radius: var(--radius-sm); display: flex; align-items: center;
+            justify-content: center; font-size: 1.1rem; color: #fff;
+        }
+
+        .sidebar-brand .brand-text {
+            font-size: 1.15rem; font-weight: 700; color: #ffffff; letter-spacing: -0.3px;
+        }
+        .sidebar-brand .brand-text span { color: var(--color-primary); }
+
+        .sidebar-menu {
+            list-style: none; flex: 1; display: flex; flex-direction: column;
+            gap: 2px; padding: 0 4px;
+        }
+
+        .sidebar-menu li a {
+            display: flex; align-items: center; gap: 12px; padding: 10px 14px;
+            color: var(--text-muted); font-weight: 500; font-size: 0.85rem;
+            border-radius: var(--radius-sm); transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .sidebar-menu li a i { width: 18px; text-align: center; font-size: 0.95rem; flex-shrink: 0; }
+        .sidebar-menu li a .menu-label { flex: 1; }
+        .sidebar-menu li a .menu-badge {
+            background: var(--color-primary-dim); color: var(--color-primary);
+            font-size: 0.6rem; font-weight: 700; padding: 2px 8px; border-radius: 20px;
+        }
+        .sidebar-menu li:hover a { color: #ffffff; background: var(--bg-surface-hover); }
+        .sidebar-menu li.active a {
+            color: var(--color-primary); background: var(--color-primary-dim); font-weight: 600;
+        }
+        .sidebar-menu li.active a::before {
+            content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+            width: 3px; height: 20px; background: var(--color-primary); border-radius: 0 4px 4px 0;
+        }
+        .sidebar-menu .divider { height: 1px; background: var(--border-color); margin: 8px 8px; }
+        .sidebar-menu .logout-item { margin-top: auto; border-top: 1px solid var(--border-color); padding-top: 12px; }
+        .sidebar-menu .logout-item a { color: var(--text-muted); }
+        .sidebar-menu .logout-item a:hover { color: var(--danger); background: var(--danger-dim); }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            margin-left: var(--sidebar-width); flex: 1; padding: 28px 36px 40px;
+            min-height: 100vh; transition: background 0.3s ease;
+        }
+
+        /* ===== TOP NAV BAR ===== */
+        .top-bar {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 0 24px 0; border-bottom: 1px solid var(--border-color);
+            margin-bottom: 28px; flex-wrap: wrap; gap: 12px;
+        }
+
+        .top-bar .page-title {
+            font-size: 1.1rem; font-weight: 600; color: var(--text-main);
+            display: flex; align-items: center; gap: 10px;
+        }
+        .top-bar .page-title i { color: var(--color-primary); }
+        .top-bar .page-title span { color: var(--text-muted); font-weight: 400; font-size: 0.85rem; }
+
+        .top-bar .user-actions { display: flex; align-items: center; gap: 12px; }
+
+        /* ===== THEME TOGGLE BUTTON ===== */
+        .theme-toggle-btn {
+            background: transparent; border: 1px solid var(--border-color);
+            border-radius: 50%; width: 40px; height: 40px; font-size: 1.2rem;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s ease; color: var(--text-inverse);
+        }
+        .theme-toggle-btn:hover { border-color: var(--color-primary); transform: rotate(20deg); }
+        [data-theme="light"] .theme-toggle-btn { color: #f59e0b; }
+        [data-theme="dark"] .theme-toggle-btn { color: #94a3b8; }
+
+        .top-bar .user-actions .user-profile {
+            display: flex; align-items: center; gap: 10px; cursor: pointer;
+            padding: 4px 12px 4px 4px; border-radius: var(--radius-md);
+            transition: background 0.2s ease; background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+        }
+        .top-bar .user-actions .user-profile:hover { background: var(--bg-surface-hover); }
+        .top-bar .user-actions .user-profile .avatar {
+            width: 32px; height: 32px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--color-primary), #e0452a);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.8rem; color: #fff;
+        }
+        .top-bar .user-actions .user-profile .user-name {
+            font-size: 0.85rem; font-weight: 600; color: var(--text-main);
+        }
+        .top-bar .user-actions .user-profile i { color: var(--text-dim); font-size: 0.8rem; }
+
+        /* ===== PAGE HEADER ===== */
+        .page-header { margin-bottom: 24px; }
+        .page-header h1 { font-size: 1.5rem; font-weight: 700; color: var(--text-main); margin-bottom: 4px; }
+        .page-header p { color: var(--text-muted); font-size: 0.9rem; }
+
+        /* ===== STATS ROW ===== */
+        .stats-row {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 28px;
+        }
+        .stat-mini {
+            background: var(--bg-surface); border: 1px solid var(--border-color);
+            border-radius: var(--radius-md); padding: 14px 16px; text-align: center;
+            transition: all 0.3s ease;
+        }
+        .stat-mini:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+        .stat-mini .stat-number {
+            font-size: 1.4rem; font-weight: 700; color: var(--text-main); line-height: 1.2;
+        }
+        .stat-mini .stat-label {
+            font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase;
+            letter-spacing: 0.5px; margin-top: 2px;
+        }
+        .stat-mini .stat-number.green { color: var(--success); }
+        .stat-mini .stat-number.yellow { color: var(--warning); }
+        .stat-mini .stat-number.blue { color: var(--blue); }
+        .stat-mini .stat-number.purple { color: var(--purple); }
+
+        /* ===== ACTION BUTTONS ===== */
+        .action-bar-top {
+            display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap;
+        }
+        .btn-action {
+            padding: 8px 20px; border-radius: var(--radius-sm); font-weight: 600;
+            font-size: 0.85rem; cursor: pointer; transition: all 0.25s ease;
+            display: inline-flex; align-items: center; gap: 8px; border: none;
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-action-primary { background: var(--color-primary); color: #ffffff; }
+        .btn-action-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(255,94,58,0.3); opacity: 0.92; }
+        .btn-action-secondary { background: var(--bg-surface-hover); color: var(--text-main); border: 1px solid var(--border-color); }
+        .btn-action-secondary:hover { border-color: var(--color-primary); color: var(--color-primary); transform: translateY(-2px); }
+        .btn-action-danger { background: var(--danger); color: #ffffff; }
+        .btn-action-danger:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(239,68,68,0.3); opacity: 0.92; }
+        .btn-action-success { background: var(--success); color: #ffffff; }
+        .btn-action-success:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(34,197,94,0.3); opacity: 0.92; }
+        .btn-sm { padding: 4px 12px; font-size: 0.7rem; }
+
+        /* ===== STUDY PLAN GRID ===== */
+        .study-plan-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+
+        /* ===== LEFT COLUMN - TOPICS ===== */
+        .topics-section { display: flex; flex-direction: column; gap: 16px; }
+
+        .topic-card {
+            background: var(--bg-surface); border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg); padding: 20px 24px;
+            transition: all 0.3s ease; position: relative;
+        }
+        .topic-card:hover { border-color: var(--border-hover); }
+
+        .topic-card .topic-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 12px; flex-wrap: wrap; gap: 8px;
+        }
+
+        .topic-card .topic-header .topic-name { display: flex; align-items: center; gap: 10px; }
+        .topic-card .topic-header .topic-name .topic-icon {
+            width: 36px; height: 36px; border-radius: var(--radius-sm);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem; flex-shrink: 0;
+        }
+        .topic-card .topic-header .topic-name .topic-icon.array { background: var(--blue-dim); color: var(--blue); }
+        .topic-card .topic-header .topic-name .topic-icon.tree { background: var(--success-dim); color: var(--success); }
+        .topic-card .topic-header .topic-name .topic-icon.dp { background: var(--purple-dim); color: var(--purple); }
+        .topic-card .topic-header .topic-name .topic-icon.graph { background: rgba(236,72,153,0.12); color: #ec4899; }
+        .topic-card .topic-header .topic-name .topic-icon.list { background: rgba(20,184,166,0.12); color: #14b8a6; }
+        .topic-card .topic-header .topic-name .topic-icon.default { background: var(--color-primary-dim); color: var(--color-primary); }
+        .topic-card .topic-header .topic-name .topic-title { font-size: 1rem; font-weight: 600; color: var(--text-main); }
+
+        .topic-card .topic-header .topic-actions { display: flex; gap: 6px; align-items: center; }
+        .topic-card .topic-header .topic-actions button {
+            background: transparent; border: 1px solid var(--border-color);
+            color: var(--text-dim); padding: 4px 10px; border-radius: var(--radius-sm);
+            cursor: pointer; font-size: 0.7rem; transition: all 0.2s ease;
+        }
+        .topic-card .topic-header .topic-actions button:hover { border-color: var(--color-primary); color: var(--color-primary); }
+        .topic-card .topic-header .topic-actions button.delete:hover { border-color: var(--danger); color: var(--danger); }
+        .topic-card .topic-header .topic-progress { font-size: 0.8rem; color: var(--text-muted); }
+        .topic-card .topic-header .topic-progress strong { color: var(--text-main); }
+
+        .topic-card .progress-bar {
+            width: 100%; height: 6px; background: var(--bg-main);
+            border-radius: 4px; overflow: hidden; margin-bottom: 12px;
+        }
+        .topic-card .progress-bar .progress-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+        .progress-fill.array { background: var(--blue); }
+        .progress-fill.tree { background: var(--success); }
+        .progress-fill.dp { background: var(--purple); }
+        .progress-fill.graph { background: #ec4899; }
+        .progress-fill.list { background: #14b8a6; }
+        .progress-fill.default { background: var(--color-primary); }
+
+        .topic-card .problem-list { display: flex; flex-direction: column; gap: 6px; }
+        .topic-card .problem-list .problem-item {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 8px 12px; background: var(--bg-main);
+            border-radius: var(--radius-sm); border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+        }
+        .topic-card .problem-list .problem-item:hover { border-color: var(--border-hover); }
+        .topic-card .problem-list .problem-item .problem-left {
+            display: flex; align-items: center; gap: 10px; flex: 1;
+        }
+        .topic-card .problem-list .problem-item .problem-left .status-dot {
+            width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+        }
+        .status-dot.completed { background: var(--success); }
+        .status-dot.in-progress { background: var(--warning); }
+        .status-dot.pending { background: var(--text-dim); }
+        .topic-card .problem-list .problem-item .problem-left .problem-name {
+            font-size: 0.85rem; color: var(--text-main); transition: color 0.2s ease; cursor: pointer;
+        }
+        .topic-card .problem-list .problem-item .problem-left .problem-name:hover { color: var(--color-primary); }
+        .topic-card .problem-list .problem-item .problem-status {
+            font-size: 0.65rem; font-weight: 600; padding: 2px 10px; border-radius: 12px;
+        }
+        .problem-status.completed { color: var(--success); background: var(--success-dim); }
+        .problem-status.in-progress { color: var(--warning); background: var(--warning-dim); }
+        .problem-status.pending { color: var(--text-dim); background: var(--bg-main); }
+        .topic-card .problem-list .problem-item .problem-actions { display: flex; gap: 4px; }
+        .topic-card .problem-list .problem-item .problem-actions button {
+            background: transparent; border: none; color: var(--text-dim);
+            cursor: pointer; font-size: 0.7rem; padding: 2px 6px;
+            border-radius: var(--radius-sm); transition: all 0.2s ease;
+        }
+        .topic-card .problem-list .problem-item .problem-actions button:hover { color: var(--color-primary); background: var(--bg-surface-hover); }
+        .topic-card .problem-list .problem-item .problem-actions button.delete:hover { color: var(--danger); background: var(--danger-dim); }
+
+        /* ===== RIGHT COLUMN - SIDEBAR ===== */
+        .plan-sidebar { display: flex; flex-direction: column; gap: 16px; }
+        .sidebar-card {
+            background: var(--bg-surface); border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg); padding: 20px 24px;
+            transition: all 0.3s ease;
+        }
+        .sidebar-card:hover { border-color: var(--border-hover); }
+        .sidebar-card .card-title {
+            font-size: 0.85rem; font-weight: 600; color: var(--text-main);
+            display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
+        }
+        .sidebar-card .card-title i { color: var(--color-primary); }
+
+        /* ===== TODAY'S PROGRESS ===== */
+        .today-stats { display: flex; flex-direction: column; gap: 10px; }
+        .today-stats .stat-row {
+            display: flex; justify-content: space-between; padding: 8px 0;
+            border-bottom: 1px solid var(--border-color); font-size: 0.85rem;
+        }
+        .today-stats .stat-row:last-child { border-bottom: none; }
+        .today-stats .stat-row .label { color: var(--text-muted); }
+        .today-stats .stat-row .value { font-weight: 600; color: var(--text-main); }
+
+        /* ===== WEEKLY GOAL ===== */
+        .weekly-goal .goal-item {
+            display: flex; align-items: center; gap: 12px; padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .weekly-goal .goal-item:last-child { border-bottom: none; }
+        .weekly-goal .goal-item .goal-check { width: 20px; text-align: center; color: var(--text-dim); cursor: pointer; }
+        .weekly-goal .goal-item .goal-check.done { color: var(--success); }
+        .weekly-goal .goal-item .goal-text { flex: 1; font-size: 0.85rem; color: var(--text-main); }
+        .weekly-goal .goal-item .goal-text.done { text-decoration: line-through; color: var(--text-dim); }
+        .weekly-goal .goal-item .goal-delete {
+            background: transparent; border: none; color: var(--text-dim);
+            cursor: pointer; font-size: 0.7rem; transition: color 0.2s ease;
+        }
+        .weekly-goal .goal-item .goal-delete:hover { color: var(--danger); }
+        .add-goal-input { display: flex; gap: 8px; margin-top: 8px; }
+        .add-goal-input input {
+            flex: 1; background: var(--bg-main); border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm); padding: 8px 12px; color: var(--text-main);
+            font-family: 'Inter', sans-serif; font-size: 0.85rem; outline: none;
+            transition: border-color 0.3s ease;
+        }
+        .add-goal-input input:focus { border-color: var(--color-primary); }
+        .add-goal-input input::placeholder { color: var(--text-dim); }
+
+        /* ===== RECOMMENDED NEXT ===== */
+        .recommended-item {
+            display: flex; align-items: center; gap: 12px; padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .recommended-item:last-child { border-bottom: none; }
+        .recommended-item .rec-icon {
+            width: 32px; height: 32px; border-radius: 50%;
+            background: var(--color-primary-dim); color: var(--color-primary);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.8rem; flex-shrink: 0;
+        }
+        .recommended-item .rec-info { flex: 1; }
+        .recommended-item .rec-info .rec-title { font-size: 0.85rem; font-weight: 600; color: var(--text-main); }
+        .recommended-item .rec-info .rec-meta { font-size: 0.7rem; color: var(--text-dim); }
+        .recommended-item .rec-action {
+            background: var(--color-primary); color: #fff; border: none;
+            padding: 4px 14px; border-radius: var(--radius-sm); font-weight: 600;
+            font-size: 0.7rem; cursor: pointer; transition: all 0.2s ease;
+        }
+        .recommended-item .rec-action:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(255,94,58,0.3); }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7); z-index: 1000; backdrop-filter: blur(8px);
+            justify-content: center; align-items: center;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-box {
+            background: var(--bg-surface); border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl); padding: 32px 36px; max-width: 500px;
+            width: 90%; box-shadow: 0 30px 80px rgba(0,0,0,0.7);
+            animation: modalSlideIn 0.3s ease;
+        }
+        @keyframes modalSlideIn {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .modal-box .modal-header {
+            display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;
+        }
+        .modal-box .modal-header h2 { font-size: 1.2rem; font-weight: 700; color: var(--text-main); }
+        .modal-box .modal-header .modal-close {
+            background: transparent; border: none; color: var(--text-dim);
+            font-size: 1.2rem; cursor: pointer; transition: color 0.2s ease;
+        }
+        .modal-box .modal-header .modal-close:hover { color: var(--text-main); }
+        .modal-box .form-group { margin-bottom: 16px; }
+        .modal-box .form-group label {
+            display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-muted); margin-bottom: 6px;
+        }
+        .modal-box .form-group input, .modal-box .form-group select {
+            width: 100%; background: var(--bg-main); border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm); padding: 10px 14px; color: var(--text-main);
+            font-family: 'Inter', sans-serif; font-size: 0.9rem; outline: none;
+            transition: border-color 0.3s ease;
+        }
+        .modal-box .form-group input:focus, .modal-box .form-group select:focus { border-color: var(--color-primary); }
+        .modal-box .form-group input::placeholder { color: var(--text-dim); }
+        .modal-box .form-group select option { background: var(--bg-surface); color: var(--text-main); }
+        .modal-box .form-actions {
+            display: flex; gap: 12px; justify-content: flex-end; margin-top: 20px;
+        }
+        .modal-box .form-actions button {
+            padding: 10px 24px; border-radius: var(--radius-sm); font-weight: 600;
+            font-size: 0.85rem; cursor: pointer; border: none; font-family: 'Inter', sans-serif;
+            transition: all 0.25s ease;
+        }
+        .modal-box .form-actions .btn-cancel {
+            background: var(--bg-surface-hover); color: var(--text-muted); border: 1px solid var(--border-color);
+        }
+        .modal-box .form-actions .btn-cancel:hover { border-color: var(--text-muted); color: var(--text-main); }
+        .modal-box .form-actions .btn-submit { background: var(--color-primary); color: #fff; }
+        .modal-box .form-actions .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(255,94,58,0.3); opacity: 0.92; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
+            .study-plan-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .admin-sidebar { transform: translateX(-100%); width: 260px; }
+            .admin-sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; padding: 16px; }
+            .top-bar { flex-direction: column; align-items: stretch; gap: 12px; }
+            .top-bar .user-actions { flex-wrap: wrap; }
+            .stats-row { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .stat-mini { padding: 10px 12px; }
+            .stat-mini .stat-number { font-size: 1.2rem; }
+            .action-bar-top { flex-direction: column; align-items: stretch; }
+            .action-bar-top .btn-action { justify-content: center; }
+            .topic-card { padding: 16px 18px; }
+            .topic-card .topic-header { flex-direction: column; align-items: flex-start; }
+            .topic-card .problem-list .problem-item { flex-wrap: wrap; gap: 6px; }
+            .sidebar-card { padding: 16px 18px; }
+            .mobile-toggle { display: flex !important; }
+            .sidebar-overlay {
+                display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                background: rgba(0,0,0,0.6); z-index: 99; backdrop-filter: blur(4px);
+            }
+            .sidebar-overlay.active { display: block; }
+            .modal-box { padding: 24px 20px; }
+        }
+        @media (max-width: 480px) {
+            .main-content { padding: 12px; }
+            .page-header h1 { font-size: 1.2rem; }
+            .stats-row { grid-template-columns: 1fr 1fr; gap: 8px; }
+            .stat-mini { padding: 8px 10px; }
+            .stat-mini .stat-number { font-size: 1rem; }
+            .stat-mini .stat-label { font-size: 0.55rem; }
+            .topic-card .problem-list .problem-item .problem-left .problem-name { font-size: 0.75rem; }
+            .modal-box { padding: 20px 16px; }
+        }
+
+        /* ===== MOBILE TOGGLE ===== */
+        .mobile-toggle {
+            display: none; position: fixed; top: 14px; left: 14px; z-index: 200;
+            background: var(--bg-surface); border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm); color: #ffffff; padding: 8px 12px;
+            font-size: 1.1rem; cursor: pointer; transition: all 0.3s ease;
+        }
+        .mobile-toggle:hover { border-color: var(--color-primary); }
+
+        /* ===== TOAST ===== */
+        .custom-toast {
+            position: fixed; bottom: 30px; right: 30px; background: var(--bg-surface);
+            border: 1px solid var(--border-color); padding: 12px 24px;
+            border-radius: var(--radius-md); color: var(--text-main); font-size: 0.9rem;
+            z-index: 9999; animation: slideUp 0.4s ease;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5); font-family: 'Inter', sans-serif;
+            backdrop-filter: blur(12px);
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== MOBILE TOGGLE ===== -->
+    <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle sidebar">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- ===== OVERLAY ===== -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="admin-sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <div class="logo-icon"><i class="fas fa-code"></i></div>
+            <div class="brand-text">Code<span>Arena</span></div>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="dashboard.html"><i class="fas fa-th-large"></i><span class="menu-label">Dashboard</span></a></li>
+            <li><a href="problems.html"><i class="fas fa-code"></i><span class="menu-label">Problems</span><span class="menu-badge">120</span></a></li>
+            <li><a href="submissions.html"><i class="fas fa-paper-plane"></i><span class="menu-label">My Submissions</span></a></li>
+            <li><a href="leaderboard.html"><i class="fas fa-trophy"></i><span class="menu-label">Leaderboard</span></a></li>
+            <li><a href="profile.html"><i class="fas fa-user"></i><span class="menu-label">Profile</span></a></li>
+            <li><a href="bookmarks.html"><i class="fas fa-bookmark"></i><span class="menu-label">Bookmarks</span><span class="menu-badge">4</span></a></li>
+            <li class="active"><a href="study-plan.html"><i class="fas fa-road"></i><span class="menu-label">Study Plan</span></a></li>
+            <li class="divider"></li>
+            <li class="logout-item"><a href="../login.html"><i class="fas fa-sign-out-alt"></i><span class="menu-label">Logout</span></a></li>
+        </ul>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main-content">
+
+        <!-- ===== TOP BAR ===== -->
+        <div class="top-bar">
+            <div class="page-title">
+                <i class="fas fa-road"></i> Study Plan <span>/ Learning Path</span>
+            </div>
+            <div class="user-actions">
+                <button class="theme-toggle-btn" id="themeToggle" aria-label="Toggle theme">🌙</button>
+                <div class="user-profile">
+                    <div class="avatar">A</div>
+                    <span class="user-name">alex_coder</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== PAGE HEADER ===== -->
+        <div class="page-header">
+            <h1>Your Study Plan</h1>
+            <p>Track your progress across topics and stay on track with your learning goals.</p>
+        </div>
+
+        <!-- ===== STATS ROW ===== -->
+        <div class="stats-row">
+            <div class="stat-mini"><div class="stat-number green">84</div><div class="stat-label">Problems Solved</div></div>
+            <div class="stat-mini"><div class="stat-number yellow">7</div><div class="stat-label">Day Streak</div></div>
+            <div class="stat-mini"><div class="stat-number blue">4</div><div class="stat-label">Topics</div></div>
+            <div class="stat-mini"><div class="stat-number purple">92%</div><div class="stat-label">Completion Rate</div></div>
+        </div>
+
+        <!-- ===== ACTION BAR ===== -->
+        <div class="action-bar-top">
+            <button class="btn-action btn-action-primary" onclick="openModal('topic')"><i class="fas fa-plus"></i> Add Topic</button>
+            <button class="btn-action btn-action-secondary" onclick="openModal('goal')"><i class="fas fa-plus"></i> Add Goal</button>
+        </div>
+
+        <!-- ===== STUDY PLAN GRID ===== -->
+        <div class="study-plan-grid">
+
+            <!-- ===== LEFT COLUMN - TOPICS ===== -->
+            <div class="topics-section" id="topicsContainer">
+
+                <!-- Topic: Arrays -->
+                <div class="topic-card" data-topic="arrays">
+                    <div class="topic-header">
+                        <div class="topic-name">
+                            <div class="topic-icon array"><i class="fas fa-layer-group"></i></div>
+                            <span class="topic-title">Arrays & Hashing</span>
+                        </div>
+                        <div class="topic-actions">
+                            <button onclick="editTopic(this)" title="Edit Topic"><i class="fas fa-edit"></i></button>
+                            <button class="delete" onclick="deleteTopic(this)" title="Delete Topic"><i class="fas fa-trash"></i></button>
+                            <span class="topic-progress"><strong>12</strong> / 15 completed</span>
+                        </div>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill array" style="width: 80%;"></div></div>
+                    <div class="problem-list">
+                        <div class="problem-item">
+                            <div class="problem-left"><span class="status-dot completed"></span><a href="problem.html?id=1" class="problem-name">Two Sum Problem Engine</a></div>
+                            <div class="problem-actions"><button onclick="editProblem(this)" title="Edit"><i class="fas fa-edit"></i></button><button class="delete" onclick="deleteProblem(this)" title="Delete"><i class="fas fa-trash"></i></button></div>
+                            <span class="problem-status completed">Completed</span>
+                        </div>
+                        <div class="problem-item">
+                            <div class="problem-left"><span class="status-dot completed"></span><a href="problem.html?id=5" class="problem-name">Valid Parentheses Checker</a></div>
+                            <div class="problem-actions"><button onclick="editProblem(this)" title="Edit"><i class="fas fa-edit"></i></button><button class="delete" onclick="deleteProblem(this)" title="Delete"><i class="fas fa-trash"></i></button></div>
+                            <span class="problem-status completed">Completed</span>
+                        </div>
+                        <div class="problem-item">
+                            <div class="problem-left"><span class="status-dot in-progress"></span><a href="problem.html?id=3" class="problem-name">LRU Cache Structure Design</a></div>
+                            <div class="problem-actions"><button onclick="editProblem(this)" title="Edit"><i class="fas fa-edit"></i></button><button class="delete" onclick="deleteProblem(this)" title="Delete"><i class="fas fa-trash"></i></button></div>
+                            <span class="problem-status in-progress">In Progress</span>
+                        </div>
+                        <div class="problem-item">
+                            <div class="problem-left"><span class="status-dot pending"></span><a href="problem.html" class="problem-name">Container With Most Water</a></div>
+                            <div class="problem-actions"><button onclick="editProblem(this)" title="Edit"><i class="fas fa-edit"></i></button><button class="delete" onclick="deleteProblem(this)" title="Delete"><i class="fas fa-trash"></i></button></div>
+                            <span class="problem-status pending">Pending</span>
+                        </div>
+                        <button class="btn-action btn-action-secondary btn-sm" style="width:100%; justify-content:center; margin-top:4px;" onclick="openModal('problem', this.closest('.topic-card'))"><i class="fas fa-plus"></i> Add Problem</button>
+                    </div>
+                </div>
+
+                <!-- Topic: Trees -->
+                <div class="topic-card" data-topic="trees">
+                    <div class="topic-header">
+                        <div class="topic-name"><div class="topic-icon tree"><i class="fas fa-tree"></i></div><span class="topic-title">Trees & Binary Search</span></div>
+                        <div class="topic-actions">
+                            <button onclick="editTopic(this)" title="Edit Topic"><i class="fas fa-edit"></i></button>
+                            <button class="delete" onclick="deleteTopic(this)" title="Delete Topic"><i class="fas fa-trash"></i></button>
+                            <span class="topic-progress"><strong>8</strong> / 12 completed</span>
+                        </div>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill tree" style="width: 66%;"></div></div>
+                    <div class="problem-list">
+                        <div class="problem-item">
+                            <div class="problem-left"><span class="status-dot completed"></span><a href="problem.html?id=4" class="problem-name">Binary Tree Level Order Traversal</a></div>
+                            <div class="problem-actions"><button onclick="editProblem(this)" title="Edit"><i class="fas fa-edit"></i></button><button class="delete" onclick="deleteProblem(this)" title="Delete"><i class="fas fa-trash"></i></button></div>
+                            <span class="problem-status completed">Completed</span>
+                        </div>
+                        <div class="problem-item">
+                            <div class="problem-left"><span class="status-dot in-progress"></span><a href="problem.html" class="problem-name">Validate Binary Search Tree</a></div>
+                            <div class="problem-actions"><button onclick="editProblem(this)" title="Edit"><i class="fas fa-edit"></i></button><button class="delete" onclick="deleteProblem(this)" title="Delete"><i class="fas fa-trash"></i></button></div>
+                            <span class="problem-status in-progress">In Progress</span>
+                        </div>
+                        <div class="problem-item">
+                            <div class="problem-left"><span class="status-dot pending"></span><a href="problem.html" class="problem-name">Binary Tree Maximum Path Sum</a></div>
+                            <div class="problem-actions"><button onclick="editProblem(this)" title="Edit"><i class="fas fa-edit"></i></button><button class="delete" onclick="deleteProblem(this)" title="Delete"><i class="fas fa-trash"></i></button></div>
+                            <span class="problem-status pending">Pending</span>
+                        </div>
+                        <button class="btn-action btn-action-secondary btn-sm" style="width:100%; justify-content:center; margin-top:4px;" onclick="openModal('problem', this.closest('.topic-card'))"><i class="fas fa-plus"></i> Add Problem</button>
+                    </div>
+                </div>
+
+                <!-- Topic: Dynamic Programming -->
+                <div class="topic-card" data-topic="dp">
+                    <div class="topic-header">
+                        <div class="topic-name"><div class="topic-icon dp"><i class="fas fa-brain"></i></div><span class="topic-title">Dynamic Programming</span></div>
+                        <div class="topic-actions">
+                            <button onclick="editTopic(this)" title="Edit Topic"><i class="fas fa-edit"></i></button>
+                            <button class="delete" onclick="deleteTopic(this)" title="Delete Topic"><i class="fas fa-trash"></i></button>
+                            <span class="topic-progress"><strong>5</strong> / 10 completed</span>
+                        </div>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill dp" style="width: 50%;"></div></div>
+                    <div class="problem-list">
+                        <div class="problem-item">
+                            <div class="problem-left"><span class="status-dot completed"></span><a href="problem.html" class="problem-name">Climbing Stairs</a></div>
+                            <div class="problem-actions"><button onclick="editProblem(this)" title="Edit"><i class="fas fa-edit"></i></button><button class="delete" onclick="deleteProblem(this)" title="Delete"><i class="fas fa-trash"></i></button></div>
+                            <span class="problem-status completed">Completed</span>
+                        </div>
+                        <div class="problem-item">
+                            <div class="problem-left"><span class="status-dot pending"></span><a href="problem.html" class="problem-name">Coin Change Problem</a></div>
+                            <div class="problem-actions"><button onclick="editProblem(this)" title="Edit"><i class="fas fa-edit"></i></button><button class="delete" onclick="deleteProblem(this)" title="Delete"><i class="fas fa-trash"></i></button></div>
+                            <span class="problem-status pending">Pending</span>
+                        </div>
+                        <button class="btn-action btn-action-secondary btn-sm" style="width:100%; justify-content:center; margin-top:4px;" onclick="openModal('problem', this.closest('.topic-card'))"><i class="fas fa-plus"></i> Add Problem</button>
+                    </div>
+                </div>
+
+                <!-- Topic: Graphs -->
+                <div class="topic-card" data-topic="graphs">
+                    <div class="topic-header">
+                        <div class="topic-name"><div class="topic-icon graph"><i class="fas fa-project-diagram"></i></div><span class="topic-title">Graphs & Algorithms</span></div>
+                        <div class="topic-actions">
+                            <button onclick="editTopic(this)" title="Edit Topic"><i class="fas fa-edit"></i></button>
+                            <button class="delete" onclick="deleteTopic(this)" title="Delete Topic"><i class="fas fa-trash"></i></button>
+                            <span class="topic-progress"><strong>3</strong> / 8 completed</span>
+                        </div>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill graph" style="width: 37%;"></div></div>
+                    <div class="problem-list">
+                        <div class="problem-item">
+                            <div class="problem-left"><span class="status-dot completed"></span><a href="problem.html" class="problem-name">Number of Islands</a></div>
+                            <div class="problem-actions"><button onclick="editProblem(this)" title="Edit"><i class="fas fa-edit"></i></button><button class="delete" onclick="deleteProblem(this)" title="Delete"><i class="fas fa-trash"></i></button></div>
+                            <span class="problem-status completed">Completed</span>
+                        </div>
+                        <div class="problem-item">
+                            <div class="problem-left"><span class="status-dot in-progress"></span><a href="problem.html" class="problem-name">Clone Graph</a></div>
+                            <div class="problem-actions"><button onclick="editProblem(this)" title="Edit"><i class="fas fa-edit"></i></button><button class="delete" onclick="deleteProblem(this)" title="Delete"><i class="fas fa-trash"></i></button></div>
+                            <span class="problem-status in-progress">In Progress</span>
+                        </div>
+                        <button class="btn-action btn-action-secondary btn-sm" style="width:100%; justify-content:center; margin-top:4px;" onclick="openModal('problem', this.closest('.topic-card'))"><i class="fas fa-plus"></i> Add Problem</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== RIGHT COLUMN - SIDEBAR ===== -->
+            <div class="plan-sidebar">
+
+                <!-- ===== TODAY'S PROGRESS ===== -->
+                <div class="sidebar-card">
+                    <div class="card-title"><i class="fas fa-calendar-day"></i> Today's Progress</div>
+                    <div class="today-stats">
+                        <div class="stat-row"><span class="label">Problems Solved</span><span class="value">3 / 5</span></div>
+                        <div class="stat-row"><span class="label">Time Spent</span><span class="value">1h 24m</span></div>
+                        <div class="stat-row"><span class="label">Accuracy</span><span class="value">87%</span></div>
+                        <div class="stat-row"><span class="label">Streak</span><span class="value" style="color: var(--color-primary);">🔥 7 days</span></div>
+                    </div>
+                </div>
+
+                <!-- ===== WEEKLY GOALS ===== -->
+                <div class="sidebar-card weekly-goal" id="weeklyGoals">
+                    <div class="card-title"><i class="fas fa-check-double"></i> Weekly Goals</div>
+                    <div class="goal-item"><span class="goal-check done" onclick="toggleGoal(this)"><i class="fas fa-check-circle"></i></span><span class="goal-text done">Complete Arrays topic</span><button class="goal-delete" onclick="deleteGoal(this)"><i class="fas fa-times"></i></button></div>
+                    <div class="goal-item"><span class="goal-check done" onclick="toggleGoal(this)"><i class="fas fa-check-circle"></i></span><span class="goal-text done">Solve 10 Medium problems</span><button class="goal-delete" onclick="deleteGoal(this)"><i class="fas fa-times"></i></button></div>
+                    <div class="goal-item"><span class="goal-check" onclick="toggleGoal(this)"><i class="far fa-circle"></i></span><span class="goal-text">Start Trees topic</span><button class="goal-delete" onclick="deleteGoal(this)"><i class="fas fa-times"></i></button></div>
+                    <div class="goal-item"><span class="goal-check" onclick="toggleGoal(this)"><i class="far fa-circle"></i></span><span class="goal-text">Complete 5 Hard problems</span><button class="goal-delete" onclick="deleteGoal(this)"><i class="fas fa-times"></i></button></div>
+                    <div class="add-goal-input">
+                        <input type="text" id="newGoalInput" placeholder="Add new goal..." onkeypress="if(event.key==='Enter') addGoal()">
+                        <button class="btn-action btn-action-primary btn-sm" onclick="addGoal()"><i class="fas fa-plus"></i></button>
+                    </div>
+                </div>
+
+                <!-- ===== RECOMMENDED NEXT ===== -->
+                <div class="sidebar-card">
+                    <div class="card-title"><i class="fas fa-lightbulb"></i> Recommended Next</div>
+                    <div class="recommended-item">
+                        <div class="rec-icon"><i class="fas fa-code"></i></div>
+                        <div class="rec-info"><div class="rec-title">Valid Parentheses Checker</div><div class="rec-meta">Easy · 82% acceptance</div></div>
+                        <a href="problem.html?id=5" class="rec-action">Solve</a>
+                    </div>
+                    <div class="recommended-item">
+                        <div class="rec-icon"><i class="fas fa-code"></i></div>
+                        <div class="rec-info"><div class="rec-title">Binary Tree Level Order Traversal</div><div class="rec-meta">Medium · 56% acceptance</div></div>
+                        <a href="problem.html?id=4" class="rec-action">Solve</a>
+                    </div>
+                    <div class="recommended-item">
+                        <div class="rec-icon"><i class="fas fa-code"></i></div>
+                        <div class="rec-info"><div class="rec-title">Matrix Shortest Path Router</div><div class="rec-meta">Hard · 12% acceptance</div></div>
+                        <a href="problem.html?id=2" class="rec-action">Solve</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ===== MODAL ===== -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2 id="modalTitle">Add New Topic</h2>
+                <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="modalForm" onsubmit="submitModal(event)">
+                <input type="hidden" id="modalType" value="topic">
+                <input type="hidden" id="editTarget" value="">
+                <div class="form-group" id="topicNameGroup">
+                    <label for="topicName">Topic Name</label>
+                    <input type="text" id="topicName" placeholder="e.g., Arrays & Hashing" required>
+                </div>
+                <div class="form-group" id="topicIconGroup">
+                    <label for="topicIcon">Icon Class</label>
+                    <select id="topicIcon">
+                        <option value="fa-layer-group">Arrays</option>
+                        <option value="fa-tree">Trees</option>
+                        <option value="fa-brain">DP</option>
+                        <option value="fa-project-diagram">Graphs</option>
+                        <option value="fa-list">Linked List</option>
+                        <option value="fa-code">Default</option>
+                    </select>
+                </div>
+                <div class="form-group" id="problemNameGroup" style="display:none;">
+                    <label for="problemName">Problem Name</label>
+                    <input type="text" id="problemName" placeholder="e.g., Two Sum Problem Engine">
+                </div>
+                <div class="form-group" id="problemStatusGroup" style="display:none;">
+                    <label for="problemStatus">Status</label>
+                    <select id="problemStatus">
+                        <option value="completed">Completed</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="pending">Pending</option>
+                    </select>
+                </div>
+                <div class="form-group" id="goalNameGroup" style="display:none;">
+                    <label for="goalName">Goal Description</label>
+                    <input type="text" id="goalName" placeholder="e.g., Complete Arrays topic">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn-submit" id="modalSubmitBtn">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script>
+        // ===== MOBILE SIDEBAR =====
+        const mobileToggle = document.getElementById('mobileToggle');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+            const icon = mobileToggle.querySelector('i');
+            icon.className = sidebar.classList.contains('open') ? 'fas fa-times' : 'fas fa-bars';
+        }
+
+        mobileToggle.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+
+        document.querySelectorAll('.sidebar-menu a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href && !href.startsWith('#')) {
+                    return; // Allow normal navigation
+                }
+                if (window.innerWidth <= 768) {
+                    sidebar.classList.remove('open');
+                    overlay.classList.remove('active');
+                    mobileToggle.querySelector('i').className = 'fas fa-bars';
+                }
+            });
+        });
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
+                mobileToggle.querySelector('i').className = 'fas fa-bars';
+            }
+        });
+
+        // ===== THEME TOGGLE =====
+        const themeToggle = document.getElementById('themeToggle');
+        let currentTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        themeToggle.textContent = currentTheme === 'dark' ? '🌙' : '☀️';
+
+        themeToggle.addEventListener('click', function() {
+            const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            themeToggle.textContent = newTheme === 'dark' ? '🌙' : '☀️';
+        });
+
+        // ===== TOAST =====
+        function showToast(message) {
+            const existing = document.querySelector('.custom-toast');
+            if (existing) existing.remove();
+
+            const toast = document.createElement('div');
+            toast.className = 'custom-toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.4s ease';
+                setTimeout(() => toast.remove(), 400);
+            }, 2500);
+        }
+
+        // ===== MODAL =====
+        let currentTopicCard = null;
+
+        function openModal(type, topicCard) {
+            const overlay = document.getElementById('modalOverlay');
+            const title = document.getElementById('modalTitle');
+            const modalType = document.getElementById('modalType');
+
+            document.getElementById('modalForm').reset();
+            document.getElementById('topicNameGroup').style.display = 'block';
+            document.getElementById('topicIconGroup').style.display = 'block';
+            document.getElementById('problemNameGroup').style.display = 'none';
+            document.getElementById('problemStatusGroup').style.display = 'none';
+            document.getElementById('goalNameGroup').style.display = 'none';
+
+            modalType.value = type;
+            document.getElementById('editTarget').value = '';
+            currentTopicCard = topicCard || null;
+
+            if (type === 'topic') {
+                title.textContent = 'Add New Topic';
+                document.getElementById('modalSubmitBtn').textContent = 'Add Topic';
+                document.getElementById('topicNameGroup').style.display = 'block';
+                document.getElementById('topicIconGroup').style.display = 'block';
+            } else if (type === 'problem') {
+                title.textContent = 'Add Problem';
+                document.getElementById('modalSubmitBtn').textContent = 'Add Problem';
+                document.getElementById('topicNameGroup').style.display = 'none';
+                document.getElementById('topicIconGroup').style.display = 'none';
+                document.getElementById('problemNameGroup').style.display = 'block';
+                document.getElementById('problemStatusGroup').style.display = 'block';
+            } else if (type === 'goal') {
+                title.textContent = 'Add Weekly Goal';
+                document.getElementById('modalSubmitBtn').textContent = 'Add Goal';
+                document.getElementById('topicNameGroup').style.display = 'none';
+                document.getElementById('topicIconGroup').style.display = 'none';
+                document.getElementById('problemNameGroup').style.display = 'none';
+                document.getElementById('problemStatusGroup').style.display = 'none';
+                document.getElementById('goalNameGroup').style.display = 'block';
+            }
+
+            overlay.classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+        }
+
+        function getIconClass(iconName) {
+            const map = {
+                'fa-layer-group': 'array',
+                'fa-tree': 'tree',
+                'fa-brain': 'dp',
+                'fa-project-diagram': 'graph',
+                'fa-list': 'list',
+                'fa-code': 'default'
+            };
+            return map[iconName] || 'default';
+        }
+
+        function submitModal(e) {
+            e.preventDefault();
+            const type = document.getElementById('modalType').value;
+            const editTarget = document.getElementById('editTarget').value;
+
+            if (type === 'topic') {
+                const name = document.getElementById('topicName').value.trim();
+                const icon = document.getElementById('topicIcon').value;
+                if (!name) { showToast('⚠️ Please enter a topic name'); return; }
+                if (editTarget) {
+                    const card = document.querySelector(`.topic-card[data-topic="${editTarget}"]`);
+                    if (card) {
+                        card.querySelector('.topic-title').textContent = name;
+                        const iconEl = card.querySelector('.topic-icon');
+                        iconEl.className = `topic-icon ${getIconClass(icon)}`;
+                        iconEl.innerHTML = `<i class="fas ${icon}"></i>`;
+                        showToast(`✅ Topic "${name}" updated successfully!`);
+                    }
+                } else {
+                    addTopic(name, icon);
+                }
+            } else if (type === 'problem') {
+                const name = document.getElementById('problemName').value.trim();
+                const status = document.getElementById('problemStatus').value;
+                if (!name) { showToast('⚠️ Please enter a problem name'); return; }
+                if (currentTopicCard) {
+                    addProblem(currentTopicCard, name, status);
+                } else {
+                    showToast('⚠️ Please select a topic first');
+                }
+            } else if (type === 'goal') {
+                const goal = document.getElementById('goalName').value.trim();
+                if (!goal) { showToast('⚠️ Please enter a goal'); return; }
+                addGoal(goal);
+            }
+
+            closeModal();
+        }
+
+        // ===== ADD TOPIC =====
+        function addTopic(name, icon) {
+            const container = document.getElementById('topicsContainer');
+            const iconClass = getIconClass(icon);
+            const iconDisplay = icon || 'fa-code';
+            const progressFill = iconClass === 'array' ? 'array' : iconClass === 'tree' ? 'tree' : iconClass === 'dp' ? 'dp' :
+                iconClass === 'graph' ? 'graph' : iconClass === 'list' ? 'list' : 'default';
+
+            const card = document.createElement('div');
+            card.className = 'topic-card';
+            card.setAttribute('data-topic', name.toLowerCase().replace(/\s+/g, '-'));
+            card.innerHTML = `
+                <div class="topic-header">
+                    <div class="topic-name">
+                        <div class="topic-icon ${iconClass}"><i class="fas ${iconDisplay}"></i></div>
+                        <span class="topic-title">${name}</span>
+                    </div>
+                    <div class="topic-actions">
+                        <button onclick="editTopic(this)" title="Edit Topic"><i class="fas fa-edit"></i></button>
+                        <button class="delete" onclick="deleteTopic(this)" title="Delete Topic"><i class="fas fa-trash"></i></button>
+                        <span class="topic-progress"><strong>0</strong> / 0 completed</span>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill ${progressFill}" style="width: 0%;"></div>
+                </div>
+                <div class="problem-list">
+                    <button class="btn-action btn-action-secondary btn-sm" style="width: 100%; justify-content: center; margin-top: 4px;" onclick="openModal('problem', this.closest('.topic-card'))">
+                        <i class="fas fa-plus"></i> Add Problem
+                    </button>
+                </div>
+            `;
+            container.appendChild(card);
+            updateStats();
+            showToast(`✅ Topic "${name}" created successfully!`);
+        }
+
+        // ===== EDIT TOPIC =====
+        function editTopic(btn) {
+            const card = btn.closest('.topic-card');
+            const title = card.querySelector('.topic-title').textContent;
+            const iconEl = card.querySelector('.topic-icon i');
+            const iconClass = iconEl.className.replace('fas ', '');
+
+            document.getElementById('modalType').value = 'topic';
+            document.getElementById('editTarget').value = card.dataset.topic;
+            document.getElementById('modalTitle').textContent = 'Edit Topic';
+            document.getElementById('modalSubmitBtn').textContent = 'Update Topic';
+            document.getElementById('topicName').value = title;
+            document.getElementById('topicIcon').value = iconClass;
+            document.getElementById('topicNameGroup').style.display = 'block';
+            document.getElementById('topicIconGroup').style.display = 'block';
+            document.getElementById('problemNameGroup').style.display = 'none';
+            document.getElementById('problemStatusGroup').style.display = 'none';
+            document.getElementById('goalNameGroup').style.display = 'none';
+            document.getElementById('modalOverlay').classList.add('active');
+        }
+
+        // ===== DELETE TOPIC =====
+        function deleteTopic(btn) {
+            if (!confirm('Are you sure you want to delete this topic and all its problems?')) return;
+            const card = btn.closest('.topic-card');
+            card.style.opacity = '0';
+            card.style.transform = 'translateX(-20px)';
+            setTimeout(() => {
+                card.remove();
+                updateStats();
+                showToast('🗑️ Topic deleted successfully');
+            }, 300);
+        }
+
+        // ===== ADD PROBLEM =====
+        function addProblem(topicCard, name, status) {
+            const list = topicCard.querySelector('.problem-list');
+            const addBtn = list.querySelector('.btn-action');
+            const statusLabels = {
+                'completed': 'Completed',
+                'in-progress': 'In Progress',
+                'pending': 'Pending'
+            };
+
+            const item = document.createElement('div');
+            item.className = 'problem-item';
+            item.innerHTML = `
+                <div class="problem-left">
+                    <span class="status-dot ${status}"></span>
+                    <a href="problem.html" class="problem-name">${name}</a>
+                </div>
+                <div class="problem-actions">
+                    <button onclick="editProblem(this)" title="Edit"><i class="fas fa-edit"></i></button>
+                    <button class="delete" onclick="deleteProblem(this)" title="Delete"><i class="fas fa-trash"></i></button>
+                </div>
+                <span class="problem-status ${status}">${statusLabels[status]}</span>
+            `;
+            list.insertBefore(item, addBtn);
+            updateProgress(topicCard);
+            updateStats();
+            showToast(`✅ Problem "${name}" added successfully!`);
+        }
+
+        // ===== EDIT PROBLEM =====
+        function editProblem(btn) {
+            const item = btn.closest('.problem-item');
+            const name = item.querySelector('.problem-name').textContent;
+            const statusEl = item.querySelector('.problem-status');
+            const status = statusEl.className.replace('problem-status ', '');
+
+            document.getElementById('modalType').value = 'problem';
+            document.getElementById('editTarget').value = 'edit';
+            document.getElementById('modalTitle').textContent = 'Edit Problem';
+            document.getElementById('modalSubmitBtn').textContent = 'Update Problem';
+            document.getElementById('problemName').value = name;
+            document.getElementById('problemStatus').value = status;
+            document.getElementById('topicNameGroup').style.display = 'none';
+            document.getElementById('topicIconGroup').style.display = 'none';
+            document.getElementById('problemNameGroup').style.display = 'block';
+            document.getElementById('problemStatusGroup').style.display = 'block';
+            document.getElementById('goalNameGroup').style.display = 'none';
+
+            document.getElementById('editTarget').dataset.problemItem = item;
+            document.getElementById('modalOverlay').classList.add('active');
+        }
+
+        // ===== DELETE PROBLEM =====
+        function deleteProblem(btn) {
+            if (!confirm('Remove this problem from the study plan?')) return;
+            const item = btn.closest('.problem-item');
+            const card = item.closest('.topic-card');
+            item.style.opacity = '0';
+            item.style.transform = 'translateX(-20px)';
+            setTimeout(() => {
+                item.remove();
+                updateProgress(card);
+                updateStats();
+                showToast('🗑️ Problem removed');
+            }, 300);
+        }
+
+        // ===== UPDATE PROGRESS =====
+        function updateProgress(card) {
+            const items = card.querySelectorAll('.problem-item');
+            const total = items.length;
+            const completed = card.querySelectorAll('.status-dot.completed').length;
+            const progress = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+            const progressText = card.querySelector('.topic-progress');
+            if (progressText) {
+                progressText.innerHTML = `<strong>${completed}</strong> / ${total} completed`;
+            }
+
+            const fill = card.querySelector('.progress-fill');
+            if (fill) {
+                fill.style.width = `${progress}%`;
+            }
+        }
+
+        // ===== UPDATE STATS =====
+        function updateStats() {
+            const cards = document.querySelectorAll('.topic-card');
+            const totalTopics = cards.length;
+            const totalProblems = document.querySelectorAll('.problem-item').length;
+            const completedProblems = document.querySelectorAll('.status-dot.completed').length;
+
+            const stats = document.querySelectorAll('.stat-mini .stat-number');
+            if (stats.length >= 4) {
+                stats[0].textContent = completedProblems || 84;
+                stats[2].textContent = totalTopics || 4;
+            }
+        }
+
+        // ===== GOALS =====
+        function addGoal(goalText) {
+            const container = document.getElementById('weeklyGoals');
+            const input = document.getElementById('newGoalInput');
+            const goal = goalText || input.value.trim();
+            if (!goal) { showToast('⚠️ Please enter a goal'); return; }
+
+            const item = document.createElement('div');
+            item.className = 'goal-item';
+            item.innerHTML = `
+                <span class="goal-check" onclick="toggleGoal(this)"><i class="far fa-circle"></i></span>
+                <span class="goal-text">${goal}</span>
+                <button class="goal-delete" onclick="deleteGoal(this)"><i class="fas fa-times"></i></button>
+            `;
+            container.insertBefore(item, container.querySelector('.add-goal-input'));
+            if (input) input.value = '';
+            showToast(`✅ Goal "${goal}" added!`);
+        }
+
+        function toggleGoal(el) {
+            const icon = el.querySelector('i');
+            const text = el.closest('.goal-item').querySelector('.goal-text');
+            if (icon.classList.contains('fa-circle')) {
+                icon.className = 'fas fa-check-circle';
+                el.classList.add('done');
+                text.classList.add('done');
+                showToast('🎯 Goal completed!');
+            } else {
+                icon.className = 'far fa-circle';
+                el.classList.remove('done');
+                text.classList.remove('done');
+            }
+        }
+
+        function deleteGoal(el) {
+            if (!confirm('Remove this goal?')) return;
+            const item = el.closest('.goal-item');
+            item.style.opacity = '0';
+            setTimeout(() => {
+                item.remove();
+                showToast('🗑️ Goal removed');
+            }, 300);
+        }
+
+        // ===== INITIAL PROGRESS UPDATE =====
+        document.querySelectorAll('.topic-card').forEach(card => {
+            updateProgress(card);
+        });
+
+        // ===== ADD TOAST STYLE =====
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideUp {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+
+</body>
+</html>
