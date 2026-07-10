@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeArena · Privacy Policy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #090d16;
+            min-height: 100vh;
+            padding: 20px;
+            color: #e8edf5;
+            overflow-x: hidden;
+        }
+
+        /* ===== ANIMATED BACKGROUND ===== */
+        .bg-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 94, 58, 0.05);
+            animation: floatParticle linear infinite;
+        }
+
+        .particle:nth-child(1) { width: 350px; height: 350px; top: -120px; left: -120px; animation-duration: 28s; }
+        .particle:nth-child(2) { width: 250px; height: 250px; bottom: -80px; right: -80px; animation-duration: 22s; animation-delay: 2s; }
+        .particle:nth-child(3) { width: 180px; height: 180px; top: 35%; right: -40px; animation-duration: 20s; animation-delay: 4s; }
+        .particle:nth-child(4) { width: 130px; height: 130px; bottom: 25%; left: -50px; animation-duration: 24s; animation-delay: 1s; }
+        .particle:nth-child(5) { width: 280px; height: 280px; top: 5%; left: 45%; animation-duration: 30s; animation-delay: 3s; }
+
+        @keyframes floatParticle {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 0.3; }
+            25% { transform: translate(120px, -90px) scale(1.15) rotate(90deg); opacity: 0.6; }
+            50% { transform: translate(-60px, 140px) scale(0.85) rotate(180deg); opacity: 0.4; }
+            75% { transform: translate(90px, -70px) scale(1.1) rotate(270deg); opacity: 0.7; }
+            100% { transform: translate(0, 0) scale(1) rotate(360deg); opacity: 0.3; }
+        }
+
+        .glow-orb {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 94, 58, 0.08), transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            animation: pulseGlow 6s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+            50% { transform: translate(-50%, -50%) scale(1.15); opacity: 0.8; }
+        }
+
+        /* ===== FLOATING SHAPES ===== */
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            border: 2px solid rgba(255, 94, 58, 0.05);
+            border-radius: 50%;
+            animation: floatShape 15s ease-in-out infinite;
+        }
+
+        .shape:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+            border-color: rgba(255, 94, 58, 0.08);
+        }
+        .shape:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            bottom: 15%;
+            right: 8%;
+            animation-delay: 3s;
+            border-color: rgba(255, 94, 58, 0.06);
+            border-radius: 30% 70% 50% 50% / 50% 40% 60% 50%;
+        }
+        .shape:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            top: 60%;
+            left: 3%;
+            animation-delay: 6s;
+            border-color: rgba(255, 94, 58, 0.1);
+            border-radius: 40% 60% 30% 70% / 50% 40% 60% 50%;
+        }
+        .shape:nth-child(4) {
+            width: 90px;
+            height: 90px;
+            top: 20%;
+            right: 5%;
+            animation-delay: 9s;
+            border-color: rgba(255, 94, 58, 0.07);
+            border-radius: 60% 40% 70% 30% / 30% 60% 40% 70%;
+        }
+
+        @keyframes floatShape {
+            0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            33% { transform: translate(30px, -40px) rotate(120deg) scale(1.1); }
+            66% { transform: translate(-20px, 30px) rotate(240deg) scale(0.9); }
+        }
+
+        /* ===== CONTENT WRAPPER ===== */
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 920px;
+            margin: 30px auto;
+            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        @keyframes slideUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== PROGRESS BAR ===== */
+        .reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            z-index: 9999;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .reading-progress .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #ff5e3a, #ff7a5a, #ff5e3a);
+            background-size: 200% 100%;
+            width: 0%;
+            transition: width 0.1s ease;
+            animation: shimmer 2s linear infinite;
+            border-radius: 0 2px 2px 0;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* ===== HEADER CARD ===== */
+        .header-card {
+            background: rgba(15, 23, 42, 0.88);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 28px;
+            padding: 50px 40px 35px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(255, 94, 58, 0.03), transparent, rgba(255, 94, 58, 0.03), transparent);
+            animation: rotateBorder 10s linear infinite;
+        }
+
+        @keyframes rotateBorder {
+            to { transform: rotate(360deg); }
+        }
+
+        .header-card .brand-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #ff5e3a, #e0452a);
+            border-radius: 18px;
+            font-size: 1.8rem;
+            color: #fff;
+            margin-bottom: 14px;
+            box-shadow: 0 8px 32px rgba(255, 94, 58, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-card .brand-icon:hover {
+            transform: scale(1.1) rotate(-5deg);
+            box-shadow: 0 12px 40px rgba(255, 94, 58, 0.4);
+        }
+
+        .header-card .brand-icon .pulse-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 18px;
+            border: 2px solid rgba(255, 94, 58, 0.3);
+            animation: pulseRing 2s ease-out infinite;
+        }
+
+        @keyframes pulseRing {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+
+        .header-card h1 {
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-card h1 span {
+            color: #ff5e3a;
+            position: relative;
+        }
+
+        .header-card h1 span::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #ff5e3a, transparent);
+            border-radius: 2px;
+        }
+
+        .header-card .last-updated {
+            color: #94a3b8;
+            font-size: 0.85rem;
+            margin-top: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-card .last-updated i {
+            color: #ff5e3a;
+            animation: blink 2s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* ===== CONTENT CARDS ===== */
+        .content-card {
+            background: rgba(15, 23, 42, 0.88);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 28px;
+            padding: 40px 45px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+            margin-bottom: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .content-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.7);
+        }
+
+        /* ===== SECTION ITEMS ===== */
+        .section-item {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: sectionReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            transition: background 0.3s ease, padding-left 0.3s ease;
+            border-radius: 12px;
+            padding-left: 0;
+        }
+
+        .section-item:hover {
+            background: rgba(255, 94, 58, 0.03);
+            padding-left: 16px;
+        }
+
+        .section-item:last-child {
+            border-bottom: none;
+        }
+
+        .section-item:nth-child(1) { animation-delay: 0.1s; }
+        .section-item:nth-child(2) { animation-delay: 0.15s; }
+        .section-item:nth-child(3) { animation-delay: 0.2s; }
+        .section-item:nth-child(4) { animation-delay: 0.25s; }
+        .section-item:nth-child(5) { animation-delay: 0.3s; }
+        .section-item:nth-child(6) { animation-delay: 0.35s; }
+        .section-item:nth-child(7) { animation-delay: 0.4s; }
+        .section-item:nth-child(8) { animation-delay: 0.45s; }
+        .section-item:nth-child(9) { animation-delay: 0.5s; }
+        .section-item:nth-child(10) { animation-delay: 0.55s; }
+
+        @keyframes sectionReveal {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-item h2 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-item h2 .icon-wrapper {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 94, 58, 0.12);
+            border-radius: 10px;
+            color: #ff5e3a;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .section-item:hover h2 .icon-wrapper {
+            background: rgba(255, 94, 58, 0.2);
+            transform: scale(1.1) rotate(-5deg);
+        }
+
+        .section-item h2 .section-number {
+            color: #ff5e3a;
+            font-size: 0.7rem;
+            background: rgba(255, 94, 58, 0.1);
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-left: auto;
+        }
+
+        .section-item p {
+            color: #c8d0dc;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            padding-left: 48px;
+        }
+
+        .section-item ul {
+            list-style: none;
+            padding: 0 0 0 48px;
+            margin: 6px 0 0;
+        }
+
+        .section-item ul li {
+            color: #c8d0dc;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            padding: 4px 0 4px 24px;
+            position: relative;
+            transition: transform 0.2s ease, color 0.2s ease;
+        }
+
+        .section-item ul li:hover {
+            transform: translateX(6px);
+            color: #ffffff;
+        }
+
+        .section-item ul li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: #ff5e3a;
+            font-weight: 700;
+            transition: transform 0.2s ease;
+        }
+
+        .section-item ul li:hover::before {
+            transform: scale(1.2);
+        }
+
+        .section-item .highlight-box {
+            background: rgba(255, 94, 58, 0.06);
+            border-left: 3px solid #ff5e3a;
+            padding: 14px 20px;
+            border-radius: 8px;
+            margin: 10px 0 0 48px;
+            transition: background 0.3s ease;
+        }
+
+        .section-item .highlight-box:hover {
+            background: rgba(255, 94, 58, 0.1);
+        }
+
+        .section-item .highlight-box p {
+            padding-left: 0;
+            margin-bottom: 0;
+            color: #e8edf5;
+            font-size: 0.9rem;
+        }
+
+        /* ===== COOKIE BANNER ===== */
+        .cookie-banner {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 20px;
+            padding: 24px 32px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(30px);
+            animation-delay: 0.1s;
+        }
+
+        .cookie-banner p {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin: 0;
+            flex: 1;
+        }
+
+        .cookie-banner p i {
+            color: #ff5e3a;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .cookie-btn {
+            background: linear-gradient(135deg, #ff5e3a, #e0452a);
+            border: none;
+            color: #fff;
+            padding: 10px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 16px rgba(255, 94, 58, 0.2);
+        }
+
+        .cookie-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 30px rgba(255, 94, 58, 0.3);
+        }
+
+        .cookie-btn:active {
+            transform: scale(0.95);
+        }
+
+        .cookie-btn .cookie-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .cookie-btn:hover .cookie-icon {
+            transform: rotate(-10deg) scale(1.2);
+        }
+
+        /* ===== BACK LINK ===== */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 94, 58, 0.08);
+            color: #ff5e3a;
+            padding: 14px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 94, 58, 0.1);
+            margin-top: 10px;
+        }
+
+        .back-link:hover {
+            background: rgba(255, 94, 58, 0.15);
+            transform: translateX(-6px);
+            border-color: #ff5e3a;
+            box-shadow: 0 4px 20px rgba(255, 94, 58, 0.15);
+        }
+
+        .back-link i {
+            transition: transform 0.3s ease;
+        }
+
+        .back-link:hover i {
+            transform: translateX(-4px);
+        }
+
+        .footer-bar {
+            text-align: center;
+            color: #64748b;
+            font-size: 0.8rem;
+            padding: 10px 0 20px;
+        }
+
+        /* ===== TOAST ===== */
+        @keyframes toastUp {
+            from { opacity: 0; transform: translateX(-50%) translateY(30px) scale(0.9); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .content-card {
+                padding: 24px 20px;
+            }
+            .header-card {
+                padding: 30px 20px;
+            }
+            .header-card h1 {
+                font-size: 1.8rem;
+            }
+            .section-item h2 {
+                font-size: 1rem;
+            }
+            .section-item p,
+            .section-item ul {
+                padding-left: 0;
+            }
+            .section-item .highlight-box {
+                margin-left: 0;
+            }
+            .section-item:hover {
+                padding-left: 0;
+            }
+            .section-item h2 .section-number {
+                display: none;
+            }
+            .cookie-banner {
+                flex-direction: column;
+                text-align: center;
+                padding: 20px;
+            }
+            .cookie-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Reading Progress -->
+    <div class="reading-progress">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Animated Background -->
+    <div class="bg-particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <div class="glow-orb"></div>
+
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <div class="content-wrapper">
+        <!-- Header -->
+        <div class="header-card">
+            <div class="brand-icon">
+                <div class="pulse-ring"></div>
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <h1>Privacy <span>Policy</span></h1>
+            <p class="last-updated"><i class="far fa-calendar-alt"></i> Last Updated: July 2026</p>
+        </div>
+
+        <!-- Cookie Banner -->
+        <div class="cookie-banner" id="cookieBanner">
+            <p><i class="fas fa-cookie-bite"></i> We use cookies to enhance your experience. By using our platform, you agree to our use of cookies.</p>
+            <button class="cookie-btn" id="acceptCookies">
+                <span class="cookie-icon"><i class="fas fa-check-circle"></i></span>
+                Accept All
+            </button>
+        </div>
+
+        <!-- Content -->
+        <div class="content-card">
+            <div class="section-item">
+                <h2>
+                    <span class="icon-wrapper"><i class="fas fa-info-circle"></i></span>
+                    Information We Collect
+                    <span class="section-number">01</span>
+                </h2>
+                <p>We collect the following types of information to provide and improve our services:</p>
+                <ul>
+                    <li><strong>Account Information:</strong> Username, email address, and password (encrypted)</li>
+                    <li><strong>User Content:</strong> Code submissions, comments, and solutions you upload</li>
+                    <li><strong>Usage Data:</strong> Pages visited, problems attempted, time spent on platform</li>
+                    <li><strong>Technical Data:</strong> Browser type, device information, IP address</li>
+                </ul>
+            </div>
+
+            <div class="section-item">
+                <h2>
+                    <span class="icon-wrapper"><i class="fas fa-database"></i></span>
+                    How We Use Your Information
+                    <span class="section-number">02</span>
+                </h2>
+                <ul>
+                    <li>To provide and maintain the CodeArena platform</li>
+                    <li>To evaluate your code submissions and provide feedback</li>
+                    <li>To track your progress and suggest relevant problems</li>
+                    <li>To send you important updates about the platform</li>
+                    <li>To improve the user experience and develop new features</li>
+                </ul>
+                <div class="highlight-box">
+                    <p><i class="fas fa-shield-alt" style="color: #ff5e3a; margin-right: 8px;"></i> <strong>Your Privacy Matters:</strong> We never sell your personal data to third parties. Your code submissions are only used to provide you with feedback and improve our platform.</p>
+                </div>
+            </div>
+
+            <div class="section-item">
+                <h2>
+                    <span class="icon-wrapper"><i class="fas fa-share-alt"></i></span>
+                    Data Sharing
+                    <span class="section-number">03</span>
+                </h2>
+                <p>We may share your information in the following limited circumstances:</p>
+                <ul>
+                    <li><strong>Service Providers:</strong> We use third-party services for hosting, analytics, and email delivery</li>
+                    <li><strong>Legal Requirements:</strong> We may disclose information if required by law or to protect our rights</li>
+                    <li><strong>Aggregated Data:</strong> We may share anonymized, aggregate statistics about platform usage</li>
+                </ul>
+            </div>
+
+            <div class="section-item">
+                <h2>
+                    <span class="icon-wrapper"><i class="fas fa-cookie"></i></span>
+                    Cookies & Tracking
+                    <span class="section-number">04</span>
+                </h2>
+                <p>We use cookies and similar technologies to enhance your experience:</p>
+                <ul>
+                    <li><strong>Essential Cookies:</strong> Required for basic platform functionality</li>
+                    <li><strong>Analytics Cookies:</strong> Help us understand how users interact with the platform</li>
+                    <li><strong>Preference Cookies:</strong> Remember your settings and preferences</li>
+                    <li><strong>Authentication Cookies:</strong> Keep you logged in securely</li>
+                </ul>
+            </div>
+
+            <div class="section-item">
+                <h2>
+                    <span class="icon-wrapper"><i class="fas fa-lock"></i></span>
+                    Data Security
+                    <span class="section-number">05</span>
+                </h2>
+                <ul>
+                    <li>All passwords are encrypted using industry-standard hashing algorithms</li>
+                    <li>Your code submissions are stored securely in isolated environments</li>
+                    <li>We regularly update our security practices to protect your data</li>
+                    <li>Access to user data is restricted to authorized personnel only</li>
+                </ul>
+            </div>
+
+            <div class="section-item">
+                <h2>
+                    <span class="icon-wrapper"><i class="fas fa-user-check"></i></span>
+                    Your Rights
+                    <span class="section-number">06</span>
+                </h2>
+                <p>You have the following rights regarding your personal data:</p>
+                <ul>
+                    <li><strong>Access:</strong> Request a copy of your personal data</li>
+                    <li><strong>Rectification:</strong> Update or correct your information</li>
+                    <li><strong>Deletion:</strong> Request deletion of your account and data</li>
+                    <li><strong>Restriction:</strong> Limit how we use your data</li>
+                    <li><strong>Portability:</strong> Receive your data in a portable format</li>
+                </ul>
+            </div>
+
+            <div class="section-item">
+                <h2>
+                    <span class="icon-wrapper"><i class="fas fa-child"></i></span>
+                    Children's Privacy
+                    <span class="section-number">07</span>
+                </h2>
+                <p>CodeArena is not intended for children under 13 years old. We do not knowingly collect personal information from children under 13. If you are a parent and believe your child has provided us with personal information, please contact us immediately.</p>
+            </div>
+
+            <div class="section-item">
+                <h2>
+                    <span class="icon-wrapper"><i class="fas fa-globe"></i></span>
+                    International Data Transfers
+                    <span class="section-number">08</span>
+                </h2>
+                <p>Your information may be transferred to and processed in countries other than your own. We ensure that appropriate safeguards are in place to protect your data during these transfers.</p>
+            </div>
+
+            <div class="section-item">
+                <h2>
+                    <span class="icon-wrapper"><i class="fas fa-sync-alt"></i></span>
+                    Changes to This Policy
+                    <span class="section-number">09</span>
+                </h2>
+                <p>We may update this Privacy Policy from time to time. We will notify you of significant changes via email or through a prominent notice on the platform. Your continued use of CodeArena constitutes acceptance of the updated policy.</p>
+            </div>
+
+            <div class="section-item">
+                <h2>
+                    <span class="icon-wrapper"><i class="fas fa-envelope"></i></span>
+                    Contact Us
+                    <span class="section-number">10</span>
+                </h2>
+                <p>If you have any questions about this Privacy Policy or your data, please contact us at:</p>
+                <ul>
+                    <li><strong>Email:</strong> <span style="color: #ff5e3a; font-weight: 600;">privacy@codearena.com</span></li>
+                    <li><strong>Address:</strong> CodeArena Inc., 123 Tech Street, San Francisco, CA 94105</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Back Link -->
+        <div style="text-align: center;">
+            <a href="register.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back to Registration
+            </a>
+        </div>
+
+        <div class="footer-bar">
+            <p>© 2026 CodeArena. All rights reserved.</p>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ===== READING PROGRESS =====
+            const progressBar = document.getElementById('progressBar');
+            window.addEventListener('scroll', function() {
+                const scrollTop = window.scrollY;
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const progress = (scrollTop / docHeight) * 100;
+                progressBar.style.width = progress + '%';
+            });
+
+            // ===== TOAST NOTIFICATION =====
+            function showToast(message, type = 'info') {
+                const colors = {
+                    success: '#22c55e',
+                    error: '#ef4444',
+                    info: '#ff5e3a',
+                    warning: '#f59e0b'
+                };
+                const icons = {
+                    success: 'fa-check-circle',
+                    error: 'fa-times-circle',
+                    info: 'fa-info-circle',
+                    warning: 'fa-exclamation-circle'
+                };
+
+                const toast = document.createElement('div');
+                toast.style.cssText = `
+                    position: fixed;
+                    bottom: 30px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: rgba(15, 23, 42, 0.95);
+                    backdrop-filter: blur(16px);
+                    padding: 16px 36px;
+                    border-radius: 16px;
+                    border: 1px solid ${colors[type]}44;
+                    color: #e8edf5;
+                    font-size: 0.95rem;
+                    z-index: 9999;
+                    animation: toastUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+                    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+                    font-family: 'Inter', sans-serif;
+                    border-left: 4px solid ${colors[type]};
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    max-width: 90%;
+                `;
+                toast.innerHTML = `<i class="fas ${icons[type]}" style="color:${colors[type]}; font-size:1.2rem;"></i> ${message}`;
+                document.body.appendChild(toast);
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateX(-50%) translateY(-20px)';
+                    toast.style.transition = 'all 0.4s ease';
+                    setTimeout(() => toast.remove(), 400);
+                }, 3500);
+            }
+
+            // ===== COOKIE CONSENT =====
+            const cookieBanner = document.getElementById('cookieBanner');
+            const acceptCookies = document.getElementById('acceptCookies');
+
+            if (localStorage.getItem('cookiesAccepted') === 'true') {
+                cookieBanner.style.display = 'none';
+            }
+
+            acceptCookies.addEventListener('click', function() {
+                localStorage.setItem('cookiesAccepted', 'true');
+                cookieBanner.style.display = 'none';
+                
+                // Confetti effect
+                createConfetti();
+                
+                showToast('🍪 Cookies accepted! Thanks for your consent.', 'success');
+            });
+
+            // ===== CONFETTI EFFECT =====
+            function createConfetti() {
+                const colors = ['#ff5e3a', '#ff7a5a', '#ff9a7a', '#ff3a1a', '#ffffff'];
+                for (let i = 0; i < 60; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.style.cssText = `
+                        position: fixed;
+                        width: ${Math.random() * 8 + 4}px;
+                        height: ${Math.random() * 6 + 4}px;
+                        background: ${colors[Math.floor(Math.random() * colors.length)]};
+                        left: ${Math.random() * 100}%;
+                        top: -20px;
+                        z-index: 9999;
+                        opacity: 0.8;
+                        border-radius: 2px;
+                        pointer-events: none;
+                        animation: confettiFall ${Math.random() * 2 + 2}s ease-in forwards;
+                        animation-delay: ${Math.random() * 0.5}s;
+                    `;
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 3000);
+                }
+
+                if (!document.getElementById('confettiStyle')) {
+                    const style = document.createElement('style');
+                    style.id = 'confettiStyle';
+                    style.textContent = `
+                        @keyframes confettiFall {
+                            0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+                            100% { transform: translateY(110vh) rotate(720deg) scale(0.5); opacity: 0; }
+                        }
+                    `;
+                    document.head.appendChild(style);
+                }
+            }
+
+            // ===== BACK LINK =====
+            document.querySelector('.back-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                this.style.opacity = '0.6';
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    window.location.href = this.getAttribute('href');
+                }, 300);
+            });
+
+            // ===== WELCOME TOAST =====
+            setTimeout(() => {
+                showToast('🔒 Please review our Privacy Policy', 'info');
+            }, 600);
+
+            // ===== SECTION HOVER EFFECT =====
+            document.querySelectorAll('.section-item').forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    const icon = this.querySelector('.icon-wrapper');
+                    if (icon) {
+                        icon.style.transform = 'scale(1.15) rotate(-5deg)';
+                        icon.style.background = 'rgba(255, 94, 58, 0.2)';
+                    }
+                });
+                item.addEventListener('mouseleave', function() {
+                    const icon = this.querySelector('.icon-wrapper');
+                    if (icon) {
+                        icon.style.transform = 'scale(1) rotate(0deg)';
+                        icon.style.background = 'rgba(255, 94, 58, 0.12)';
+                    }
+                });
+            });
+
+        })();
+    </script>
+
+</body>
+</html>

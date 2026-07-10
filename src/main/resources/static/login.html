@@ -25,7 +25,6 @@
             padding: 20px;
         }
 
-        /* Animated particles */
         .bg-particles {
             position: fixed;
             top: 0;
@@ -58,7 +57,6 @@
             100% { transform: translate(0, 0) scale(1) rotate(360deg); opacity: 0.3; }
         }
 
-        /* Glow orb */
         .glow-orb {
             position: fixed;
             width: 600px;
@@ -78,7 +76,6 @@
             50% { transform: translate(-50%, -50%) scale(1.15); opacity: 0.8; }
         }
 
-        /* Main wrapper */
         .login-wrapper {
             position: relative;
             z-index: 1;
@@ -97,7 +94,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ===== LOGIN CARD ===== */
         .login-card {
             background: rgba(15, 23, 42, 0.88);
             backdrop-filter: blur(24px);
@@ -155,7 +151,58 @@
             margin-top: 2px;
         }
 
-        /* Form */
+        .role-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .role-option {
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(255, 255, 255, 0.06);
+            border-radius: 14px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .role-option:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .role-option.active {
+            border-color: #ff5e3a;
+            background: rgba(255, 94, 58, 0.08);
+            box-shadow: 0 0 0 4px rgba(255, 94, 58, 0.1);
+        }
+
+        .role-option .role-icon {
+            font-size: 1.4rem;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .role-option .role-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #e8edf5;
+        }
+
+        .role-option .role-desc {
+            font-size: 0.7rem;
+            color: #64748b;
+            margin-top: 2px;
+        }
+
+        .role-option.active .role-label {
+            color: #ff5e3a;
+        }
+
         .login-form {
             display: flex;
             flex-direction: column;
@@ -419,7 +466,6 @@
             text-decoration: underline;
         }
 
-        /* ===== RIGHT SIDE ===== */
         .hero-side {
             display: flex;
             flex-direction: column;
@@ -515,7 +561,6 @@
             color: #64748b;
         }
 
-        /* Shake */
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
             20% { transform: translateX(-10px); }
@@ -528,13 +573,11 @@
             animation: shake 0.5s ease;
         }
 
-        /* Toast */
         @keyframes toastUp {
             from { opacity: 0; transform: translateX(-50%) translateY(20px); }
             to { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
 
-        /* Responsive */
         @media (max-width: 920px) {
             .login-wrapper {
                 grid-template-columns: 1fr;
@@ -573,12 +616,15 @@
             .social-login {
                 flex-direction: column;
             }
+
+            .role-selector {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Animated particles -->
     <div class="bg-particles">
         <div class="particle"></div>
         <div class="particle"></div>
@@ -589,10 +635,8 @@
 
     <div class="glow-orb"></div>
 
-    <!-- Main Wrapper -->
     <div class="login-wrapper">
 
-        <!-- LEFT: Login Card -->
         <div class="login-container">
             <div class="login-card">
 
@@ -602,6 +646,19 @@
                     </div>
                     <h1>Code<span>Arena</span></h1>
                     <p>Sign in to continue practicing</p>
+                </div>
+
+                <div class="role-selector">
+                    <div class="role-option active" data-role="student" onclick="selectRole('student')">
+                        <span class="role-icon">👨‍🎓</span>
+                        <div class="role-label">Student</div>
+                        <div class="role-desc">Practice & Learn</div>
+                    </div>
+                    <div class="role-option" data-role="admin" onclick="selectRole('admin')">
+                        <span class="role-icon">👨‍💼</span>
+                        <div class="role-label">Admin</div>
+                        <div class="role-desc">Manage Platform</div>
+                    </div>
                 </div>
 
                 <form class="login-form" id="loginForm" novalidate>
@@ -623,12 +680,12 @@
                             <input type="checkbox" checked>
                             Remember me
                         </label>
-                        <a href="#">Forgot password?</a>
+                        <a href="forgot-password.html">Forgot password?</a>
                     </div>
 
                     <button type="submit" class="btn-login" id="loginBtn">
                         <span class="btn-content">
-                            <span class="btn-text">Log in</span>
+                            <span class="btn-text">Log in as <span id="roleDisplay">Student</span></span>
                             <span class="spinner"></span>
                             <i class="fas fa-arrow-right" style="font-size: 0.85rem;"></i>
                         </span>
@@ -640,21 +697,20 @@
                 </div>
 
                 <div class="social-login">
-                    <button class="social-btn github">
+                    <button class="social-btn github" onclick="socialLogin('GitHub')">
                         <i class="fab fa-github"></i> GitHub
                     </button>
-                    <button class="social-btn google">
+                    <button class="social-btn google" onclick="socialLogin('Google')">
                         <i class="fab fa-google"></i> Google
                     </button>
                 </div>
 
                 <div class="signup-link">
-                    Don't have an account? <a href="#">Create one</a>
+                    Don't have an account? <a href="register.html">Create one</a>
                 </div>
             </div>
         </div>
 
-        <!-- RIGHT: Hero / Features -->
         <div class="hero-side">
             <div class="welcome-text">
                 <h2>Ready to <span>level up</span> your code?</h2>
@@ -703,6 +759,22 @@
     </div>
 
     <script>
+        let selectedRole = 'student';
+
+        function selectRole(role) {
+            selectedRole = role;
+            document.querySelectorAll('.role-option').forEach(el => {
+                el.classList.remove('active');
+            });
+            document.querySelector(`.role-option[data-role="${role}"]`).classList.add('active');
+            
+            const roleDisplay = document.getElementById('roleDisplay');
+            roleDisplay.textContent = role.charAt(0).toUpperCase() + role.slice(1);
+            
+            const btnText = document.querySelector('.btn-login .btn-text');
+            btnText.innerHTML = `Log in as <span id="roleDisplay">${role.charAt(0).toUpperCase() + role.slice(1)}</span>`;
+        }
+
         (function() {
             const form = document.getElementById('loginForm');
             const usernameInput = document.getElementById('username');
@@ -750,7 +822,7 @@
                 if (hasError) return;
 
                 loginBtn.classList.add('loading');
-                loginBtn.querySelector('.btn-text').textContent = 'Logging in';
+                loginBtn.querySelector('.btn-text').textContent = 'Logging in...';
                 loginBtn.querySelector('.fa-arrow-right').style.display = 'none';
 
                 setTimeout(() => {
@@ -759,11 +831,18 @@
                     loginBtn.querySelector('.fa-arrow-right').style.display = 'inline-block';
 
                     loginBtn.style.background = 'linear-gradient(135deg, #22c55e, #16a34a)';
-                    loginBtn.querySelector('.btn-text').textContent = '✓ Logged in!';
+                    loginBtn.querySelector('.btn-text').textContent = `✓ Welcome ${selectedRole}!`;
+
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('userRole', selectedRole);
+                    localStorage.setItem('username', username);
 
                     setTimeout(() => {
-                        loginBtn.style.background = '';
-                        loginBtn.querySelector('.btn-text').textContent = 'Log in';
+                        if (selectedRole === 'admin') {
+                            window.location.href = 'admin-dashboard.html';
+                        } else {
+                            window.location.href = 'student-dashboard.html';
+                        }
                     }, 1500);
 
                 }, 1800);
@@ -776,20 +855,52 @@
                 this.style.borderColor = '';
             });
 
-            document.querySelectorAll('.social-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const originalText = this.innerHTML;
-                    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connecting...';
-                    this.style.opacity = '0.7';
-                    this.style.pointerEvents = 'none';
+            window.socialLogin = function(provider) {
+                const btns = document.querySelectorAll('.social-btn');
+                btns.forEach(btn => {
+                    if (btn.textContent.includes(provider)) {
+                        const originalText = btn.innerHTML;
+                        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connecting...';
+                        btn.style.opacity = '0.7';
+                        btn.style.pointerEvents = 'none';
 
-                    setTimeout(() => {
-                        this.innerHTML = originalText;
-                        this.style.opacity = '1';
-                        this.style.pointerEvents = 'auto';
-                    }, 1200);
+                        setTimeout(() => {
+                            btn.innerHTML = originalText;
+                            btn.style.opacity = '1';
+                            btn.style.pointerEvents = 'auto';
+                            showToast(`✓ ${provider} authentication successful!`);
+                        }, 1200);
+                    }
                 });
-            });
+            };
+
+            function showToast(message) {
+                const toast = document.createElement('div');
+                toast.style.cssText = `
+                    position: fixed;
+                    bottom: 30px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: rgba(15, 23, 42, 0.95);
+                    backdrop-filter: blur(12px);
+                    padding: 12px 28px;
+                    border-radius: 12px;
+                    border: 1px solid rgba(255,255,255,0.06);
+                    color: #e8edf5;
+                    font-size: 0.9rem;
+                    z-index: 9999;
+                    animation: toastUp 0.4s ease;
+                    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+                    font-family: 'Inter', sans-serif;
+                `;
+                toast.textContent = message;
+                document.body.appendChild(toast);
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.transition = 'opacity 0.4s ease';
+                    setTimeout(() => toast.remove(), 400);
+                }, 3000);
+            }
 
             document.querySelectorAll('.form-options a, .signup-link a').forEach(link => {
                 link.addEventListener('click', function(e) {
@@ -800,31 +911,7 @@
                     }, 300);
 
                     const message = this.textContent.trim();
-                    const toast = document.createElement('div');
-                    toast.style.cssText = `
-                            position: fixed;
-                            bottom: 30px;
-                            left: 50%;
-                            transform: translateX(-50%);
-                            background: rgba(15, 23, 42, 0.95);
-                            backdrop-filter: blur(12px);
-                            padding: 12px 28px;
-                            border-radius: 12px;
-                            border: 1px solid rgba(255,255,255,0.06);
-                            color: #e8edf5;
-                            font-size: 0.9rem;
-                            z-index: 9999;
-                            animation: toastUp 0.4s ease;
-                            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-                            font-family: 'Inter', sans-serif;
-                        `;
-                    toast.textContent = `🔜 ${message} feature coming soon!`;
-                    document.body.appendChild(toast);
-                    setTimeout(() => {
-                        toast.style.opacity = '0';
-                        toast.style.transition = 'opacity 0.4s ease';
-                        setTimeout(() => toast.remove(), 400);
-                    }, 2500);
+                    showToast(`🔜 ${message} feature coming soon!`);
                 });
             });
         })();

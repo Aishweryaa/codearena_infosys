@@ -2,103 +2,1260 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Coding Workspace Arena | CodeArena</title>
-    <link rel="stylesheet" href="../css/variables.css">
-    <link rel="stylesheet" href="../css/common.css">
-    <link rel="stylesheet" href="../css/animations.css">
-    <link rel="stylesheet" href="../css/dashboard.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problem · CodeArena</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <style>
+        /* ===== RESET & VARIABLES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-main: #0a0e17;
+            --bg-surface: #111827;
+            --bg-surface-hover: #1e293b;
+            --bg-card: #141c2b;
+            --text-main: #e8edf5;
+            --text-muted: #8b9bb5;
+            --text-dim: #4a5a7a;
+            --text-inverse: #f0f4ff;
+            --border-color: rgba(255, 255, 255, 0.06);
+            --border-hover: rgba(255, 255, 255, 0.10);
+            --color-primary: #ff5e3a;
+            --color-primary-dim: rgba(255, 94, 58, 0.12);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+            --sidebar-width: 220px;
+            --success: #22c55e;
+            --success-dim: rgba(34, 197, 94, 0.12);
+            --warning: #f59e0b;
+            --warning-dim: rgba(245, 158, 11, 0.12);
+            --danger: #ef4444;
+            --danger-dim: rgba(239, 68, 68, 0.12);
+            --blue: #3b82f6;
+            --blue-dim: rgba(59, 130, 246, 0.12);
+            --purple: #8b5cf6;
+            --purple-dim: rgba(139, 92, 246, 0.12);
+        }
+
+        [data-theme="light"] {
+            --bg-main: #f1f5f9;
+            --bg-surface: #ffffff;
+            --bg-surface-hover: #e8edf5;
+            --bg-card: #f8fafc;
+            --text-main: #0b1b33;
+            --text-muted: #475569;
+            --text-dim: #94a3b8;
+            --text-inverse: #1e293b;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --border-hover: rgba(0, 0, 0, 0.12);
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-main); }
+        ::-webkit-scrollbar-thumb { background: var(--text-dim); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+        /* ===== SIDEBAR ===== */
+        .admin-sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: var(--bg-surface);
+            border-right: 1px solid var(--border-color);
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease, border-color 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0 8px 20px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        .sidebar-brand .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--color-primary), #e0452a);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .sidebar-brand .brand-text {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.3px;
+        }
+
+        .sidebar-brand .brand-text span { color: var(--color-primary); }
+
+        .sidebar-menu {
+            list-style: none;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            padding: 0 4px;
+        }
+
+        .sidebar-menu li a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.85rem;
+            border-radius: var(--radius-sm);
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .sidebar-menu li a i { width: 18px; text-align: center; font-size: 0.95rem; flex-shrink: 0; }
+        .sidebar-menu li a .menu-label { flex: 1; }
+        .sidebar-menu li a .menu-badge {
+            background: var(--color-primary-dim);
+            color: var(--color-primary);
+            font-size: 0.6rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 20px;
+        }
+        .sidebar-menu li:hover a { color: #ffffff; background: var(--bg-surface-hover); }
+        .sidebar-menu li.active a {
+            color: var(--color-primary);
+            background: var(--color-primary-dim);
+            font-weight: 600;
+        }
+        .sidebar-menu li.active a::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 20px;
+            background: var(--color-primary);
+            border-radius: 0 4px 4px 0;
+        }
+        .sidebar-menu .divider { height: 1px; background: var(--border-color); margin: 8px 8px; }
+        .sidebar-menu .logout-item { margin-top: auto; border-top: 1px solid var(--border-color); padding-top: 12px; }
+        .sidebar-menu .logout-item a { color: var(--text-muted); }
+        .sidebar-menu .logout-item a:hover { color: var(--danger); background: var(--danger-dim); }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            padding: 24px 32px 40px;
+            min-height: 100vh;
+            transition: background 0.3s ease;
+            max-width: 100%;
+        }
+
+        /* ===== TOP NAV BAR ===== */
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 0 20px 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .top-bar .page-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .top-bar .page-title i { color: var(--color-primary); }
+        .top-bar .page-title span { color: var(--text-muted); font-weight: 400; font-size: 0.85rem; }
+        .top-bar .user-actions { display: flex; align-items: center; gap: 12px; }
+
+        /* ===== THEME TOGGLE ===== */
+        .theme-toggle-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            width: 38px;
+            height: 38px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            color: var(--text-inverse);
+            flex-shrink: 0;
+        }
+        .theme-toggle-btn:hover { border-color: var(--color-primary); transform: rotate(20deg); }
+        [data-theme="light"] .theme-toggle-btn { color: #f59e0b; }
+        [data-theme="dark"] .theme-toggle-btn { color: #94a3b8; }
+
+        .top-bar .user-actions .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 4px 14px 4px 4px;
+            border-radius: var(--radius-md);
+            transition: background 0.2s ease;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+        }
+        .top-bar .user-actions .user-profile:hover { background: var(--bg-surface-hover); }
+        .top-bar .user-actions .user-profile .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--color-primary), #e0452a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: #fff;
+            flex-shrink: 0;
+        }
+        .top-bar .user-actions .user-profile .user-name { font-size: 0.85rem; font-weight: 600; color: var(--text-main); }
+        .top-bar .user-actions .user-profile i { color: var(--text-dim); font-size: 0.75rem; }
+
+        /* ===== IDE CONTAINER ===== */
+        .ide-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 4px;
+            align-items: start;
+        }
+
+        /* ===== LEFT PANEL ===== */
+        .ide-panel-left {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 28px 30px;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .ide-panel-left:hover { border-color: var(--border-hover); }
+
+        .ide-panel-left .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: color 0.2s ease;
+            cursor: pointer;
+            padding: 4px 0;
+            width: fit-content;
+        }
+        .ide-panel-left .back-link:hover { color: var(--color-primary); }
+        .ide-panel-left .back-link i { font-size: 0.7rem; }
+
+        .ide-panel-left .problem-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .ide-panel-left .problem-header .problem-id {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            font-weight: 500;
+            background: var(--bg-main);
+            padding: 2px 10px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+        .ide-panel-left .problem-header h1 { font-size: 1.3rem; font-weight: 700; color: var(--text-main); }
+
+        .ide-panel-left .badge {
+            padding: 3px 14px;
+            border-radius: 20px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            display: inline-block;
+            border: 1px solid transparent;
+        }
+        .badge-success { background: var(--success-dim); color: var(--success); border-color: rgba(34, 197, 94, 0.15); }
+        .badge-warning { background: var(--warning-dim); color: var(--warning); border-color: rgba(245, 158, 11, 0.15); }
+        .badge-danger { background: var(--danger-dim); color: var(--danger); border-color: rgba(239, 68, 68, 0.15); }
+
+        .ide-panel-left .topic-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+        .ide-panel-left .topic-tags .tag {
+            padding: 3px 12px;
+            border-radius: 12px;
+            font-size: 0.6rem;
+            font-weight: 500;
+            border: 1px solid transparent;
+        }
+        .tag-array { background: var(--blue-dim); color: var(--blue); border-color: rgba(59, 130, 246, 0.15); }
+        .tag-hash { background: var(--purple-dim); color: var(--purple); border-color: rgba(139, 92, 246, 0.15); }
+
+        .ide-panel-left .problem-description {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+        .ide-panel-left .problem-description code {
+            background: rgba(255, 255, 255, 0.06);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            color: var(--text-main);
+            font-family: 'Courier New', monospace;
+        }
+
+        .ide-panel-left .examples-section { display: flex; flex-direction: column; gap: 10px; }
+        .ide-panel-left .example-box {
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 14px 18px;
+        }
+        .ide-panel-left .example-box .example-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+        .ide-panel-left .example-box pre {
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            line-height: 1.7;
+            white-space: pre-wrap;
+            word-break: break-all;
+            margin: 0;
+        }
+        .ide-panel-left .example-box pre .highlight { color: var(--color-primary); }
+
+        .ide-panel-left .problem-meta {
+            display: flex;
+            gap: 20px;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            padding-top: 14px;
+            border-top: 1px solid var(--border-color);
+            flex-wrap: wrap;
+        }
+        .ide-panel-left .problem-meta span { display: flex; align-items: center; gap: 6px; }
+        .ide-panel-left .problem-meta i { color: var(--text-muted); font-size: 0.75rem; }
+
+        /* ===== RIGHT PANEL ===== */
+        .ide-panel-right { display: flex; flex-direction: column; gap: 16px; }
+
+        .code-editor-wrapper {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .code-editor-wrapper:hover { border-color: var(--border-hover); }
+
+        .editor-header-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .editor-header-bar .editor-actions { display: flex; align-items: center; gap: 10px; }
+        .editor-header-bar select {
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+            font-weight: 500;
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+        .editor-header-bar select:hover { border-color: var(--color-primary); }
+        .editor-header-bar select option { background: var(--bg-surface); color: var(--text-main); }
+        .editor-header-bar .editor-status {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .editor-header-bar .editor-status .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--success);
+            display: inline-block;
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+        @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+        .code-editor-body {
+            padding: 20px 24px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: var(--text-main);
+            min-height: 280px;
+            background: var(--bg-main);
+            overflow-x: auto;
+            display: flex;
+        }
+        .code-editor-body .line-numbers {
+            color: var(--text-dim);
+            user-select: none;
+            padding-right: 16px;
+            display: inline-block;
+            text-align: right;
+            min-width: 24px;
+            border-right: 1px solid var(--border-color);
+            margin-right: 16px;
+        }
+        .code-editor-body .code-content { display: inline-block; white-space: pre; flex: 1; }
+        .code-editor-body .keyword { color: #ff79c6; }
+        .code-editor-body .function { color: #50fa7b; }
+        .code-editor-body .type { color: #8be9fd; }
+        .code-editor-body .comment { color: #6272a4; }
+        .code-editor-body .string { color: #f1fa8c; }
+        .code-editor-body .return { color: #ff79c6; }
+
+        /* ===== TEST CONSOLE ===== */
+        .test-console {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 16px 20px;
+            transition: all 0.3s ease;
+        }
+        .test-console:hover { border-color: var(--border-hover); }
+
+        .test-console .console-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .test-console .console-header h4 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .test-console .console-header h4 i { color: var(--color-primary); }
+        .test-console .console-header span { font-size: 0.7rem; color: var(--text-dim); }
+
+        .test-console textarea {
+            width: 100%;
+            height: 70px;
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 10px 14px;
+            color: var(--text-main);
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            resize: vertical;
+            outline: none;
+            transition: border-color 0.3s ease;
+            min-height: 60px;
+        }
+        .test-console textarea:focus { border-color: var(--color-primary); }
+        .test-console textarea::placeholder { color: var(--text-dim); }
+
+        /* ===== TEST RESULTS ===== */
+        .test-results {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 16px 20px;
+            transition: all 0.3s ease;
+            display: none;
+        }
+        .test-results.visible { display: block; }
+        .test-results:hover { border-color: var(--border-hover); }
+
+        .test-results .results-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        .test-results .results-header h4 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .test-results .results-header h4 i { color: var(--color-primary); }
+        .test-results .results-header .results-summary {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+        .results-summary.passed { background: var(--success-dim); color: var(--success); }
+        .results-summary.failed { background: var(--danger-dim); color: var(--danger); }
+        .results-summary.partial { background: var(--warning-dim); color: var(--warning); }
+
+        .test-results .test-case-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
+            border-bottom: 1px solid var(--border-color);
+            transition: background 0.2s ease;
+        }
+        .test-results .test-case-item:last-child { border-bottom: none; }
+        .test-results .test-case-item:hover { background: var(--bg-surface-hover); }
+
+        .test-results .test-case-item .tc-left { display: flex; align-items: center; gap: 10px; }
+        .test-results .test-case-item .tc-left .tc-status {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            font-weight: 700;
+        }
+        .tc-status.pass { background: var(--success-dim); color: var(--success); }
+        .tc-status.fail { background: var(--danger-dim); color: var(--danger); }
+
+        .test-results .test-case-item .tc-left .tc-label {
+            font-size: 0.85rem;
+            color: var(--text-main);
+            font-weight: 500;
+        }
+        .test-results .test-case-item .tc-left .tc-detail {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            margin-left: 4px;
+        }
+        .test-results .test-case-item .tc-time {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+        }
+
+        .test-results .test-case-item .tc-expected,
+        .test-results .test-case-item .tc-actual {
+            font-family: 'Courier New', monospace;
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        .test-results .test-case-item .tc-expected { background: var(--success-dim); color: var(--success); }
+        .test-results .test-case-item .tc-actual.fail { background: var(--danger-dim); color: var(--danger); }
+        .test-results .test-case-item .tc-actual.pass { background: var(--success-dim); color: var(--success); }
+
+        /* ===== ACTION BAR ===== */
+        .action-bar {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            background: var(--bg-surface);
+            padding: 16px 20px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            flex-wrap: wrap;
+        }
+        .action-bar .btn-action {
+            padding: 10px 24px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+            font-family: 'Inter', sans-serif;
+        }
+        .action-bar .btn-action-secondary {
+            background: var(--bg-surface-hover);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+        }
+        .action-bar .btn-action-secondary:hover {
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+            transform: translateY(-2px);
+        }
+        .action-bar .btn-action-primary {
+            background: var(--color-primary);
+            color: #ffffff;
+        }
+        .action-bar .btn-action-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(255, 94, 58, 0.3);
+            opacity: 0.92;
+        }
+        .action-bar .btn-action-success {
+            background: var(--success);
+            color: #ffffff;
+        }
+        .action-bar .btn-action-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(34, 197, 94, 0.3);
+            opacity: 0.92;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) { .ide-container { grid-template-columns: 1fr; } }
+
+        @media (max-width: 768px) {
+            .admin-sidebar { transform: translateX(-100%); width: 280px; }
+            .admin-sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; padding: 16px; }
+            .top-bar { flex-direction: column; align-items: stretch; gap: 12px; }
+            .top-bar .user-actions { flex-wrap: wrap; }
+            .ide-panel-left { padding: 18px 16px; }
+            .ide-panel-left .problem-header h1 { font-size: 1.1rem; }
+            .code-editor-body { font-size: 0.75rem; padding: 14px 16px; min-height: 180px; }
+            .action-bar { flex-direction: column; }
+            .action-bar .btn-action { width: 100%; justify-content: center; }
+            .mobile-toggle { display: flex !important; }
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.6);
+                z-index: 99;
+                backdrop-filter: blur(4px);
+            }
+            .sidebar-overlay.active { display: block; }
+        }
+
+        @media (max-width: 480px) {
+            .main-content { padding: 12px; }
+            .ide-panel-left { padding: 14px 12px; }
+            .ide-panel-left .problem-header h1 { font-size: 1rem; }
+            .code-editor-body { font-size: 0.7rem; padding: 10px 12px; min-height: 140px; }
+            .editor-header-bar { flex-direction: column; align-items: stretch; gap: 6px; }
+            .editor-header-bar .editor-actions { flex-wrap: wrap; }
+            .editor-header-bar select { width: 100%; }
+            .test-console textarea { height: 50px; font-size: 0.75rem; }
+            .action-bar { padding: 12px 14px; }
+            .test-results .test-case-item { flex-direction: column; align-items: flex-start; gap: 4px; }
+        }
+
+        .mobile-toggle {
+            display: none;
+            position: fixed;
+            top: 14px;
+            left: 14px;
+            z-index: 200;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            color: #ffffff;
+            padding: 8px 12px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .mobile-toggle:hover { border-color: var(--color-primary); }
+
+        .custom-toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            padding: 12px 24px;
+            border-radius: var(--radius-md);
+            color: var(--text-main);
+            font-size: 0.9rem;
+            z-index: 9999;
+            animation: slideUp 0.4s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            font-family: 'Inter', sans-serif;
+            backdrop-filter: blur(12px);
+            max-width: 90%;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
 <body>
-    <div class="admin-container">
-        <!-- Student Module Navigation Sidebar -->
-        <aside class="admin-sidebar">
-            <div class="sidebar-brand">CodeArena<span>.</span></div>
-            <ul class="sidebar-menu">
-                <li><a href="dashboard.html">Dashboard</a></li>
-                <li class="active"><a href="problems.html">Problems</a></li>
-                <li><a href="submissions.html">My Submissions</a></li>
-                <li><a href="leaderboard.html">Leaderboard</a></li>
-                <li><a href="profile.html">Profile</a></li>
-                <li style="margin-top: auto;"><a href="../login.html" style="color: var(--danger);">Logout</a></li>
-            </ul>
-        </aside>
+<aside class="admin-sidebar">
+    <div class="sidebar-brand">
+        <div class="logo-icon"><i class="fas fa-code"></i></div>
+        <div class="brand-text">Code<span>Arena</span></div>
+    </div>
+    <ul class="sidebar-menu">
+        <li>
+            <a href="dashboard.html">
+                <i class="fas fa-th-large"></i>
+                <span class="menu-label">Dashboard</span>
+            </a>
+        </li>
+        <!-- Other items -->
+    </ul>
+</aside>
+    <!-- ===== MOBILE TOGGLE ===== -->
+    <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle sidebar">
+        <i class="fas fa-bars"></i>
+    </button>
 
-        <!-- Main Workspace Viewport -->
-        <main class="main-content animate-fade-up" style="max-width: 100%;">
-            <!-- Split IDE Development Interface Core -->
-            <div class="ide-container">
-                
-                <!-- Left Narrative Pane Panel Details -->
-                <div class="ide-panel-left">
-                    <span class="badge badge-success" style="margin-bottom: 12px; display: inline-block;">Easy</span>
-                    <h1 style="font-size: 1.5rem; margin-bottom: 16px;">101. Two Sum Problem Engine</h1>
-                    
-                    <p style="font-size: 0.95rem; line-height: 1.6; margin-bottom: 16px; color: #cbd5e1;">
-                        Given an array of integers <code style="background: rgba(255,255,255,0.08); padding: 2px 6px; border-radius: 4px;">nums</code> and an integer <code style="background: rgba(255,255,255,0.08); padding: 2px 6px; border-radius: 4px;">target</code>, return indices of the two numbers such that they add up to <code style="background: rgba(255,255,255,0.08); padding: 2px 6px; border-radius: 4px;">target</code>.
-                    </p>
-                    
-                    <h3 style="font-size: 0.95rem; font-weight:600; margin-bottom: 8px;">Example Mockup Input Matrix:</h3>
-                    <pre style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); padding: 12px; border-radius: var(--radius-md); font-family: monospace; font-size: 0.85rem; color: var(--text-muted); line-height:1.4;">
-Input: nums =, target = 9
-Output: [0, 1]
-Explanation: Because nums[0] + nums[1] == 9, we return [0, 1].</pre>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="admin-sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <div class="logo-icon"><i class="fas fa-code"></i></div>
+            <div class="brand-text">Code<span>Arena</span></div>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="dashboard.html"><i class="fas fa-th-large"></i><span class="menu-label">Dashboard</span></a></li>
+            <li class="active"><a href="problems.html"><i class="fas fa-code"></i><span class="menu-label">Problems</span><span class="menu-badge">120</span></a></li>
+            <li><a href="submissions.html"><i class="fas fa-paper-plane"></i><span class="menu-label">My Submissions</span></a></li>
+            <li><a href="leaderboard.html"><i class="fas fa-trophy"></i><span class="menu-label">Leaderboard</span></a></li>
+            <li><a href="profile.html"><i class="fas fa-user"></i><span class="menu-label">Profile</span></a></li>
+            <li><a href="bookmarks.html"><i class="fas fa-bookmark"></i><span class="menu-label">Bookmarks</span><span class="menu-badge">4</span></a></li>
+            <li><a href="study-plan.html"><i class="fas fa-road"></i><span class="menu-label">Study Plan</span></a></li>
+            <li class="divider"></li>
+            <li class="logout-item"><a href="../login.html"><i class="fas fa-sign-out-alt"></i><span class="menu-label">Logout</span></a></li>
+        </ul>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main-content">
+
+        <!-- ===== TOP BAR ===== -->
+        <div class="top-bar">
+            <div class="page-title">
+                <i class="fas fa-code"></i>
+                Problem
+                <span id="problemTitleDisplay">/ Two Sum</span>
+            </div>
+            <div class="user-actions">
+                <button class="theme-toggle-btn" id="themeToggle" aria-label="Toggle theme">🌙</button>
+                <div class="user-profile">
+                    <div class="avatar">A</div>
+                    <span class="user-name">alex_coder</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== IDE CONTAINER ===== -->
+        <div class="ide-container">
+
+            <!-- ===== LEFT PANEL ===== -->
+            <div class="ide-panel-left">
+                <a href="problems.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Problems</a>
+
+                <div class="problem-header">
+                    <span class="problem-id" id="problemId">#101</span>
+                    <h1 id="problemTitle">Two Sum</h1>
+                    <span class="badge badge-success" id="problemDifficulty">Easy</span>
                 </div>
 
-                <!-- Right Code Editor Workspace Layout Panel Container -->
-                <div class="ide-panel-right">
-                    <div class="code-editor-mock">
-                        <!-- Upgraded Language Selection Dropdown Banner -->
-                        <div class="editor-header-bar">
-                            <select id="editor-lang-select" style="background: var(--bg-main); border: 1px solid var(--border-color); color: var(--text-main); padding: 6px 12px; border-radius: 4px; font-weight: 500; font-family: var(--font-main); outline: none; cursor: pointer;">
-                                <option value="java-17">Java (OpenJDK 17)</option>
-                                <option value="java-21">Java (OpenJDK 21)</option>
-                                <option value="python">Python (3.10)</option>
-                                <option value="cpp">C++ (GCC 20)</option>
-                                <option value="c">C Language</option>
-                                <option value="csharp">C# (.NET 8)</option>
+                <div class="topic-tags">
+                    <span class="tag tag-array">Arrays</span>
+                    <span class="tag tag-hash">Hash Table</span>
+                </div>
+
+                <div class="problem-description">
+                    Given an array of integers <code>nums</code> and an integer <code>target</code>, return <strong>indices</strong> of the two numbers such that they add up to <code>target</code>.
+                    <br><br>
+                    You may assume that each input would have <strong>exactly one solution</strong>, and you may not use the same element twice. You can return the answer in any order.
+                </div>
+
+                <div class="examples-section">
+                    <div class="example-box">
+                        <div class="example-title">📌 Example 1:</div>
+                        <pre>Input: nums = <span class="highlight">[2, 7, 11, 15]</span>, target = <span class="highlight">9</span>
+Output: <span class="highlight">[0, 1]</span>
+Explanation: Because nums[0] + nums[1] == 9, we return [0, 1].</pre>
+                    </div>
+                    <div class="example-box">
+                        <div class="example-title">📌 Example 2:</div>
+                        <pre>Input: nums = <span class="highlight">[3, 2, 4]</span>, target = <span class="highlight">6</span>
+Output: <span class="highlight">[1, 2]</span></pre>
+                    </div>
+                    <div class="example-box">
+                        <div class="example-title">📌 Example 3:</div>
+                        <pre>Input: nums = <span class="highlight">[3, 3]</span>, target = <span class="highlight">6</span>
+Output: <span class="highlight">[0, 1]</span></pre>
+                    </div>
+                </div>
+
+                <div class="problem-meta">
+                    <span><i class="far fa-clock"></i> 15 min</span>
+                    <span><i class="far fa-check-circle"></i> 78.4% acceptance</span>
+                    <span><i class="far fa-bookmark"></i> 1.2k solutions</span>
+                </div>
+            </div>
+
+            <!-- ===== RIGHT PANEL ===== -->
+            <div class="ide-panel-right">
+
+                <!-- ===== CODE EDITOR ===== -->
+                <div class="code-editor-wrapper">
+                    <div class="editor-header-bar">
+                        <div class="editor-actions">
+                            <select id="editor-lang-select">
+                                <option value="python" selected>Python 3.10</option>
+                                <option value="java-17">Java 17</option>
+                                <option value="java-21">Java 21</option>
+                                <option value="cpp">C++ 20</option>
+                                <option value="c">C</option>
+                                <option value="csharp">C# .NET 8</option>
+                                <option value="typescript">TypeScript</option>
+                                <option value="go">Go</option>
+                                <option value="rust">Rust</option>
                                 <option value="mysql">MySQL</option>
                                 <option value="postgresql">PostgreSQL</option>
-                                <option value="typescript">TypeScript</option>
-                                <option value="go">Go Lang</option>
-                                <option value="rust">Rust</option>
                             </select>
-                            <span style="font-size: 0.8rem; color: var(--text-muted);">Workspace Auto-Saved</span>
                         </div>
-                        
-                        <div style="font-size: 0.9rem; line-height: 1.6; color: #e2e8f0; font-family: monospace;">
-                            <p><span style="color: #ff79c6;">class</span> <span style="color: #50fa7b;">Solution</span> {</p>
-                            <p>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #ff79c6;">public</span> <span style="color: #8be9fd;">int</span>[] <span style="color: #50fa7b;">twoSum</span>(<span style="color: #8be9fd;">int</span>[] nums, <span style="color: #8be9fd;">int</span> target) {</p>
-                            <p style="background: rgba(99,102,241,0.1);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6272a4;">// Write your implementation log here...</span></p>
-                            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #ff79c6;">return</span> <span style="color: #ff79c6;">new</span> <span style="color: #8be9fd;">int</span>[] {};</p>
-                            <p>&nbsp;&nbsp;&nbsp;&nbsp;}</p>
-                            <p>}</p>
+                        <div class="editor-status">
+                            <span class="dot"></span>
+                            Auto-saved
                         </div>
                     </div>
-
-                    <!-- Expandable Client Console Diagnostic Panel Workbench -->
-                    <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 20px;">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                            <h4 style="font-size:0.9rem; font-weight:700; color:var(--text-main);">Custom Local Test Parameters Console</h4>
-                            <span style="font-size:0.75rem; color:var(--text-muted);">Provide data layers for testing</span>
-                        </div>
-                        <textarea id="custom-console-input" style="width: 100%; height: 80px; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 12px; color: var(--text-main); font-family: monospace; font-size: 0.9rem; resize: none; outline: none;" placeholder="Type custom input values here... (e.g. nums =, target = 9)"></textarea>
-                    </div>
-
-                    <!-- Sandbox Workspace Actions Footers Bar -->
-                    <div style="display: flex; justify-content: flex-end; gap: 12px; background: var(--bg-surface); padding: 16px; border: 1px solid var(--border-color); border-radius: var(--radius-lg);">
-                        <button class="btn btn-secondary">Run Local Tests</button>
-                        <a href="result.html" class="btn btn-primary" style="background: var(--success);">Submit Architecture</a>
+                    <div class="code-editor-body">
+                        <span class="line-numbers" id="lineNumbers">1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9</span>
+                        <span class="code-content" id="codeContent"><span class="keyword">class</span> <span class="function">Solution</span>:
+    <span class="keyword">def</span> <span class="function">twoSum</span>(<span class="type">self</span>, nums: <span class="type">List[int]</span>, target: <span class="type">int</span>) <span class="keyword">-></span> <span class="type">List[int]</span>:
+        <span class="comment"># Write your implementation here</span>
+        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(<span class="function">len</span>(nums)):
+            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="function">range</span>(i + 1, <span class="function">len</span>(nums)):
+                <span class="keyword">if</span> nums[i] + nums[j] == target:
+                    <span class="keyword">return</span> [i, j]
+        <span class="keyword">return</span> []</span>
                     </div>
                 </div>
 
+                <!-- ===== TEST CONSOLE ===== -->
+                <div class="test-console">
+                    <div class="console-header">
+                        <h4><i class="fas fa-terminal"></i> Test Console</h4>
+                        <span>Custom test cases</span>
+                    </div>
+                    <textarea id="customConsoleInput" placeholder="Type custom input values here...&#10;Example: nums = [2,7,11,15], target = 9"></textarea>
+                </div>
+
+                <!-- ===== TEST RESULTS ===== -->
+                <div class="test-results" id="testResults">
+                    <div class="results-header">
+                        <h4><i class="fas fa-flask"></i> Test Results</h4>
+                        <span class="results-summary" id="resultsSummary">0/0 passed</span>
+                    </div>
+                    <div id="testCasesList"></div>
+                </div>
+
+                <!-- ===== ACTION BAR ===== -->
+                <div class="action-bar">
+                    <button class="btn-action btn-action-secondary" onclick="runTests()">
+                        <i class="fas fa-play"></i> Run Tests
+                    </button>
+                    <button class="btn-action btn-action-primary" onclick="submitSolution()">
+                        <i class="fas fa-paper-plane"></i> Submit
+                    </button>
+                    <button class="btn-action btn-action-success" onclick="submitAndVerify()">
+                        <i class="fas fa-check-circle"></i> Submit & Verify
+                    </button>
+                </div>
             </div>
-        </main>
-    </div>
-    
-    <!-- Core Client Scripts System Configuration -->
-    <script src="../js/config.js"></script>
-    <script src="../js/utils.js"></script>
-    <script src="../js/api.js"></script>
-    <script src="../js/auth.js"></script>
+        </div>
+    </main>
+
+    <script>
+        // ===== MOBILE SIDEBAR =====
+        const mobileToggle = document.getElementById('mobileToggle');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+            const icon = mobileToggle.querySelector('i');
+            icon.className = sidebar.classList.contains('open') ? 'fas fa-times' : 'fas fa-bars';
+        }
+
+        mobileToggle.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+
+        document.querySelectorAll('.sidebar-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    sidebar.classList.remove('open');
+                    overlay.classList.remove('active');
+                    mobileToggle.querySelector('i').className = 'fas fa-bars';
+                }
+            });
+        });
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
+                mobileToggle.querySelector('i').className = 'fas fa-bars';
+            }
+        });
+
+        // ===== THEME TOGGLE =====
+        const themeToggle = document.getElementById('themeToggle');
+        let currentTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        themeToggle.textContent = currentTheme === 'dark' ? '🌙' : '☀️';
+
+        themeToggle.addEventListener('click', function() {
+            const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            themeToggle.textContent = newTheme === 'dark' ? '🌙' : '☀️';
+        });
+
+        // ===== GET PROBLEM ID FROM URL =====
+        function getProblemId() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('id') || '1';
+        }
+
+        // ===== PROBLEM DATA =====
+        const problemData = {
+            1: { id: '#101', title: 'Two Sum', difficulty: 'Easy', badge: 'badge-success' },
+            2: { id: '#102', title: 'Matrix Shortest Path', difficulty: 'Hard', badge: 'badge-danger' },
+            3: { id: '#103', title: 'LRU Cache Design', difficulty: 'Medium', badge: 'badge-warning' },
+            4: { id: '#104', title: 'Binary Tree Level Order', difficulty: 'Medium', badge: 'badge-warning' },
+            5: { id: '#105', title: 'Valid Parentheses', difficulty: 'Easy', badge: 'badge-success' }
+        };
+
+        // ===== LOAD PROBLEM DATA =====
+        function loadProblem() {
+            const id = getProblemId();
+            const data = problemData[id] || problemData[1];
+
+            document.getElementById('problemId').textContent = data.id;
+            document.getElementById('problemTitle').textContent = data.title;
+            document.getElementById('problemTitleDisplay').textContent = `/ ${data.title}`;
+
+            const badge = document.getElementById('problemDifficulty');
+            badge.textContent = data.difficulty;
+            badge.className = `badge ${data.badge}`;
+        }
+        loadProblem();
+
+        // ===== TWO SUM SOLUTION (for validation) =====
+        function twoSum(nums, target) {
+            const map = {};
+            for (let i = 0; i < nums.length; i++) {
+                const complement = target - nums[i];
+                if (complement in map) {
+                    return [map[complement], i];
+                }
+                map[nums[i]] = i;
+            }
+            return [];
+        }
+
+        // ===== PARSE INPUT =====
+        function parseInput(inputText) {
+            try {
+                // Remove any whitespace and split
+                const parts = inputText.split(',');
+                let nums = [];
+                let target = null;
+                
+                for (let part of parts) {
+                    part = part.trim();
+                    if (part.includes('nums')) {
+                        const match = part.match(/\[(.*)\]/);
+                        if (match) {
+                            nums = match[1].split(',').map(x => parseInt(x.trim()));
+                        }
+                    } else if (part.includes('target')) {
+                        const match = part.match(/[\d-]+/);
+                        if (match) {
+                            target = parseInt(match[0]);
+                        }
+                    }
+                }
+                
+                // If parsing failed, try direct array parsing
+                if (nums.length === 0 && inputText.includes('[')) {
+                    const bracketMatch = inputText.match(/\[([^\]]*)\]/);
+                    if (bracketMatch) {
+                        nums = bracketMatch[1].split(',').map(x => parseInt(x.trim()));
+                    }
+                    const targetMatch = inputText.match(/target\s*=\s*(\d+)/);
+                    if (targetMatch) {
+                        target = parseInt(targetMatch[1]);
+                    }
+                }
+                
+                return { nums, target };
+            } catch (e) {
+                return { nums: [], target: null };
+            }
+        }
+
+        // ===== PRE-DEFINED TEST CASES =====
+        const predefinedTests = [
+            { nums: [2, 7, 11, 15], target: 9, expected: [0, 1] },
+            { nums: [3, 2, 4], target: 6, expected: [1, 2] },
+            { nums: [3, 3], target: 6, expected: [0, 1] },
+            { nums: [1, 2, 3, 4], target: 5, expected: [1, 2] },
+            { nums: [-1, -2, -3, -4], target: -5, expected: [1, 2] },
+        ];
+
+        // ===== RUN TESTS =====
+        function runTests() {
+            const consoleInput = document.getElementById('customConsoleInput').value.trim();
+            const resultsDiv = document.getElementById('testResults');
+            const testCasesList = document.getElementById('testCasesList');
+            const resultsSummary = document.getElementById('resultsSummary');
+            
+            // Clear previous results
+            testCasesList.innerHTML = '';
+            
+            let testCases = [];
+            
+            // Check if user provided custom input
+            if (consoleInput) {
+                const parsed = parseInput(consoleInput);
+                if (parsed.nums.length > 0 && parsed.target !== null) {
+                    const expected = twoSum(parsed.nums, parsed.target);
+                    testCases.push({ 
+                        nums: parsed.nums, 
+                        target: parsed.target, 
+                        expected: expected,
+                        isCustom: true 
+                    });
+                } else {
+                    showToast('⚠️ Invalid input format. Use: nums = [1,2,3], target = 4', 'warning');
+                    return;
+                }
+            } else {
+                // Use predefined test cases
+                testCases = predefinedTests.map(tc => ({ ...tc, isCustom: false }));
+            }
+            
+            // Run each test case
+            let passed = 0;
+            let total = testCases.length;
+            
+            testCases.forEach((tc, index) => {
+                const result = twoSum(tc.nums, tc.target);
+                const isPass = JSON.stringify(result) === JSON.stringify(tc.expected);
+                if (isPass) passed++;
+                
+                // Create test case item
+                const item = document.createElement('div');
+                item.className = 'test-case-item';
+                item.innerHTML = `
+                    <div class="tc-left">
+                        <span class="tc-status ${isPass ? 'pass' : 'fail'}">
+                            <i class="fas ${isPass ? 'fa-check' : 'fa-times'}"></i>
+                        </span>
+                        <span class="tc-label">Test #${index + 1}</span>
+                        <span class="tc-detail">nums = [${tc.nums.join(', ')}], target = ${tc.target}</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                        <span class="tc-expected">Expected: [${tc.expected.join(', ')}]</span>
+                        <span class="tc-actual ${isPass ? 'pass' : 'fail'}">Output: [${result.join(', ')}]</span>
+                        ${tc.isCustom ? '<span style="font-size:0.6rem; color:var(--text-dim);">custom</span>' : ''}
+                        <span class="tc-time">${isPass ? '✅' : '❌'}</span>
+                    </div>
+                `;
+                testCasesList.appendChild(item);
+            });
+            
+            // Update summary
+            resultsDiv.classList.add('visible');
+            const allPassed = passed === total;
+            const summaryClass = allPassed ? 'passed' : (passed > 0 ? 'partial' : 'failed');
+            const summaryText = allPassed ? '✅ All passed!' : `${passed}/${total} passed`;
+            resultsSummary.className = `results-summary ${summaryClass}`;
+            resultsSummary.textContent = summaryText;
+            
+            // Scroll to results
+            resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            
+            // Toast notification
+            if (allPassed) {
+                showToast('🎉 All test cases passed!', 'success');
+            } else if (passed > 0) {
+                showToast(`⚠️ ${passed}/${total} test cases passed`, 'warning');
+            } else {
+                showToast('❌ All test cases failed. Try again!', 'error');
+            }
+        }
+
+        // ===== SUBMIT SOLUTION =====
+        function submitSolution() {
+            const resultsDiv = document.getElementById('testResults');
+            const testCasesList = document.getElementById('testCasesList');
+            const resultsSummary = document.getElementById('resultsSummary');
+            
+            // Check if tests were run
+            if (!resultsDiv.classList.contains('visible')) {
+                showToast('⚠️ Please run tests before submitting', 'warning');
+                return;
+            }
+            
+            // Check if all tests passed
+            const summaryText = resultsSummary.textContent;
+            if (!summaryText.includes('All passed')) {
+                showToast('⚠️ Please fix failing test cases before submitting', 'warning');
+                return;
+            }
+            
+            showToast('📤 Submitting solution...', 'info');
+            
+            // Simulate submission
+            setTimeout(() => {
+                const submitBtn = document.querySelector('.btn-action-primary');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+                submitBtn.disabled = true;
+                
+                setTimeout(() => {
+                    submitBtn.innerHTML = '✅ Submitted!';
+                    submitBtn.style.background = 'var(--success)';
+                    showToast('✅ Solution submitted successfully!', 'success');
+                    
+                    setTimeout(() => {
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.style.background = '';
+                        submitBtn.disabled = false;
+                    }, 2000);
+                }, 1500);
+            }, 500);
+        }
+
+        // ===== SUBMIT & VERIFY =====
+        function submitAndVerify() {
+            // First run tests
+            runTests();
+            
+            // Then submit after a delay
+            setTimeout(() => {
+                submitSolution();
+            }, 1000);
+        }
+
+        // ===== TOAST NOTIFICATION =====
+        function showToast(message, type = 'info') {
+            const existing = document.querySelector('.custom-toast');
+            if (existing) existing.remove();
+
+            const colors = {
+                success: '#22c55e',
+                error: '#ef4444',
+                warning: '#f59e0b',
+                info: '#ff5e3a'
+            };
+            
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-times-circle',
+                warning: 'fa-exclamation-triangle',
+                info: 'fa-info-circle'
+            };
+
+            const toast = document.createElement('div');
+            toast.className = 'custom-toast';
+            toast.innerHTML = `<i class="fas ${icons[type]}" style="color:${colors[type]}; margin-right:8px;"></i> ${message}`;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.4s ease';
+                setTimeout(() => toast.remove(), 400);
+            }, 3000);
+        }
+
+        // ===== LANGUAGE SELECTOR =====
+        document.getElementById('editor-lang-select').addEventListener('change', function() {
+            showToast(`🔄 Switched to ${this.options[this.selectedIndex].text}`, 'info');
+        });
+
+        // ===== AUTO-RUN TESTS ON ENTER =====
+        document.getElementById('customConsoleInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                runTests();
+            }
+        });
+
+        // ===== QUICK INPUT TEMPLATES =====
+        // Show hint on focus
+        document.getElementById('customConsoleInput').addEventListener('focus', function() {
+            if (this.value === '') {
+                this.placeholder = 'Format: nums = [2,7,11,15], target = 9';
+            }
+        });
+    </script>
 </body>
 </html>
