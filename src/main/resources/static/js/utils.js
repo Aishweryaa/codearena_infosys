@@ -1,137 +1,279 @@
 /**
- * CodeArena Reusable Global Frontend Utilities
+ * ==========================================================
+ * CodeArena Utility Library
+ * ==========================================================
  */
+
 const Utils = {
-    /**
-     * Query single or multiple DOM elements cleanly
-     */
-    $: (selector) => document.querySelector(selector),
-    $$: (selector) => document.querySelectorAll(selector),
 
     /**
-     * Inject a dynamic, non-intrusive alert toast element into the viewport
+     * Query Selector
      */
-    showToast: (message, type = 'info') => {
-        let container = document.querySelector('.toast-layer-container');
-        if (!container) {
-            container = document.createElement('div');
-            container.className = 'toast-layer-container';
-            container.setAttribute('style', 'position:fixed; bottom:24px; right:24px; display:flex; flex-direction:column; gap:12px; z-index:9999;');
-            document.body.appendChild(container);
+    $(selector) {
+        return document.querySelector(selector);
+    },
+
+    /**
+     * Query Selector All
+     */
+    $all(selector) {
+        return document.querySelectorAll(selector);
+    },
+
+    /**
+     * Create Element
+     */
+    create(tag) {
+        return document.createElement(tag);
+    },
+
+    /**
+     * Trim string safely
+     */
+    trim(value) {
+        return value ? value.trim() : "";
+    },
+
+    /**
+     * Email validation
+     */
+    isValidEmail(email) {
+
+        const regex =
+            /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        return regex.test(email);
+
+    },
+
+    /**
+     * Password validation
+     */
+    isValidPassword(password) {
+
+        return password && password.length >= 6;
+
+    },
+
+    /**
+     * Show Toast
+     */
+    showToast(message, type = "info") {
+
+        const existing = document.getElementById("toast");
+
+        if (existing) {
+            existing.remove();
         }
 
-        const toast = document.createElement('div');
-        let bg = 'var(--bg-surface)';
-        let border = 'var(--border-color)';
-        if (type === 'success') border = 'var(--success)';
-        if (type === 'error') border = 'var(--danger)';
+        const toast = document.createElement("div");
 
-        toast.setAttribute('style', `background:${bg}; border:1px solid ${border}; color:var(--text-main); padding:14px 24px; border-radius:var(--radius-md); box-shadow:var(--shadow); animation:fadeInUp 0.3s cubic-bezier(0.16,1,0.3,1) forwards; font-size:0.95rem; font-weight:500;`);
-        toast.textContent = message;
+        toast.id = "toast";
 
-        container.appendChild(toast);
+        toast.innerHTML = message;
+
+        toast.style.position = "fixed";
+        toast.style.bottom = "30px";
+        toast.style.right = "30px";
+        toast.style.padding = "14px 22px";
+        toast.style.borderRadius = "10px";
+        toast.style.fontWeight = "600";
+        toast.style.color = "#fff";
+        toast.style.fontFamily = "Inter,sans-serif";
+        toast.style.zIndex = "999999";
+        toast.style.boxShadow = "0 8px 25px rgba(0,0,0,.25)";
+        toast.style.opacity = "0";
+        toast.style.transition = "0.3s";
+
+        switch (type) {
+
+            case "success":
+                toast.style.background = "#16a34a";
+                break;
+
+            case "error":
+                toast.style.background = "#dc2626";
+                break;
+
+            case "warning":
+                toast.style.background = "#f59e0b";
+                break;
+
+            default:
+                toast.style.background = "#2563eb";
+        }
+
+        document.body.appendChild(toast);
+
         setTimeout(() => {
-            toast.style.opacity = '0';
-            toast.style.transform = 'translateY(8px)';
-            toast.style.transition = 'all 0.3s ease';
-            setTimeout(() => toast.remove(), 300);
-        }, 3500);
+            toast.style.opacity = "1";
+        }, 100);
+
+        setTimeout(() => {
+
+            toast.style.opacity = "0";
+
+            setTimeout(() => {
+
+                toast.remove();
+
+            }, 300);
+
+        }, 3000);
+
     },
 
     /**
-     * Humanize execution latency metric values
+     * Disable Button
      */
-    formatRuntimeMetrics: (ms) => {
-        return ms < 1 ? `${(ms * 1000).toFixed(0)} µs` : `${ms.toFixed(1)} ms`;
-    }
-};
+    disableButton(button, text = "Please wait...") {
 
-/**
- * Global Theme Toggling Engine System
- */
-const ThemeEngine = {
-    init() {
-        // Run as soon as the DOM finishes building
-        document.addEventListener('DOMContentLoaded', () => {
-            const currentTheme = localStorage.getItem('codearena_theme') || 'dark';
-            if (currentTheme === 'light') {
-                document.body.classList.add('light-theme');
-            }
-            this.renderToggleButton();
-        });
+        if (!button) return;
+
+        button.dataset.originalText = button.innerHTML;
+
+        button.disabled = true;
+
+        button.innerHTML = text;
+
     },
 
-    toggle() {
-        if (document.body.classList.contains('light-theme')) {
-            document.body.classList.remove('light-theme');
-            localStorage.setItem('codearena_theme', 'dark');
-            Utils.showToast('Switched to Dark Mode Theme', 'info');
-        } else {
-            document.body.classList.add('light-theme');
-            localStorage.setItem('codearena_theme', 'light');
-            Utils.showToast('Switched to Light Mode Theme', 'info');
+    /**
+     * Enable Button
+     */
+    enableButton(button) {
+
+        if (!button) return;
+
+        button.disabled = false;
+
+        if (button.dataset.originalText) {
+
+            button.innerHTML =
+                button.dataset.originalText;
+
         }
+
     },
 
-	renderToggleButton() {
-	    if (document.querySelector('.theme-slider-container')) return;
-	    
-	    // Main container card anchor
-	    const container = document.createElement('div');
-	    container.className = 'theme-slider-container';
-	    container.setAttribute('style', 'position:fixed; top:24px; right:24px; display:flex; align-items:center; gap:10px; background:var(--bg-surface); border:1px solid var(--border-color); padding:8px 14px; border-radius:30px; box-shadow:var(--shadow); z-index:9999; font-size:0.85rem; font-weight:600; color:var(--text-muted); user-select:none;');
+    /**
+     * Store User Session
+     */
+    saveUser(data) {
 
-	    // Context status text node
-	    const labelText = document.createElement('span');
-	    labelText.id = 'theme-slider-text';
-	    labelText.textContent = document.body.classList.contains('light-theme') ? 'Light Mode' : 'Dark Mode';
+        CONFIG.saveSession(data);
 
-	    // Icon display state node wrapper
-	    const modeIcon = document.createElement('span');
-	    modeIcon.id = 'theme-slider-icon';
-	    modeIcon.setAttribute('style', 'font-size:1rem; transition:transform 0.3s ease; display:inline-block;');
-	    modeIcon.textContent = document.body.classList.contains('light-theme') ? '☀️' : '🌙';
+    },
 
-	    // Sliding capsule track deck
-	    const switchTrack = document.createElement('div');
-	    switchTrack.setAttribute('style', 'width:42px; height:22px; background:var(--border-color); border-radius:11px; position:relative; cursor:pointer;');
+    /**
+     * Logout
+     */
+    logout() {
 
-	    // Sliding inner core pill thumb
-	    const switchThumb = document.createElement('div');
-	    switchThumb.id = 'theme-slider-thumb';
-	    
-	    const isLight = document.body.classList.contains('light-theme');
-	    switchThumb.setAttribute('style', `width:16px; height:16px; background:${isLight ? 'var(--color-primary)' : 'var(--text-muted)'}; border-radius:50%; position:absolute; top:3px; left:${isLight ? '23px' : '3px'}; transition:all 0.25s cubic-bezier(0.2, 0, 0, 1);`);
+        CONFIG.clearSession();
 
-	    // Assemble all modern interface pieces
-	    switchTrack.appendChild(switchThumb);
-	    container.appendChild(modeIcon); // Icon sits perfectly on the left side of text
-	    container.appendChild(labelText);
-	    container.appendChild(switchTrack);
-	    
-	    switchTrack.addEventListener('click', () => {
-	        this.toggle();
-	        
-	        const activeLight = document.body.classList.contains('light-theme');
-	        
-	        // Core interface parameter adjustments on click
-	        labelText.textContent = activeLight ? 'Light Mode' : 'Dark Mode';
-	        modeIcon.textContent = activeLight ? '☀️' : '🌙';
-	        
-	        // Dynamic text indicator subtle scale animation pop
-	        modeIcon.style.transform = 'scale(1.2)';
-	        setTimeout(() => modeIcon.style.transform = 'scale(1)', 150);
-	        
-	        switchThumb.style.left = activeLight ? '23px' : '3px';
-	        switchThumb.style.background = activeLight ? 'var(--color-primary)' : 'var(--text-muted)';
-	    });
-	    
-	    document.body.appendChild(container);
-	}
+        window.location.href =
+            CONFIG.DEFAULT_REDIRECTS.LOGIN;
 
+    },
 
+    /**
+     * Redirect after Login
+     */
+    redirectDashboard() {
+
+        CONFIG.redirectAfterLogin();
+
+    },
+
+    /**
+     * Require Login
+     */
+    requireLogin() {
+
+        if (!CONFIG.isLoggedIn()) {
+
+            window.location.href =
+                CONFIG.DEFAULT_REDIRECTS.LOGIN;
+
+        }
+
+    },
+
+    /**
+     * Require Admin
+     */
+    requireAdmin() {
+
+        Utils.requireLogin();
+
+        if (
+            CONFIG.getRole() !==
+            CONFIG.ROLES.ADMIN
+        ) {
+
+            Utils.showToast(
+                "Access Denied",
+                "error"
+            );
+
+            setTimeout(() => {
+
+                window.location.href =
+                    CONFIG.DEFAULT_REDIRECTS.STUDENT_DASHBOARD;
+
+            }, 1000);
+
+        }
+
+    },
+
+    /**
+     * Format Date
+     */
+    formatDate(date) {
+
+        return new Date(date)
+            .toLocaleString();
+
+    },
+
+    /**
+     * Capitalize
+     */
+    capitalize(text) {
+
+        if (!text) return "";
+
+        return text.charAt(0)
+            .toUpperCase() +
+            text.slice(1);
+
+    },
+
+    /**
+     * Debounce
+     */
+    debounce(func, delay = 300) {
+
+        let timer;
+
+        return function () {
+
+            clearTimeout(timer);
+
+            timer = setTimeout(() => {
+
+                func.apply(this, arguments);
+
+            }, delay);
+
+        };
+
+    }
 
 };
 
-// Initialize the system automatically
-ThemeEngine.init();
+Object.freeze(Utils);
+
+console.log("✅ Utils Loaded");

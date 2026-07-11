@@ -6,13 +6,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.codearena.codearena.repository.UserRepository;
-import com.codearena.codearena.security.JwtUtils;
-import com.codearena.codearena.security.CustomUserDetailsService;
-import com.codearena.codearena.dto.RegisterRequest;
+import com.codearena.codearena.dto.AuthResponse;
 import com.codearena.codearena.dto.LoginRequest;
-import com.codearena.codearena.model.User;
+import com.codearena.codearena.dto.RegisterRequest;
 import com.codearena.codearena.model.Role;
+import com.codearena.codearena.model.User;
+import com.codearena.codearena.repository.UserRepository;
+import com.codearena.codearena.security.CustomUserDetailsService;
+import com.codearena.codearena.security.JwtUtils;
 
 @Service
 public class AuthService {
@@ -35,11 +36,13 @@ public class AuthService {
         this.userDetailsService = userDetailsService;
     }
 
-    // TASK 4: REGISTER API
+    // Register
     public String register(RegisterRequest request) {
+
         if (userRepository.existsByUsername(request.getUsername())) {
             throw new RuntimeException("Username already exists");
         }
+
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new RuntimeException("Email already exists");
         }
@@ -54,28 +57,39 @@ public class AuthService {
         } else {
             try {
                 user.setRole(Role.valueOf(request.getRole().toUpperCase()));
-            } catch (IllegalArgumentException e) {
-                throw new RuntimeException("Invalid role. Allowed: USER or ADMIN");
+            } catch (IllegalArgumentException ex) {
+                throw new RuntimeException("Invalid role. Allowed values: USER or ADMIN");
             }
         }
 
         userRepository.save(user);
+
         return "User registered successfully";
     }
 
-    // TASK 5: LOGIN API (WITH GENUINE CRYPTO TOKENS!)
-    public String login(LoginRequest request) {
+    // Login
+    public AuthResponse login(LoginRequest request) {
+
         authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(
-                request.getEmail(),
-                request.getPassword()
-            )
+                new UsernamePasswordAuthenticationToken(
+                        request.getEmail(),
+                        request.getPassword()
+                )
         );
 
-        // Load the user credentials using your partner's user detail loader
-        UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
-        
-        // Generate a real cryptographic token string!
-        return jwtUtils.generateToken(userDetails);
+        UserDetails userDetails =
+                userDetailsService.loadUserByUsername(request.getEmail());
+
+        String token = jwtUtils.generateToken(userDetails);
+
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return new AuthResponse(
+                token,
+                user.getUsername(),
+                user.getEmail(),
+                user.getRole().name()
+        );
     }
 }
