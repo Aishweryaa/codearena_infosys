@@ -5,13 +5,15 @@
     <title>Admin Dashboard | CodeArena</title>
     <link rel="stylesheet" href="../css/variables.css">
     <link rel="stylesheet" href="../css/common.css">
+
     <style>
         .grid-stats {
             display: grid;
-            grid-template-columns: repeat(4, 11fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 24px;
             margin-bottom: 40px;
         }
+
         .stat-card {
             background-color: var(--bg-surface);
             border: 1px solid var(--border-color);
@@ -19,15 +21,18 @@
             padding: 24px;
             box-shadow: var(--shadow);
         }
+
         .stat-card h3 {
             font-size: 0.9rem;
             color: var(--text-muted);
             margin-bottom: 12px;
         }
+
         .stat-card .value {
             font-size: 2.25rem;
             font-weight: 700;
         }
+
         .dashboard-split {
             display: grid;
             grid-template-columns: 3fr 2fr;
@@ -38,15 +43,39 @@
 
 <body>
     <div class="admin-container">
+
         <!-- Sidebar Navigation -->
         <aside class="admin-sidebar">
-            <div class="sidebar-brand">CodeArena<span>.</span></div>
+            <div class="sidebar-brand">
+                CodeArena<span>.</span>
+            </div>
+
             <ul class="sidebar-menu">
-                <li class="active"><a href="dashboard.html">Dashboard</a></li>
-                <li><a href="problems.html">Manage Problems</a></li>
-                <li><a href="users.html">Manage Users</a></li>
-                <li><a href="submissions.html">Submissions</a></li>
-                <li style="margin-top: auto;"><a href="../login.html" style="color: var(--danger);">Logout</a></li>
+                <li class="active">
+                    <a href="/admin/dashboard.html">Dashboard</a>
+                </li>
+
+                <li>
+                    <a href="/admin/problems.html">Manage Problems</a>
+                </li>
+
+                <li>
+                    <a href="/admin/users.html">Manage Users</a>
+                </li>
+
+                <li>
+                    <a href="/admin/submissions.html">Submissions</a>
+                </li>
+
+                <li>
+                    <a href="/admin/create-problem.html">Create Problem</a>
+                </li>
+
+                <li style="margin-top: auto;">
+                    <a href="#" onclick="handleLogout(); return false;" style="color: var(--danger);">
+                        Logout
+                    </a>
+                </li>
             </ul>
         </aside>
 
@@ -65,14 +94,17 @@
                     <h3>Total Registered Users</h3>
                     <div class="value">1,248</div>
                 </div>
+
                 <div class="stat-card">
                     <h3>Coding Problems</h3>
                     <div class="value">142</div>
                 </div>
+
                 <div class="stat-card">
                     <h3>Evaluations Today</h3>
                     <div class="value">4,119</div>
                 </div>
+
                 <div class="stat-card">
                     <h3>System Load</h3>
                     <div class="value" style="color: var(--success);">0.4%</div>
@@ -80,11 +112,13 @@
             </div>
 
             <div class="dashboard-split">
+
                 <!-- Recent Activities Logs -->
                 <div class="table-container">
                     <div style="padding: 20px 24px; border-bottom: 1px solid var(--border-color);">
                         <h2 style="font-size: 1.1rem; font-weight:600;">Recent Submissions</h2>
                     </div>
+
                     <table class="custom-table">
                         <thead>
                             <tr>
@@ -93,17 +127,20 @@
                                 <th>Status</th>
                             </tr>
                         </thead>
+
                         <tbody>
                             <tr>
                                 <td>alex_coder</td>
                                 <td>Two Sum Engine</td>
                                 <td><span class="badge badge-success">Accepted</span></td>
                             </tr>
+
                             <tr>
                                 <td>sarah_k</td>
                                 <td>Matrix Shortest Path</td>
                                 <td><span class="badge badge-danger">Runtime Error</span></td>
                             </tr>
+
                             <tr>
                                 <td>dev_rahul</td>
                                 <td>LRU Cache Design</td>
@@ -115,32 +152,38 @@
 
                 <!-- Server Performance Status Card -->
                 <div class="table-container" style="padding:24px;">
-                    <h2 style="font-size: 1.1rem; font-weight:600; margin-bottom: 20px;">Judge Status Engine</h2>
+                    <h2 style="font-size: 1.1rem; font-weight:600; margin-bottom: 20px;">
+                        Judge Status Engine
+                    </h2>
+
                     <div style="margin-bottom: 16px;">
-                        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom: 6px;">Worker Cluster 01</p>
+                        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom: 6px;">
+                            Worker Cluster 01
+                        </p>
+
                         <div style="background: var(--border-color); height: 8px; border-radius:4px; overflow:hidden;">
                             <div style="background: var(--color-primary); width: 45%; height:100%;"></div>
                         </div>
                     </div>
+
                     <div>
-                        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom: 6px;">Sandbox Memory Usage</p>
+                        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom: 6px;">
+                            Sandbox Memory Usage
+                        </p>
+
                         <div style="background: var(--border-color); height: 8px; border-radius:4px; overflow:hidden;">
                             <div style="background: var(--color-accent); width: 22%; height:100%;"></div>
                         </div>
                     </div>
                 </div>
+
             </div>
         </main>
     </div>
-    
-    <!-- Core Client Scripts System Configuration -->
-    <script src="../js/config.js"></script>
-    <script src="../js/utils.js"></script>
-    <script src="../js/api.js"></script>
-    <script src="../js/auth.js"></script>
+
     <script src="/js/admin-common.js"></script>
-<script>
-  requireAdmin();
-</script>
+    <script>
+        requireAdmin();
+    </script>
 </body>
 </html>

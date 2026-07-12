@@ -2,6 +2,7 @@ package com.codearena.codearena.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -26,7 +27,7 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
-    
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -36,30 +37,84 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
+
                 .authorizeHttpRequests(auth -> auth
-                        // 1. Public Authentication Routes
-                        .requestMatchers("/api/v1/auth/register", "/api/v1/auth/login", "/api/v1/auth/**").permitAll()
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
 
-                        // 🌟 2. Student & Admin can BOTH view problems using GET
-                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/v1/problem", "/api/v1/problem/**").hasAnyRole("USER", "ADMIN")
+                        // Static frontend pages - allow browser to open HTML/CSS/JS
+                        .requestMatchers(
+                                "/",
+                                "/index.html",
+                                "/login.html",
+                                "/register.html",
+                                "/privacy.html",
+                                "/terms.html",
+                                "/css/**",
+                                "/js/**",
+                                "/assets/**",
+                                "/admin/**",
+                                "/student/**"
+                        ).permitAll()
 
-                        // 🌟 3. ONLY Admins can modify or create problems using POST, PUT, DELETE
-                        .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/v1/problem", "/api/v1/problem/**").hasRole("ADMIN")
-                        .requestMatchers(org.springframework.http.HttpMethod.PUT, "/api/v1/problem", "/api/v1/problem/**").hasRole("ADMIN")
-                        .requestMatchers(org.springframework.http.HttpMethod.DELETE, "/api/v1/problem", "/api/v1/problem/**").hasRole("ADMIN")
+                        // Auth APIs - public
+                        .requestMatchers(
+                                "/api/v1/auth/register",
+                                "/api/v1/auth/login",
+                                "/api/v1/auth/**"
+                        ).permitAll()
 
-                        // 🌟 4. SECURE ACCESS TRACK MAPPING FOR SUBMISSIONS:
-                        .requestMatchers("/api/v1/submissions", "/api/v1/submissions/**").authenticated()
+                        // Swagger/OpenAPI - public
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui.html"
+                        ).permitAll()
 
-                        // 🌟 5. SECURE ACCESS TRACK MAPPING FOR LEADERBOARD:
-                        .requestMatchers("/api/v1/leaderboard", "/api/v1/leaderboard/**").authenticated()
+                        // Problem view - USER and ADMIN
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/v1/problem",
+                                "/api/v1/problem/**"
+                        ).hasAnyRole("USER", "ADMIN")
 
+                        // Problem create/update/delete - ADMIN only
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/api/v1/problem",
+                                "/api/v1/problem/**"
+                        ).hasRole("ADMIN")
+
+                        .requestMatchers(
+                                HttpMethod.PUT,
+                                "/api/v1/problem",
+                                "/api/v1/problem/**"
+                        ).hasRole("ADMIN")
+
+                        .requestMatchers(
+                                HttpMethod.DELETE,
+                                "/api/v1/problem",
+                                "/api/v1/problem/**"
+                        ).hasRole("ADMIN")
+
+                        // Submissions - logged-in users
+                        .requestMatchers(
+                                "/api/v1/submissions",
+                                "/api/v1/submissions/**"
+                        ).authenticated()
+
+                        // Leaderboard - logged-in users
+                        .requestMatchers(
+                                "/api/v1/leaderboard",
+                                "/api/v1/leaderboard/**"
+                        ).authenticated()
+
+                        // Any other request needs login
                         .anyRequest().authenticated()
                 )
+
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
+
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

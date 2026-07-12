@@ -3,13 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Submissions · CodeArena Admin</title>
+    <title>Submissions | CodeArena Admin</title>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+
     <style>
-        /* ===== RESET & VARIABLES ===== */
         * {
             margin: 0;
             padding: 0;
@@ -24,7 +22,7 @@
             --text-main: #e8edf5;
             --text-muted: #94a3b8;
             --text-inverse: #f0f4ff;
-            --border-color: rgba(255, 255, 255, 0.06);
+            --border-color: rgba(255, 255, 255, 0.08);
             --color-primary: #ff5e3a;
             --color-success: #22c55e;
             --color-danger: #ef4444;
@@ -33,11 +31,9 @@
             --radius-md: 12px;
             --radius-lg: 20px;
             --shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.7);
-            --font-main: 'Inter', system-ui, -apple-system, sans-serif;
             --sidebar-width: 260px;
         }
 
-        /* ===== LIGHT THEME ===== */
         [data-theme="light"] {
             --bg-main: #f1f5f9;
             --bg-surface: #ffffff;
@@ -51,72 +47,18 @@
             --shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.1);
         }
 
-        html { scroll-behavior: smooth; }
-
         body {
-            font-family: var(--font-main);
+            font-family: Arial, sans-serif;
             background: var(--bg-main);
             color: var(--text-main);
             min-height: 100vh;
-            display: flex;
-            transition: background 0.3s ease, color 0.3s ease;
         }
 
-        a { text-decoration: none; color: inherit; }
-
-        /* ===== ANIMATED BACKGROUND ===== */
-        .bg-particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            overflow: hidden;
-            pointer-events: none;
+        a {
+            text-decoration: none;
+            color: inherit;
         }
 
-        .particle {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255, 94, 58, 0.05);
-            animation: floatParticle linear infinite;
-        }
-
-        .particle:nth-child(1) { width: 350px; height: 350px; top: -120px; left: -120px; animation-duration: 28s; }
-        .particle:nth-child(2) { width: 250px; height: 250px; bottom: -80px; right: -80px; animation-duration: 22s; animation-delay: 2s; }
-        .particle:nth-child(3) { width: 180px; height: 180px; top: 35%; right: -40px; animation-duration: 20s; animation-delay: 4s; }
-        .particle:nth-child(4) { width: 130px; height: 130px; bottom: 25%; left: -50px; animation-duration: 24s; animation-delay: 1s; }
-        .particle:nth-child(5) { width: 280px; height: 280px; top: 5%; left: 45%; animation-duration: 30s; animation-delay: 3s; }
-
-        @keyframes floatParticle {
-            0% { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 0.3; }
-            25% { transform: translate(120px, -90px) scale(1.15) rotate(90deg); opacity: 0.6; }
-            50% { transform: translate(-60px, 140px) scale(0.85) rotate(180deg); opacity: 0.4; }
-            75% { transform: translate(90px, -70px) scale(1.1) rotate(270deg); opacity: 0.7; }
-            100% { transform: translate(0, 0) scale(1) rotate(360deg); opacity: 0.3; }
-        }
-
-        .glow-orb {
-            position: fixed;
-            width: 600px;
-            height: 600px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(255, 94, 58, 0.06), transparent 70%);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 0;
-            animation: pulseGlow 6s ease-in-out infinite;
-            pointer-events: none;
-        }
-
-        @keyframes pulseGlow {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
-            50% { transform: translate(-50%, -50%) scale(1.15); opacity: 0.8; }
-        }
-
-        /* ===== SIDEBAR ===== */
         .admin-sidebar {
             position: fixed;
             top: 0;
@@ -129,8 +71,6 @@
             display: flex;
             flex-direction: column;
             z-index: 100;
-            transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
-            overflow-y: auto;
         }
 
         .sidebar-brand {
@@ -140,15 +80,7 @@
             padding-bottom: 24px;
             border-bottom: 1px solid var(--border-color);
             margin-bottom: 24px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: color 0.3s ease;
             cursor: pointer;
-        }
-
-        .sidebar-brand:hover {
-            color: var(--color-primary);
         }
 
         .sidebar-brand span {
@@ -157,15 +89,15 @@
 
         .sidebar-brand i {
             color: var(--color-primary);
-            font-size: 1.4rem;
+            margin-right: 8px;
         }
 
         .sidebar-menu {
             list-style: none;
-            flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 8px;
+            flex: 1;
         }
 
         .sidebar-menu li a {
@@ -175,10 +107,9 @@
             padding: 12px 16px;
             border-radius: var(--radius-md);
             color: var(--text-muted);
-            font-weight: 500;
-            font-size: 0.9rem;
-            transition: all 0.2s ease;
-            position: relative;
+            font-weight: 600;
+            font-size: 0.92rem;
+            transition: 0.2s;
         }
 
         .sidebar-menu li a:hover {
@@ -186,71 +117,42 @@
             color: var(--text-inverse);
         }
 
-        .sidebar-menu li a i {
-            width: 20px;
-            text-align: center;
-            font-size: 1rem;
-        }
-
         .sidebar-menu li.active a {
-            background: rgba(255, 94, 58, 0.08);
+            background: rgba(255, 94, 58, 0.12);
             color: var(--color-primary);
         }
 
-        .sidebar-menu li.active a::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 3px;
-            height: 24px;
-            background: var(--color-primary);
-            border-radius: 0 4px 4px 0;
-        }
-
-        .sidebar-menu li.logout-item {
+        .logout-item {
             margin-top: auto;
             border-top: 1px solid var(--border-color);
             padding-top: 16px;
         }
 
-        .sidebar-menu li.logout-item a {
-            color: var(--color-danger);
+        .logout-item a {
+            color: var(--color-danger) !important;
         }
 
-        .sidebar-menu li.logout-item a:hover {
-            background: rgba(239, 68, 68, 0.08);
-        }
-
-        /* ===== MAIN CONTENT ===== */
         .main-content {
             margin-left: var(--sidebar-width);
-            flex: 1;
             padding: 32px 40px;
-            position: relative;
-            z-index: 1;
             min-height: 100vh;
         }
 
-        /* ===== TOP BAR ===== */
         .top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-bottom: 24px;
+            gap: 20px;
             border-bottom: 1px solid var(--border-color);
+            padding-bottom: 24px;
             margin-bottom: 32px;
             flex-wrap: wrap;
-            gap: 16px;
         }
 
         .page-title h1 {
             font-size: 1.8rem;
-            font-weight: 800;
             color: var(--text-inverse);
-            letter-spacing: -0.5px;
-            transition: color 0.3s ease;
+            margin-bottom: 6px;
         }
 
         .page-title h1 i {
@@ -260,283 +162,119 @@
         .page-title p {
             color: var(--text-muted);
             font-size: 0.95rem;
-            margin-top: 4px;
         }
 
-        .page-title p i {
-            color: var(--color-primary);
-            margin-right: 4px;
-        }
-
-        /* ===== RIGHT UPPER NAV BAR ACTIONS ===== */
-        .top-bar-actions {
+        .top-actions {
             display: flex;
             align-items: center;
-            gap: 16px;
-            margin-left: auto;
+            gap: 14px;
         }
 
         .theme-toggle-btn {
-            background: transparent;
             border: 1px solid var(--border-color);
+            background: var(--bg-surface);
+            color: var(--text-main);
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            font-size: 1.2rem;
+            width: 42px;
+            height: 42px;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            color: var(--text-inverse);
+            font-size: 1.1rem;
         }
 
-        .theme-toggle-btn:hover {
-            border-color: var(--color-primary);
-            transform: rotate(20deg);
-        }
-
-        /* ===== USER BADGE - RIGHT UPPER CORNER ===== */
         .admin-user-badge {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             background: var(--bg-surface);
-            padding: 6px 16px 6px 8px;
-            border-radius: 40px;
             border: 1px solid var(--border-color);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .admin-user-badge:hover {
-            border-color: var(--color-primary);
-            background: var(--bg-surface-hover);
-            box-shadow: 0 4px 20px rgba(255, 94, 58, 0.1);
+            padding: 8px 14px;
+            border-radius: 40px;
         }
 
         .admin-user-badge .avatar {
-            width: 36px;
-            height: 36px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--color-primary), #e0452a);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #fff;
+            color: white;
             font-weight: 700;
+        }
+
+        .admin-user-badge .name {
             font-size: 0.9rem;
-            flex-shrink: 0;
-        }
-
-        .admin-user-badge .user-info {
-            display: flex;
-            flex-direction: column;
-            line-height: 1.2;
-        }
-
-        .admin-user-badge .user-info .name {
-            font-weight: 600;
+            font-weight: 700;
             color: var(--text-inverse);
-            font-size: 0.9rem;
         }
 
-        .admin-user-badge .user-info .role {
-            font-size: 0.65rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .admin-user-badge .dropdown-icon {
-            color: var(--text-muted);
+        .admin-user-badge .role {
             font-size: 0.7rem;
-            transition: transform 0.3s ease;
-            margin-left: 4px;
-        }
-
-        .admin-user-badge:hover .dropdown-icon {
-            transform: rotate(180deg);
-        }
-
-        /* ===== USER DROPDOWN MENU ===== */
-        .user-dropdown {
-            display: none;
-            position: absolute;
-            top: calc(100% + 10px);
-            right: 0;
-            background: var(--bg-surface);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-md);
-            padding: 8px 0;
-            min-width: 200px;
-            box-shadow: var(--shadow);
-            z-index: 50;
-        }
-
-        .user-dropdown.open {
-            display: block;
-            animation: slideDown 0.2s ease;
-        }
-
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .user-dropdown a {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 20px;
             color: var(--text-muted);
-            font-size: 0.85rem;
-            transition: all 0.2s ease;
         }
 
-        .user-dropdown a:hover {
-            background: var(--bg-surface-hover);
-            color: var(--text-inverse);
-        }
-
-        .user-dropdown a i {
-            width: 18px;
-            text-align: center;
-            font-size: 0.9rem;
-        }
-
-        .user-dropdown .divider {
-            height: 1px;
-            background: var(--border-color);
-            margin: 6px 16px;
-        }
-
-        .user-dropdown .logout-btn {
-            color: var(--color-danger);
-        }
-
-        .user-dropdown .logout-btn:hover {
-            background: rgba(239, 68, 68, 0.08);
-        }
-
-        /* ===== SIDEBAR TOGGLE (Mobile) ===== */
-        .sidebar-toggle {
-            display: none;
-            background: transparent;
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-md);
-            padding: 8px 12px;
-            color: var(--text-inverse);
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .sidebar-toggle:hover {
-            border-color: var(--color-primary);
-        }
-
-        .sidebar-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            z-index: 99;
-        }
-
-        .sidebar-overlay.active {
-            display: block;
-        }
-
-        /* ===== STATS ROW ===== */
         .stats-row {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 24px;
             margin-bottom: 32px;
-            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            opacity: 0;
-            transform: translateY(30px);
-        }
-
-        @keyframes slideUp {
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .stat-card {
             background: var(--bg-card);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
             border: 1px solid var(--border-color);
             border-radius: var(--radius-lg);
-            padding: 20px 24px;
+            padding: 22px;
             box-shadow: var(--shadow);
-            transition: all 0.3s ease;
         }
 
-        .stat-card:hover {
-            transform: translateY(-3px);
-            border-color: var(--color-primary);
-        }
-
-        .stat-card .stat-label {
-            font-size: 0.8rem;
+        .stat-label {
+            font-size: 0.85rem;
             color: var(--text-muted);
-            font-weight: 500;
+            margin-bottom: 8px;
         }
 
-        .stat-card .stat-value {
+        .stat-value {
             font-size: 1.8rem;
             font-weight: 800;
             color: var(--text-inverse);
-            margin-top: 4px;
         }
 
-        .stat-card .stat-change {
-            font-size: 0.7rem;
-            margin-top: 4px;
+        .stat-change {
             display: inline-flex;
             align-items: center;
-            gap: 4px;
-            padding: 2px 10px;
+            gap: 5px;
+            margin-top: 8px;
+            padding: 3px 10px;
             border-radius: 20px;
-            background: rgba(34, 197, 94, 0.1);
+            background: rgba(34, 197, 94, 0.12);
             color: var(--color-success);
+            font-size: 0.75rem;
+            font-weight: 700;
         }
 
-        /* ===== TABLE ===== */
         .table-container {
             background: var(--bg-card);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
             border: 1px solid var(--border-color);
             border-radius: var(--radius-lg);
             box-shadow: var(--shadow);
             overflow: hidden;
-            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            opacity: 0;
-            transform: translateY(30px);
-            animation-delay: 0.1s;
         }
 
         .table-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 24px;
-            border-bottom: 1px solid var(--border-color);
+            gap: 14px;
             flex-wrap: wrap;
-            gap: 12px;
         }
 
         .table-header h2 {
-            font-size: 1.1rem;
-            font-weight: 700;
             color: var(--text-inverse);
+            font-size: 1.15rem;
         }
 
         .table-header h2 i {
@@ -546,26 +284,18 @@
 
         .table-controls {
             display: flex;
-            align-items: center;
             gap: 12px;
             flex-wrap: wrap;
         }
 
         .filter-select {
-            padding: 8px 14px;
             background: var(--bg-main);
+            color: var(--text-main);
             border: 1px solid var(--border-color);
             border-radius: var(--radius-md);
-            color: var(--text-main);
-            font-family: var(--font-main);
-            font-size: 0.85rem;
+            padding: 9px 14px;
             outline: none;
             cursor: pointer;
-            transition: border-color 0.3s ease;
-        }
-
-        .filter-select:focus {
-            border-color: var(--color-primary);
         }
 
         .filter-select option {
@@ -578,141 +308,88 @@
             border-collapse: collapse;
         }
 
-        .custom-table thead th {
+        .custom-table th {
             padding: 14px 24px;
             text-align: left;
-            font-size: 0.7rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
             color: var(--text-muted);
+            font-size: 0.75rem;
+            text-transform: uppercase;
             border-bottom: 1px solid var(--border-color);
-            background: rgba(255, 255, 255, 0.02);
         }
 
-        .custom-table tbody td {
+        .custom-table td {
             padding: 16px 24px;
-            font-size: 0.9rem;
-            color: var(--text-main);
             border-bottom: 1px solid var(--border-color);
-            transition: background 0.2s ease;
+            color: var(--text-main);
+            font-size: 0.9rem;
         }
 
-        .custom-table tbody tr:hover td {
-            background: rgba(255, 255, 255, 0.02);
+        .custom-table tr:hover td {
+            background: rgba(255, 255, 255, 0.03);
         }
 
-        .custom-table tbody tr:last-child td {
-            border-bottom: none;
-        }
-
-        .custom-table .candidate-name {
-            font-weight: 500;
+        .candidate-name {
+            font-weight: 700;
             color: var(--text-inverse);
         }
 
-        .custom-table .language-tag {
-            font-family: 'Courier New', monospace;
-            color: var(--text-muted);
-            font-size: 0.8rem;
+        .language-tag {
+            font-family: "Courier New", monospace;
             background: var(--bg-main);
-            padding: 2px 10px;
-            border-radius: 4px;
+            color: var(--text-muted);
+            padding: 4px 10px;
+            border-radius: 6px;
             display: inline-block;
+            font-size: 0.82rem;
         }
 
-        .custom-table .runtime {
-            font-family: 'Courier New', monospace;
+        .runtime {
+            font-family: "Courier New", monospace;
             color: var(--text-muted);
         }
 
-        /* ===== BADGES ===== */
         .badge {
             display: inline-flex;
             align-items: center;
-            gap: 4px;
-            padding: 4px 12px;
+            gap: 5px;
+            padding: 5px 12px;
             border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: 600;
+            font-size: 0.75rem;
+            font-weight: 700;
         }
 
         .badge-success {
-            background: rgba(34, 197, 94, 0.1);
+            background: rgba(34, 197, 94, 0.12);
             color: var(--color-success);
         }
 
         .badge-danger {
-            background: rgba(239, 68, 68, 0.1);
+            background: rgba(239, 68, 68, 0.12);
             color: var(--color-danger);
         }
 
         .badge-warning {
-            background: rgba(245, 158, 11, 0.1);
+            background: rgba(245, 158, 11, 0.12);
             color: var(--color-warning);
         }
 
         .badge-info {
-            background: rgba(139, 92, 246, 0.1);
+            background: rgba(139, 92, 246, 0.12);
             color: var(--color-accent);
         }
 
-        /* ===== ACTION BUTTONS ===== */
-        .action-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 14px;
-            border-radius: var(--radius-md);
-            font-size: 0.8rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: none;
-            text-decoration: none;
-            font-family: var(--font-main);
+        .empty-message {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 24px;
+            display: none;
         }
 
-        .action-btn.view {
-            background: rgba(139, 92, 246, 0.1);
-            color: var(--color-accent);
-        }
-
-        .action-btn.view:hover {
-            background: rgba(139, 92, 246, 0.2);
-            transform: translateY(-2px);
-        }
-
-        .action-group {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
-
-        /* ===== TOAST ===== */
-        @keyframes toastUp {
-            from { opacity: 0; transform: translateX(-50%) translateY(30px) scale(0.9); }
-            to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
-        }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 1024px) {
-            .table-container {
-                overflow-x: auto;
-            }
-            .stats-row {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 768px) {
+        @media (max-width: 900px) {
             .admin-sidebar {
-                transform: translateX(-100%);
-                width: 280px;
-            }
-
-            .admin-sidebar.open {
-                transform: translateX(0);
+                position: relative;
+                width: 100%;
+                height: auto;
             }
 
             .main-content {
@@ -720,200 +397,153 @@
                 padding: 20px;
             }
 
-            .top-bar {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .top-bar-actions {
-                margin-left: 0;
-                width: 100%;
-                justify-content: flex-end;
-            }
-
-            .sidebar-toggle {
-                display: flex !important;
-            }
-
-            .page-title h1 {
-                font-size: 1.4rem;
-            }
-
             .stats-row {
-                grid-template-columns: 1fr 1fr;
-                gap: 16px;
+                grid-template-columns: repeat(2, 1fr);
             }
 
-            .stat-card .stat-value {
-                font-size: 1.4rem;
+            .table-container {
+                overflow-x: auto;
             }
 
-            .table-header {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .table-controls {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .admin-user-badge .user-info .name {
-                font-size: 0.8rem;
-            }
-
-            .admin-user-badge {
-                padding: 4px 12px 4px 4px;
-            }
-
-            .admin-user-badge .avatar {
-                width: 30px;
-                height: 30px;
-                font-size: 0.7rem;
-            }
-
-            .custom-table thead th,
-            .custom-table tbody td {
-                padding: 10px 14px;
-                font-size: 0.8rem;
-            }
-
-            .action-group {
-                flex-direction: column;
-            }
-
-            .action-btn {
-                justify-content: center;
+            .custom-table {
+                min-width: 850px;
             }
         }
 
-        @media (max-width: 480px) {
-            .admin-user-badge .user-info .role {
-                display: none;
-            }
-
-            .top-bar-actions {
-                gap: 10px;
-            }
-
+        @media (max-width: 600px) {
             .stats-row {
                 grid-template-columns: 1fr;
+            }
+
+            .top-bar {
+                align-items: flex-start;
+            }
+
+            .table-controls {
+                width: 100%;
+                flex-direction: column;
             }
         }
     </style>
 </head>
+
 <body>
 
-    <!-- ===== ANIMATED BACKGROUND ===== -->
-    <div class="bg-particles">
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-    </div>
-
-    <div class="glow-orb"></div>
-
-    <!-- ===== SIDEBAR OVERLAY (Mobile) ===== -->
-    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
-
-    <!-- ===== SIDEBAR ===== -->
     <aside class="admin-sidebar" id="adminSidebar">
-        <div class="sidebar-brand" onclick="window.location.href='admin-dashboard.html'">
+        <div class="sidebar-brand" onclick="window.location.href='/admin/dashboard.html'">
             <i class="fas fa-code"></i> Code<span>Arena</span>
         </div>
+
         <ul class="sidebar-menu">
-            <li><a href="admin-dashboard.html"><i class="fas fa-chart-pie"></i> Dashboard</a></li>
-            <li><a href="admin-problems.html"><i class="fas fa-list-check"></i> Manage Problems</a></li>
-            <li><a href="admin-users.html"><i class="fas fa-users"></i> Manage Users</a></li>
-            <li class="active"><a href="admin-submissions.html"><i class="fas fa-paper-plane"></i> Submissions</a></li>
-            <li class="logout-item"><a href="#" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            <li>
+                <a href="/admin/dashboard.html">
+                    <i class="fas fa-chart-pie"></i> Dashboard
+                </a>
+            </li>
+
+            <li>
+                <a href="/admin/problems.html">
+                    <i class="fas fa-list-check"></i> Manage Problems
+                </a>
+            </li>
+
+            <li>
+                <a href="/admin/create-problem.html">
+                    <i class="fas fa-plus-circle"></i> Create Problem
+                </a>
+            </li>
+
+            <li>
+                <a href="/admin/users.html">
+                    <i class="fas fa-users"></i> Manage Users
+                </a>
+            </li>
+
+            <li class="active">
+                <a href="/admin/submissions.html">
+                    <i class="fas fa-paper-plane"></i> Submissions
+                </a>
+            </li>
+
+            <li class="logout-item">
+                <a href="#" onclick="handleLogout(); return false;">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </li>
         </ul>
     </aside>
 
-    <!-- ===== MAIN CONTENT ===== -->
     <main class="main-content">
 
-        <!-- ===== TOP BAR ===== -->
         <div class="top-bar">
             <div class="page-title">
                 <h1><i class="fas fa-paper-plane"></i> Global System Submissions</h1>
-                <p><i class="fas fa-clock"></i> Audit and track real-time script code compilation files pushed by runtime candidates</p>
+                <p>Audit and track coding submissions, status, language, and runtime.</p>
             </div>
 
-            <!-- ===== RIGHT UPPER NAV BAR ===== -->
-            <div class="top-bar-actions">
-                <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Toggle sidebar">
-                    <i class="fas fa-bars"></i>
-                </button>
+            <div class="top-actions">
+                <button class="theme-toggle-btn" id="themeToggle">🌙</button>
 
-                <button class="theme-toggle-btn" id="themeToggle" aria-label="Toggle theme">
-                    🌙
-                </button>
-
-                <!-- ===== USER BADGE ===== -->
-                <div class="admin-user-badge" onclick="toggleUserDropdown()">
+                <div class="admin-user-badge">
                     <div class="avatar" id="userAvatar">A</div>
-                    <div class="user-info">
-                        <div class="name" id="adminName">alex_coder</div>
+                    <div>
+                        <div class="name" id="adminName">Admin</div>
                         <div class="role">Administrator</div>
-                    </div>
-                    <i class="fas fa-chevron-down dropdown-icon"></i>
-
-                    <!-- ===== DROPDOWN MENU ===== -->
-                    <div class="user-dropdown" id="userDropdown">
-                        <a href="#"><i class="fas fa-user"></i> My Profile</a>
-                        <a href="#"><i class="fas fa-cog"></i> Settings</a>
-                        <div class="divider"></div>
-                        <a href="#" onclick="handleLogout()" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ===== STATS ROW ===== -->
         <div class="stats-row">
             <div class="stat-card">
                 <div class="stat-label">Total Submissions</div>
                 <div class="stat-value">1,247</div>
                 <div class="stat-change"><i class="fas fa-arrow-up"></i> 12% this week</div>
             </div>
+
             <div class="stat-card">
                 <div class="stat-label">Accepted</div>
                 <div class="stat-value" style="color: var(--color-success);">856</div>
-                <div class="stat-change" style="background: rgba(34, 197, 94, 0.1); color: var(--color-success);"><i class="fas fa-check-circle"></i> 68.6% rate</div>
+                <div class="stat-change"><i class="fas fa-check-circle"></i> 68.6% rate</div>
             </div>
+
             <div class="stat-card">
                 <div class="stat-label">Failed</div>
                 <div class="stat-value" style="color: var(--color-danger);">391</div>
-                <div class="stat-change" style="background: rgba(239, 68, 68, 0.1); color: var(--color-danger);"><i class="fas fa-times-circle"></i> 31.4% rate</div>
+                <div class="stat-change" style="background: rgba(239, 68, 68, 0.12); color: var(--color-danger);">
+                    <i class="fas fa-times-circle"></i> 31.4% rate
+                </div>
             </div>
+
             <div class="stat-card">
                 <div class="stat-label">Avg Runtime</div>
                 <div class="stat-value" style="color: var(--color-accent);">142ms</div>
-                <div class="stat-change" style="background: rgba(139, 92, 246, 0.1); color: var(--color-accent);"><i class="fas fa-clock"></i> 12ms faster</div>
+                <div class="stat-change" style="background: rgba(139, 92, 246, 0.12); color: var(--color-accent);">
+                    <i class="fas fa-clock"></i> 12ms faster
+                </div>
             </div>
         </div>
 
-        <!-- ===== TABLE ===== -->
         <div class="table-container">
             <div class="table-header">
                 <h2><i class="fas fa-list"></i> Submission Logs</h2>
+
                 <div class="table-controls">
                     <select class="filter-select" id="filterStatus" onchange="filterSubmissions()">
                         <option value="all">All Status</option>
-                        <option value="accepted">✅ Accepted</option>
-                        <option value="runtime-error">❌ Runtime Error</option>
-                        <option value="tle">⏰ Time Limit Exceeded</option>
-                        <option value="pending">⏳ Pending</option>
+                        <option value="accepted">Accepted</option>
+                        <option value="runtime-error">Runtime Error</option>
+                        <option value="tle">Time Limit Exceeded</option>
+                        <option value="pending">Pending</option>
                     </select>
+
                     <select class="filter-select" id="filterLanguage" onchange="filterSubmissions()">
                         <option value="all">All Languages</option>
                         <option value="java">Java</option>
                         <option value="cpp">C++</option>
                         <option value="python">Python</option>
                         <option value="javascript">JavaScript</option>
+                        <option value="go">Go</option>
                     </select>
                 </div>
             </div>
@@ -923,47 +553,52 @@
                     <tr>
                         <th>Run ID</th>
                         <th>Candidate</th>
-                        <th>Target Task</th>
-                        <th>Language Used</th>
-                        <th>Status Badge</th>
-                        <th>Runtime Execution</th>
+                        <th>Problem</th>
+                        <th>Language</th>
+                        <th>Status</th>
+                        <th>Runtime</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td><span style="color: var(--text-muted); font-weight: 600;">#RUN-9082</span></td>
+
+                <tbody id="submissionsTableBody">
+                    <tr data-status="accepted" data-language="java">
+                        <td>#RUN-9082</td>
                         <td class="candidate-name">alex_coder</td>
                         <td>Two Sum Engine</td>
                         <td><span class="language-tag">Java 17</span></td>
                         <td><span class="badge badge-success"><i class="fas fa-check-circle"></i> Accepted</span></td>
                         <td class="runtime">42 ms</td>
                     </tr>
-                    <tr>
-                        <td><span style="color: var(--text-muted); font-weight: 600;">#RUN-9081</span></td>
+
+                    <tr data-status="runtime-error" data-language="cpp">
+                        <td>#RUN-9081</td>
                         <td class="candidate-name">sarah_k</td>
                         <td>Matrix Shortest Path</td>
                         <td><span class="language-tag">C++ 20</span></td>
                         <td><span class="badge badge-danger"><i class="fas fa-times-circle"></i> Runtime Error</span></td>
                         <td class="runtime">--</td>
                     </tr>
-                    <tr>
-                        <td><span style="color: var(--text-muted); font-weight: 600;">#RUN-9080</span></td>
+
+                    <tr data-status="tle" data-language="python">
+                        <td>#RUN-9080</td>
                         <td class="candidate-name">dev_rahul</td>
                         <td>LRU Cache Design</td>
                         <td><span class="language-tag">Python 3.10</span></td>
                         <td><span class="badge badge-warning"><i class="fas fa-clock"></i> Time Limit Exceeded</span></td>
                         <td class="runtime">1000 ms</td>
                     </tr>
-                    <tr>
-                        <td><span style="color: var(--text-muted); font-weight: 600;">#RUN-9079</span></td>
+
+                    <tr data-status="accepted" data-language="javascript">
+                        <td>#RUN-9079</td>
                         <td class="candidate-name">maya_dev</td>
                         <td>Binary Tree BFS</td>
                         <td><span class="language-tag">JavaScript</span></td>
                         <td><span class="badge badge-success"><i class="fas fa-check-circle"></i> Accepted</span></td>
                         <td class="runtime">28 ms</td>
                     </tr>
-                    <tr>
-                        <td><span style="color: var(--text-muted); font-weight: 600;">#RUN-9078</span></td>
+
+                    <tr data-status="pending" data-language="go">
+                        <td>#RUN-9078</td>
                         <td class="candidate-name">jason_c</td>
                         <td>Merge Intervals</td>
                         <td><span class="language-tag">Go 1.21</span></td>
@@ -972,153 +607,82 @@
                     </tr>
                 </tbody>
             </table>
+
+            <div class="empty-message" id="emptyMessage">
+                No submissions found for selected filters.
+            </div>
         </div>
 
     </main>
 
-    <!-- ===== SCRIPTS ===== -->
+    <script src="/js/admin-common.js"></script>
+
     <script>
-        // ===== THEME TOGGLE =====
-        (function() {
-            const themeToggle = document.getElementById('themeToggle');
-            const htmlElement = document.documentElement;
+        requireAdmin();
 
-            let currentTheme = localStorage.getItem('theme') || 'dark';
-            htmlElement.setAttribute('data-theme', currentTheme);
-            themeToggle.textContent = currentTheme === 'dark' ? '🌙' : '☀️';
-
-            themeToggle.addEventListener('click', function() {
-                const isDark = htmlElement.getAttribute('data-theme') === 'dark';
-                const newTheme = isDark ? 'light' : 'dark';
-                htmlElement.setAttribute('data-theme', newTheme);
-                localStorage.setItem('theme', newTheme);
-                themeToggle.textContent = newTheme === 'dark' ? '🌙' : '☀️';
-            });
-        })();
-
-        // ===== SIDEBAR TOGGLE (Mobile) =====
-        function toggleSidebar() {
-            const sidebar = document.getElementById('adminSidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            sidebar.classList.toggle('open');
-            overlay.classList.toggle('active');
-        }
-
-        // ===== USER DROPDOWN TOGGLE =====
-        function toggleUserDropdown() {
-            const dropdown = document.getElementById('userDropdown');
-            dropdown.classList.toggle('open');
-        }
-
-        document.addEventListener('click', function(e) {
-            const badge = document.querySelector('.admin-user-badge');
-            if (badge && !badge.contains(e.target)) {
-                const dropdown = document.getElementById('userDropdown');
-                if (dropdown) dropdown.classList.remove('open');
+        function notify(message, type = "info") {
+            if (typeof showToast === "function") {
+                showToast(message, type);
+            } else {
+                alert(message);
             }
+        }
+
+        const username = localStorage.getItem("username") || "Admin";
+
+        const nameDisplay = document.getElementById("adminName");
+        const avatarDisplay = document.getElementById("userAvatar");
+
+        if (nameDisplay) {
+            nameDisplay.textContent = username;
+        }
+
+        if (avatarDisplay) {
+            avatarDisplay.textContent = username.charAt(0).toUpperCase();
+        }
+
+        const themeToggle = document.getElementById("themeToggle");
+        const htmlElement = document.documentElement;
+
+        let currentTheme = localStorage.getItem("theme") || "dark";
+        htmlElement.setAttribute("data-theme", currentTheme);
+        themeToggle.textContent = currentTheme === "dark" ? "🌙" : "☀️";
+
+        themeToggle.addEventListener("click", function () {
+            const isDark = htmlElement.getAttribute("data-theme") === "dark";
+            const newTheme = isDark ? "light" : "dark";
+
+            htmlElement.setAttribute("data-theme", newTheme);
+            localStorage.setItem("theme", newTheme);
+            themeToggle.textContent = newTheme === "dark" ? "🌙" : "☀️";
         });
 
-        // ===== TOAST NOTIFICATION =====
-        function showToast(message, type = 'info') {
-            const colors = {
-                success: '#22c55e',
-                error: '#ef4444',
-                info: '#ff5e3a',
-                warning: '#f59e0b'
-            };
-            const icons = {
-                success: 'fa-check-circle',
-                error: 'fa-times-circle',
-                info: 'fa-info-circle',
-                warning: 'fa-exclamation-circle'
-            };
-
-            const toast = document.createElement('div');
-            toast.style.cssText = `
-                position: fixed;
-                bottom: 30px;
-                left: 50%;
-                transform: translateX(-50%);
-                background: rgba(15, 23, 42, 0.95);
-                backdrop-filter: blur(16px);
-                padding: 16px 36px;
-                border-radius: 16px;
-                border: 1px solid ${colors[type]}44;
-                color: #e8edf5;
-                font-size: 0.95rem;
-                z-index: 9999;
-                animation: toastUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-                box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-                font-family: 'Inter', sans-serif;
-                border-left: 4px solid ${colors[type]};
-                display: flex;
-                align-items: center;
-                gap: 12px;
-                max-width: 90%;
-            `;
-            toast.innerHTML = `<i class="fas ${icons[type]}" style="color:${colors[type]}; font-size:1.2rem;"></i> ${message}`;
-            document.body.appendChild(toast);
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transform = 'translateX(-50%) translateY(-20px)';
-                toast.style.transition = 'all 0.4s ease';
-                setTimeout(() => toast.remove(), 400);
-            }, 3500);
-        }
-
-        // ===== FILTER SUBMISSIONS =====
         function filterSubmissions() {
-            const statusFilter = document.getElementById('filterStatus').value;
-            const langFilter = document.getElementById('filterLanguage').value;
-            
-            showToast(`🔍 Filtering: ${statusFilter} | ${langFilter}`, 'info');
-            
-            // In a real app, you would filter the table rows here
-            // For demo, just show a toast
-        }
+            const statusFilter = document.getElementById("filterStatus").value;
+            const languageFilter = document.getElementById("filterLanguage").value;
+            const rows = document.querySelectorAll("#submissionsTableBody tr");
+            const emptyMessage = document.getElementById("emptyMessage");
 
-        // ===== LOGOUT =====
-        function handleLogout() {
-            localStorage.removeItem('isLoggedIn');
-            localStorage.removeItem('userRole');
-            localStorage.removeItem('username');
-            showToast('👋 Logging out...', 'info');
-            setTimeout(() => {
-                window.location.href = 'login.html';
-            }, 1000);
-        }
+            let visibleCount = 0;
 
-        // ===== CHECK AUTH =====
-        (function() {
-            const isLoggedIn = localStorage.getItem('isLoggedIn');
-            const userRole = localStorage.getItem('userRole');
+            rows.forEach(function (row) {
+                const rowStatus = row.getAttribute("data-status");
+                const rowLanguage = row.getAttribute("data-language");
 
-            if (isLoggedIn !== 'true' || userRole !== 'admin') {
-                window.location.href = 'login.html';
-                return;
-            }
+                const statusMatch = statusFilter === "all" || rowStatus === statusFilter;
+                const languageMatch = languageFilter === "all" || rowLanguage === languageFilter;
 
-            const username = localStorage.getItem('username');
-            if (username) {
-                const nameDisplay = document.getElementById('adminName');
-                const avatarDisplay = document.getElementById('userAvatar');
-                if (nameDisplay) {
-                    nameDisplay.textContent = username;
+                if (statusMatch && languageMatch) {
+                    row.style.display = "";
+                    visibleCount++;
+                } else {
+                    row.style.display = "none";
                 }
-                if (avatarDisplay) {
-                    avatarDisplay.textContent = username.charAt(0).toUpperCase();
-                }
-            }
-        })();
+            });
 
-        // ===== WELCOME TOAST =====
-        setTimeout(() => {
-            showToast('📋 Monitor global system submissions', 'info');
-        }, 600);
+            emptyMessage.style.display = visibleCount === 0 ? "block" : "none";
+        }
     </script>
-<script src="/js/admin-common.js"></script>
-<script>
-  requireAdmin();
-</script>
+
 </body>
 </html>
