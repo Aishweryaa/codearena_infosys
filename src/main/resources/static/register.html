@@ -666,7 +666,7 @@
                 grid-template-columns: 1fr;
             }
         }
-        
+
         .login-link p {
             margin: 6px 0;
         }
@@ -690,381 +690,154 @@
 </head>
 <body>
 
-    <div class="bg-particles">
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-    </div>
+<div class="bg-particles">
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+</div>
 
-    <div class="glow-orb"></div>
+<div class="glow-orb"></div>
 
-    <div class="register-wrapper">
+<div class="register-wrapper">
 
-        <div class="register-container">
-            <div class="register-card">
+    <div class="register-container">
+        <div class="register-card">
 
-                <div class="brand-header">
-                    <div class="brand-icon">
-                        <i class="fas fa-code"></i>
-                    </div>
-                    <h1>Code<span>Arena</span></h1>
-                    <p>Create your free account</p>
+            <div class="brand-header">
+                <div class="brand-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <h1>Code<span>Arena</span></h1>
+                <p>Create your free account</p>
+            </div>
+
+            <div class="role-selector">
+                <div class="role-option active" data-role="student" onclick="selectRole('student')">
+                    <span class="role-icon">👨‍🎓</span>
+                    <div class="role-label">Student</div>
+                    <div class="role-desc">Practice & Learn</div>
+                </div>
+                <div class="role-option" data-role="admin" onclick="selectRole('admin')">
+                    <span class="role-icon">👨‍💼</span>
+                    <div class="role-label">Admin</div>
+                    <div class="role-desc">Manage Platform</div>
+                </div>
+            </div>
+
+            <form class="register-form" id="registerForm" novalidate>
+                <div class="form-group">
+                    <input type="text" id="username" placeholder="Username" required autocomplete="username">
+                    <i class="fas fa-user input-icon"></i>
                 </div>
 
-                <div class="role-selector">
-                    <div class="role-option active" data-role="student" onclick="selectRole('student')">
-                        <span class="role-icon">👨‍🎓</span>
-                        <div class="role-label">Student</div>
-                        <div class="role-desc">Practice & Learn</div>
-                    </div>
-                    <div class="role-option" data-role="admin" onclick="selectRole('admin')">
-                        <span class="role-icon">👨‍💼</span>
-                        <div class="role-label">Admin</div>
-                        <div class="role-desc">Manage Platform</div>
-                    </div>
+                <div class="form-group">
+                    <input type="email" id="email" placeholder="Email address" required autocomplete="email">
+                    <i class="fas fa-envelope input-icon"></i>
                 </div>
 
-                <form class="register-form" id="registerForm" novalidate>
-                    <div class="form-group">
-                        <input type="text" id="username" placeholder="Username" required autocomplete="username">
-                        <i class="fas fa-user input-icon"></i>
-                    </div>
+                <div class="form-group">
+                    <input type="password" id="password" placeholder="Password" required autocomplete="new-password">
+                    <i class="fas fa-lock input-icon"></i>
+                    <button type="button" class="password-toggle" id="togglePassword" aria-label="Toggle password">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
 
-                    <div class="form-group">
-                        <input type="email" id="email" placeholder="Email address" required autocomplete="email">
-                        <i class="fas fa-envelope input-icon"></i>
-                    </div>
+                <div class="password-strength" id="strengthBars">
+                    <div class="bar" id="bar1"></div>
+                    <div class="bar" id="bar2"></div>
+                    <div class="bar" id="bar3"></div>
+                </div>
+                <div class="password-hint" id="passwordHint">Use 8+ characters with a mix of letters, numbers & symbols</div>
 
-                    <div class="form-group">
-                        <input type="password" id="password" placeholder="Password" required autocomplete="new-password">
-                        <i class="fas fa-lock input-icon"></i>
-                        <button type="button" class="password-toggle" id="togglePassword" aria-label="Toggle password">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </div>
+                <div class="form-options">
+                    <label>
+                        <input type="checkbox" id="termsCheck" checked>
+                        I agree to the <a href="terms.html" style="display:inline; font-size:0.8rem; color:#ff5e3a;">Terms of Service</a> & <a href="privacy.html" style="display:inline; font-size:0.8rem; color:#ff5e3a;">Privacy Policy</a>
+                    </label>
+                </div>
 
-                    <div class="password-strength" id="strengthBars">
-                        <div class="bar" id="bar1"></div>
-                        <div class="bar" id="bar2"></div>
-                        <div class="bar" id="bar3"></div>
-                    </div>
-                    <div class="password-hint" id="passwordHint">Use 8+ characters with a mix of letters, numbers & symbols</div>
-
-                    <div class="form-options">
-                        <label>
-                            <input type="checkbox" id="termsCheck" checked>
-                            I agree to the <a href="terms.html" style="display:inline; font-size:0.8rem; color:#ff5e3a;">Terms of Service</a> & <a href="privacy.html" style="display:inline; font-size:0.8rem; color:#ff5e3a;">Privacy Policy</a>
-                        </label>
-                    </div>
-
-                    <button type="submit" class="btn-register" id="registerBtn">
+                <button type="submit" class="btn-register" id="registerBtn">
                         <span class="btn-content">
                             <span class="btn-text">Create account as <span id="roleDisplay">Student</span></span>
                             <span class="spinner"></span>
                             <i class="fas fa-arrow-right" style="font-size: 0.85rem;"></i>
                         </span>
-                    </button>
-                </form>
+                </button>
+            </form>
 
-                <div class="divider">
-                    <span>or continue with</span>
-                </div>
+            <div class="divider">
+                <span>or continue with</span>
+            </div>
 
-                <div class="social-login">
-                    <button class="social-btn github" onclick="socialLogin('GitHub')">
-                        <i class="fab fa-github"></i> GitHub
-                    </button>
-                    <button class="social-btn google" onclick="socialLogin('Google')">
-                        <i class="fab fa-google"></i> Google
-                    </button>
-                </div>
+            <div class="social-login">
+                <button class="social-btn github" onclick="socialLogin('GitHub')">
+                    <i class="fab fa-github"></i> GitHub
+                </button>
+                <button class="social-btn google" onclick="socialLogin('Google')">
+                    <i class="fab fa-google"></i> Google
+                </button>
+            </div>
 
-                <div class="login-link">
-                    <p>Already have an account? <a href="login.html">Login here</a></p>
-                    <p><a href="index.html">Back to Home</a></p>
-                </div>
+            <div class="login-link">
+                <p>Already have an account? <a href="login.html">Login here</a></p>
+                <p><a href="index.html">Back to Home</a></p>
             </div>
         </div>
-
-        <div class="hero-side">
-            <div class="welcome-text">
-                <h2>Start your <span>coding</span> journey today</h2>
-                <p>Join thousands of developers sharpening their skills with real‑time feedback, sandboxed execution, and a global community.</p>
-            </div>
-
-            <div class="feature-grid-side">
-                <div class="feature-mini">
-                    <div class="f-icon"><i class="fas fa-code"></i></div>
-                    <h4>Multi‑language</h4>
-                    <p>Java, Python, C++, JS, Go & more</p>
-                </div>
-                <div class="feature-mini">
-                    <div class="f-icon"><i class="fas fa-bolt"></i></div>
-                    <h4>Instant verdict</h4>
-                    <p>Per‑testcase results in seconds</p>
-                </div>
-                <div class="feature-mini">
-                    <div class="f-icon"><i class="fas fa-shield-alt"></i></div>
-                    <h4>Secure sandbox</h4>
-                    <p>Isolated execution environment</p>
-                </div>
-                <div class="feature-mini">
-                    <div class="f-icon"><i class="fas fa-trophy"></i></div>
-                    <h4>Leaderboards</h4>
-                    <p>Compete & track your progress</p>
-                </div>
-            </div>
-
-            <div class="stats-mini">
-                <div class="stat-item">
-                    <span class="number">10<span>+</span></span>
-                    <span class="label">Languages</span>
-                </div>
-                <div class="stat-item">
-                    <span class="number">120<span>+</span></span>
-                    <span class="label">Problems</span>
-                </div>
-                <div class="stat-item">
-                    <span class="number">2.4k</span>
-                    <span class="label">Developers</span>
-                </div>
-            </div>
-        </div>
-
     </div>
 
-    <script>
-        let selectedRole = 'student';
+    <div class="hero-side">
+        <div class="welcome-text">
+            <h2>Start your <span>coding</span> journey today</h2>
+            <p>Join thousands of developers sharpening their skills with real‑time feedback, sandboxed execution, and a global community.</p>
+        </div>
 
-        function selectRole(role) {
-            selectedRole = role;
-            document.querySelectorAll('.role-option').forEach(el => {
-                el.classList.remove('active');
-            });
-            document.querySelector(`.role-option[data-role="${role}"]`).classList.add('active');
-            
-            const roleDisplay = document.getElementById('roleDisplay');
-            roleDisplay.textContent = role.charAt(0).toUpperCase() + role.slice(1);
-            
-            const btnText = document.querySelector('.btn-register .btn-text');
-            btnText.innerHTML = `Create account as <span id="roleDisplay">${role.charAt(0).toUpperCase() + role.slice(1)}</span>`;
-        }
+        <div class="feature-grid-side">
+            <div class="feature-mini">
+                <div class="f-icon"><i class="fas fa-code"></i></div>
+                <h4>Multi‑language</h4>
+                <p>Java, Python, C++, JS, Go & more</p>
+            </div>
+            <div class="feature-mini">
+                <div class="f-icon"><i class="fas fa-bolt"></i></div>
+                <h4>Instant verdict</h4>
+                <p>Per‑testcase results in seconds</p>
+            </div>
+            <div class="feature-mini">
+                <div class="f-icon"><i class="fas fa-shield-alt"></i></div>
+                <h4>Secure sandbox</h4>
+                <p>Isolated execution environment</p>
+            </div>
+            <div class="feature-mini">
+                <div class="f-icon"><i class="fas fa-trophy"></i></div>
+                <h4>Leaderboards</h4>
+                <p>Compete & track your progress</p>
+            </div>
+        </div>
 
-        (function() {
-            const form = document.getElementById('registerForm');
-            const usernameInput = document.getElementById('username');
-            const emailInput = document.getElementById('email');
-            const passwordInput = document.getElementById('password');
-            const registerBtn = document.getElementById('registerBtn');
-            const togglePassword = document.getElementById('togglePassword');
-            const termsCheck = document.getElementById('termsCheck');
+        <div class="stats-mini">
+            <div class="stat-item">
+                <span class="number">10<span>+</span></span>
+                <span class="label">Languages</span>
+            </div>
+            <div class="stat-item">
+                <span class="number">120<span>+</span></span>
+                <span class="label">Problems</span>
+            </div>
+            <div class="stat-item">
+                <span class="number">2.4k</span>
+                <span class="label">Developers</span>
+            </div>
+        </div>
+    </div>
 
-            const bar1 = document.getElementById('bar1');
-            const bar2 = document.getElementById('bar2');
-            const bar3 = document.getElementById('bar3');
-            const passwordHint = document.getElementById('passwordHint');
+</div>
 
-            togglePassword.addEventListener('click', function() {
-                const isPassword = passwordInput.type === 'password';
-                passwordInput.type = isPassword ? 'text' : 'password';
-                this.querySelector('i').className = isPassword ? 'fas fa-eye-slash' : 'fas fa-eye';
-            });
-
-            function checkPasswordStrength(password) {
-                let score = 0;
-                if (password.length >= 8) score++;
-                if (/[a-z]/.test(password) && /[A-Z]/.test(password)) score++;
-                if (/\d/.test(password) && /[^a-zA-Z0-9]/.test(password)) score++;
-                return score;
-            }
-
-            passwordInput.addEventListener('input', function() {
-                const password = this.value;
-                const strength = checkPasswordStrength(password);
-
-                bar1.className = 'bar';
-                bar2.className = 'bar';
-                bar3.className = 'bar';
-
-                if (password.length === 0) {
-                    passwordHint.textContent = 'Use 8+ characters with a mix of letters, numbers & symbols';
-                    passwordHint.className = 'password-hint';
-                    return;
-                }
-
-                if (strength === 0 || (strength === 1 && password.length < 8)) {
-                    bar1.classList.add('weak');
-                    passwordHint.textContent = '⚠️ Weak — add more variety';
-                    passwordHint.className = 'password-hint weak';
-                } else if (strength === 1 || strength === 2) {
-                    bar1.classList.add('medium');
-                    bar2.classList.add('medium');
-                    passwordHint.textContent = '🔶 Medium — almost there!';
-                    passwordHint.className = 'password-hint medium';
-                } else {
-                    bar1.classList.add('strong');
-                    bar2.classList.add('strong');
-                    bar3.classList.add('strong');
-                    passwordHint.textContent = '✅ Strong password!';
-                    passwordHint.className = 'password-hint strong';
-                }
-            });
-
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-
-                const username = usernameInput.value.trim();
-                const email = emailInput.value.trim();
-                const password = passwordInput.value.trim();
-                let hasError = false;
-
-                [usernameInput, emailInput, passwordInput].forEach(el => {
-                    el.classList.remove('error', 'success');
-                    el.style.borderColor = '';
-                });
-
-                if (!username || username.length < 3) {
-                    usernameInput.classList.add('error');
-                    usernameInput.style.borderColor = '#ef4444';
-                    usernameInput.classList.add('shake');
-                    hasError = true;
-                    setTimeout(() => usernameInput.classList.remove('shake'), 600);
-                } else {
-                    usernameInput.classList.add('success');
-                }
-
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!email || !emailRegex.test(email)) {
-                    emailInput.classList.add('error');
-                    emailInput.style.borderColor = '#ef4444';
-                    emailInput.classList.add('shake');
-                    hasError = true;
-                    setTimeout(() => emailInput.classList.remove('shake'), 600);
-                } else {
-                    emailInput.classList.add('success');
-                }
-
-                if (!password || password.length < 8) {
-                    passwordInput.classList.add('error');
-                    passwordInput.style.borderColor = '#ef4444';
-                    passwordInput.classList.add('shake');
-                    hasError = true;
-                    setTimeout(() => passwordInput.classList.remove('shake'), 600);
-                } else {
-                    passwordInput.classList.add('success');
-                }
-
-                if (!termsCheck.checked) {
-                    termsCheck.style.outline = '2px solid #ef4444';
-                    setTimeout(() => termsCheck.style.outline = '', 1500);
-                    hasError = true;
-                }
-
-                if (hasError) return;
-
-                registerBtn.classList.add('loading');
-                registerBtn.querySelector('.btn-text').textContent = 'Creating account...';
-                registerBtn.querySelector('.fa-arrow-right').style.display = 'none';
-
-                setTimeout(() => {
-                    registerBtn.classList.remove('loading');
-                    registerBtn.querySelector('.btn-text').textContent = 'Create account';
-                    registerBtn.querySelector('.fa-arrow-right').style.display = 'inline-block';
-
-                    registerBtn.style.background = 'linear-gradient(135deg, #22c55e, #16a34a)';
-                    registerBtn.querySelector('.btn-text').textContent = `✓ ${selectedRole} account created!`;
-
-                    localStorage.setItem('userRole', selectedRole);
-                    localStorage.setItem('username', username);
-                    localStorage.setItem('email', email);
-                    localStorage.setItem('isRegistered', 'true');
-
-                    setTimeout(() => {
-                        window.location.href = 'login.html';
-                    }, 1500);
-
-                }, 2000);
-            });
-
-            [usernameInput, emailInput, passwordInput].forEach(el => {
-                el.addEventListener('focus', function() {
-                    this.style.borderColor = '';
-                    this.classList.remove('error', 'success');
-                });
-            });
-
-            window.socialLogin = function(provider) {
-                const btns = document.querySelectorAll('.social-btn');
-                btns.forEach(btn => {
-                    if (btn.textContent.includes(provider)) {
-                        const originalText = btn.innerHTML;
-                        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connecting...';
-                        btn.style.opacity = '0.7';
-                        btn.style.pointerEvents = 'none';
-
-                        setTimeout(() => {
-                            btn.innerHTML = originalText;
-                            btn.style.opacity = '1';
-                            btn.style.pointerEvents = 'auto';
-                            showToast(`✓ ${provider} authentication successful!`);
-                        }, 1500);
-                    }
-                });
-            };
-
-            function showToast(message) {
-                const toast = document.createElement('div');
-                toast.style.cssText = `
-                    position: fixed;
-                    bottom: 30px;
-                    left: 50%;
-                    transform: translateX(-50%);
-                    background: rgba(15, 23, 42, 0.95);
-                    backdrop-filter: blur(12px);
-                    padding: 12px 28px;
-                    border-radius: 12px;
-                    border: 1px solid rgba(255,255,255,0.06);
-                    color: #e8edf5;
-                    font-size: 0.9rem;
-                    z-index: 9999;
-                    animation: toastUp 0.4s ease;
-                    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-                    font-family: 'Inter', sans-serif;
-                `;
-                toast.textContent = message;
-                document.body.appendChild(toast);
-                setTimeout(() => {
-                    toast.style.opacity = '0';
-                    toast.style.transition = 'opacity 0.4s ease';
-                    setTimeout(() => toast.remove(), 400);
-                }, 3000);
-            }
-
-            document.querySelectorAll('.form-options a, .login-link a').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    if (this.closest('.login-link')) {
-                        return;
-                    }
-                    
-                    if (this.closest('.form-options')) {
-                        e.preventDefault();
-                        const message = this.textContent.trim();
-                        showToast(`📄 Opening ${message} page...`);
-                        setTimeout(() => {
-                            window.location.href = this.getAttribute('href');
-                        }, 1500);
-                    }
-                });
-            });
-
-            setTimeout(() => {
-                showToast('🚀 Welcome to CodeArena! Choose your role.');
-            }, 500);
-
-        })();
-    </script>
+<script src="/js/config.js"></script>
+<script src="/js/utils.js"></script>
+<script src="/js/register.js"></script>
 
 </body>
 </html>

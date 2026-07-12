@@ -788,6 +788,7 @@
     togglePassword.addEventListener("click", function () {
         const isPassword = passwordInput.type === "password";
         passwordInput.type = isPassword ? "text" : "password";
+
         this.querySelector("i").className = isPassword
             ? "fas fa-eye-slash"
             : "fas fa-eye";
@@ -800,7 +801,7 @@
         const password = passwordInput.value.trim();
 
         if (!username || !password) {
-            showToast("Please enter username and password", "error");
+            showToast("Please enter email/username and password", "error");
             return;
         }
 
@@ -857,8 +858,10 @@
 
         } catch (error) {
             loginBtn.classList.remove("loading");
+
             loginBtn.querySelector(".btn-text").textContent =
                 `Log in as ${selectedRole.charAt(0).toUpperCase() + selectedRole.slice(1)}`;
+
             loginBtn.querySelector(".fa-arrow-right").style.display = "inline-block";
 
             showToast(error.message || "Invalid username or password", "error");
@@ -869,6 +872,5 @@
         showToast(provider + " login coming soon", "info");
     };
 </script>
-
 </body>
 </html>
