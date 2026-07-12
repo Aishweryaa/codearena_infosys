@@ -2,107 +2,1355 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>My Profile Portfolio | CodeArena</title>
-    <link rel="stylesheet" href="../css/variables.css">
-    <link rel="stylesheet" href="../css/common.css">
-    <link rel="stylesheet" href="../css/animations.css">
-    <link rel="stylesheet" href="../css/dashboard.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile · CodeArena</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <style>
-        .profile-grid-box {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 32px;
+        /* ===== RESET & VARIABLES ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg-main: #0a0e17;
+            --bg-surface: #111827;
+            --bg-surface-hover: #1e293b;
+            --bg-card: #141c2b;
+            --text-main: #e8edf5;
+            --text-muted: #8b9bb5;
+            --text-dim: #4a5a7a;
+            --text-inverse: #f0f4ff;
+            --border-color: rgba(255, 255, 255, 0.05);
+            --border-hover: rgba(255, 255, 255, 0.08);
+            --color-primary: #ff5e3a;
+            --color-primary-dim: rgba(255, 94, 58, 0.12);
+            --color-accent: #ff7a5a;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+            --sidebar-width: 220px;
+            --success: #22c55e;
+            --success-dim: rgba(34, 197, 94, 0.12);
+            --warning: #f59e0b;
+            --warning-dim: rgba(245, 158, 11, 0.12);
+            --danger: #ef4444;
+            --danger-dim: rgba(239, 68, 68, 0.12);
+            --blue: #3b82f6;
+            --blue-dim: rgba(59, 130, 246, 0.12);
+            --purple: #8b5cf6;
+            --purple-dim: rgba(139, 92, 246, 0.12);
+            --gold: #f59e0b;
+            --heat-0: #161b22;
+            --heat-1: #0e4429;
+            --heat-2: #006d32;
+            --heat-3: #26a641;
+            --heat-4: #39d353;
         }
-        .heatmap-matrix-grid {
+
+        [data-theme="light"] {
+            --bg-main: #f1f5f9;
+            --bg-surface: #ffffff;
+            --bg-surface-hover: #e8edf5;
+            --bg-card: #f8fafc;
+            --text-main: #0b1b33;
+            --text-muted: #475569;
+            --text-dim: #94a3b8;
+            --text-inverse: #1e293b;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --border-hover: rgba(0, 0, 0, 0.12);
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            --heat-0: #ebedf0;
+            --heat-1: #9be9a8;
+            --heat-2: #40c463;
+            --heat-3: #30a14e;
+            --heat-4: #216e39;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.5;
+            min-height: 100vh;
+            display: flex;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-main); }
+        ::-webkit-scrollbar-thumb { background: var(--text-dim); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+        /* ===== SIDEBAR ===== */
+        .admin-sidebar {
+            position: fixed; top: 0; left: 0; width: var(--sidebar-width); height: 100vh;
+            background: var(--bg-surface); border-right: 1px solid var(--border-color);
+            padding: 24px 16px; display: flex; flex-direction: column; z-index: 100;
+            transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), background 0.3s ease, border-color 0.3s ease;
+        }
+
+        .sidebar-brand {
+            display: flex; align-items: center; gap: 10px;
+            padding: 0 8px 20px; border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        .sidebar-brand .logo-icon {
+            width: 36px; height: 36px;
+            background: linear-gradient(135deg, var(--color-primary), #e0452a);
+            border-radius: var(--radius-sm);
+            display: flex; align-items: center;
+            justify-content: center; font-size: 1.1rem; color: #fff;
+        }
+
+        .sidebar-brand .brand-text {
+            font-size: 1.15rem; font-weight: 700; color: var(--text-main);
+            letter-spacing: -0.3px;
+        }
+        .sidebar-brand .brand-text span { color: var(--color-primary); }
+
+        .sidebar-menu {
+            list-style: none; flex: 1; display: flex; flex-direction: column;
+            gap: 2px; padding: 0 4px;
+        }
+
+        .sidebar-menu li a {
+            display: flex; align-items: center; gap: 12px; padding: 10px 14px;
+            color: var(--text-muted); font-weight: 500; font-size: 0.85rem;
+            border-radius: var(--radius-sm); transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .sidebar-menu li a i { width: 18px; text-align: center; font-size: 0.95rem; flex-shrink: 0; }
+        .sidebar-menu li a .menu-label { flex: 1; }
+        .sidebar-menu li a .menu-badge {
+            background: var(--color-primary-dim); color: var(--color-primary);
+            font-size: 0.6rem; font-weight: 700; padding: 2px 8px; border-radius: 20px;
+        }
+        .sidebar-menu li:hover a { color: var(--text-main); background: var(--bg-surface-hover); }
+        .sidebar-menu li.active a {
+            color: var(--color-primary); background: var(--color-primary-dim); font-weight: 600;
+        }
+        .sidebar-menu li.active a::before {
+            content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+            width: 3px; height: 20px; background: var(--color-primary); border-radius: 0 4px 4px 0;
+        }
+        .sidebar-menu .divider { height: 1px; background: var(--border-color); margin: 8px 8px; }
+        .sidebar-menu .logout-item { margin-top: auto; border-top: 1px solid var(--border-color); padding-top: 12px; }
+        .sidebar-menu .logout-item a { color: var(--text-muted); }
+        .sidebar-menu .logout-item a:hover { color: var(--danger); background: var(--danger-dim); }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            margin-left: var(--sidebar-width); flex: 1; padding: 28px 36px 40px;
+            min-height: 100vh; transition: background 0.3s ease;
+        }
+
+        /* ===== TOP NAV BAR ===== */
+        .top-bar {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 0 20px 0; border-bottom: 1px solid var(--border-color);
+            margin-bottom: 24px; flex-wrap: wrap; gap: 12px;
+        }
+
+        .top-bar .page-title {
+            font-size: 1.1rem; font-weight: 600; color: var(--text-main);
+            display: flex; align-items: center; gap: 10px;
+        }
+        .top-bar .page-title i { color: var(--color-primary); }
+        .top-bar .page-title span { color: var(--text-muted); font-weight: 400; font-size: 0.85rem; }
+
+        .top-bar .user-actions { display: flex; align-items: center; gap: 12px; }
+
+        /* ===== THEME TOGGLE BUTTON ===== */
+        .theme-toggle-btn {
+            background: transparent; border: 1px solid var(--border-color);
+            border-radius: 50%; width: 38px; height: 38px; font-size: 1.1rem;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s ease; color: var(--text-inverse);
+        }
+        .theme-toggle-btn:hover { border-color: var(--color-primary); transform: rotate(20deg); }
+        [data-theme="light"] .theme-toggle-btn { color: #f59e0b; }
+        [data-theme="dark"] .theme-toggle-btn { color: #94a3b8; }
+
+        .top-bar .user-actions .user-profile {
+            display: flex; align-items: center; gap: 10px; cursor: pointer;
+            padding: 4px 12px 4px 4px; border-radius: var(--radius-md);
+            transition: background 0.2s ease; background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+        }
+        .top-bar .user-actions .user-profile:hover { background: var(--bg-surface-hover); }
+        .top-bar .user-actions .user-profile .avatar {
+            width: 32px; height: 32px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--color-primary), #e0452a);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.8rem; color: #fff;
+        }
+        .top-bar .user-actions .user-profile .user-name {
+            font-size: 0.85rem; font-weight: 600; color: var(--text-main);
+        }
+        .top-bar .user-actions .user-profile i { color: var(--text-dim); font-size: 0.8rem; }
+
+        /* ===== PROFILE LAYOUT ===== */
+        .profile-layout {
             display: grid;
-            grid-template-columns: repeat(12, 1fr);
+            grid-template-columns: 300px 1fr;
+            gap: 28px;
+        }
+
+        /* ===== LEFT COLUMN - PROFILE CARD ===== */
+        .profile-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 24px 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .profile-card:hover { border-color: var(--border-hover); }
+
+        .profile-card .edit-profile-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 4px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
             gap: 6px;
-            margin-top: 16px;
         }
-        .heatmap-box-cell {
-            background-color: var(--border-color);
+
+        .profile-card .edit-profile-btn:hover {
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+            background: var(--color-primary-dim);
+        }
+
+        .profile-card .avatar-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .profile-card .avatar-wrapper .avatar-image {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--color-primary), #e0452a);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.5rem; color: #fff;
+            border: 3px solid var(--color-primary);
+            box-shadow: 0 0 30px rgba(255, 94, 58, 0.12);
+        }
+
+        .profile-card .avatar-wrapper .online-dot {
+            position: absolute;
+            bottom: 4px; right: 4px;
+            width: 14px; height: 14px;
+            border-radius: 50%;
+            background: var(--success);
+            border: 3px solid var(--bg-surface);
+        }
+
+        .profile-card .display-name {
+            font-size: 1.2rem; font-weight: 700; color: var(--text-main);
+        }
+
+        .profile-card .user-handle {
+            color: var(--text-muted); font-size: 0.8rem; margin-bottom: 2px;
+        }
+
+        .profile-card .user-email {
+            color: var(--text-dim); font-size: 0.75rem; margin-bottom: 12px;
+        }
+
+        .profile-card .user-bio {
+            color: var(--text-muted); font-size: 0.8rem; line-height: 1.5;
+            padding: 10px; background: var(--bg-main);
+            border-radius: var(--radius-md); border: 1px solid var(--border-color);
+            margin-bottom: 12px; text-align: left;
+        }
+
+        .profile-card .user-bio i { color: var(--color-primary); margin-right: 4px; }
+
+        .profile-card .info-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 12px;
+        }
+
+        .profile-card .info-grid .info-item {
+            background: var(--bg-main); padding: 8px;
+            border-radius: var(--radius-md); border: 1px solid var(--border-color);
+        }
+
+        .profile-card .info-grid .info-item .info-value {
+            font-size: 1.2rem; font-weight: 700; color: var(--text-main);
+        }
+
+        .profile-card .info-grid .info-item .info-label {
+            font-size: 0.55rem; color: var(--text-muted);
+            text-transform: uppercase; letter-spacing: 0.3px;
+        }
+
+        .profile-card .rank-section {
+            display: flex; justify-content: space-between;
+            background: var(--bg-main); border-radius: var(--radius-md);
+            padding: 8px 12px; border: 1px solid var(--border-color);
+            margin-bottom: 6px;
+        }
+
+        .profile-card .rank-section .rank-label {
+            color: var(--text-muted); font-size: 0.75rem;
+        }
+
+        .profile-card .rank-section .rank-value {
+            font-weight: 700; color: var(--color-primary); font-size: 0.85rem;
+        }
+
+        .profile-card .rank-section .rank-value .rank-icon { margin-right: 4px; }
+
+        /* ===== RIGHT COLUMN ===== */
+        .profile-right { display: flex; flex-direction: column; gap: 20px; }
+
+        /* ===== STATS ROW ===== */
+        .stats-row {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+        }
+
+        .stat-card {
+            background: var(--bg-surface); border: 1px solid var(--border-color);
+            border-radius: var(--radius-md); padding: 14px 16px; text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+
+        .stat-card .stat-number {
+            font-size: 1.5rem; font-weight: 700; color: var(--text-main); line-height: 1.2;
+        }
+
+        .stat-card .stat-number.green { color: var(--success); }
+        .stat-card .stat-number.yellow { color: var(--warning); }
+        .stat-card .stat-number.red { color: var(--danger); }
+        .stat-card .stat-number.blue { color: var(--blue); }
+        .stat-card .stat-number.purple { color: var(--purple); }
+
+        .stat-card .stat-label {
+            font-size: 0.6rem; color: var(--text-muted);
+            text-transform: uppercase; letter-spacing: 0.3px; margin-top: 2px;
+        }
+
+        /* ===== ACTIVITY HEATMAP ===== */
+        .activity-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 18px 22px;
+            transition: all 0.3s ease;
+        }
+
+        .activity-card:hover { border-color: var(--border-hover); }
+
+        .activity-card .card-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 14px; flex-wrap: wrap; gap: 8px;
+        }
+
+        .activity-card .card-header .card-title {
+            font-size: 0.9rem; font-weight: 600; color: var(--text-main);
+            display: flex; align-items: center; gap: 8px;
+        }
+
+        .activity-card .card-header .card-title i { color: var(--color-primary); }
+
+        .activity-card .card-header .card-subtitle {
+            font-size: 0.75rem; color: var(--text-muted);
+        }
+
+        .heatmap-wrapper {
+            overflow-x: auto;
+            padding: 4px 0;
+        }
+
+        .heatmap-grid {
+            display: grid;
+            grid-template-columns: 28px repeat(53, 1fr);
+            gap: 3px;
+            min-width: 700px;
+        }
+
+        .heatmap-grid .month-label {
+            font-size: 0.5rem;
+            color: var(--text-dim);
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding-right: 4px;
+            font-weight: 500;
+        }
+
+        .heatmap-grid .day-label {
+            font-size: 0.5rem;
+            color: var(--text-dim);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 4px;
+            font-weight: 500;
+            height: 12px;
+        }
+
+        .heatmap-cell {
             aspect-ratio: 1;
             border-radius: 2px;
+            background: var(--heat-0);
+            transition: all 0.2s ease;
+            cursor: default;
+            min-width: 10px;
+            min-height: 10px;
         }
-        .heatmap-box-cell.active-low { background-color: #312e81; }
-        .heatmap-box-cell.active-medium { background-color: #4338ca; }
-        .heatmap-box-cell.active-high { background-color: #6366f1; }
+
+        .heatmap-cell:hover {
+            transform: scale(1.3);
+            z-index: 2;
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
+        }
+
+        .heatmap-cell.level-0 { background: var(--heat-0); }
+        .heatmap-cell.level-1 { background: var(--heat-1); }
+        .heatmap-cell.level-2 { background: var(--heat-2); }
+        .heatmap-cell.level-3 { background: var(--heat-3); }
+        .heatmap-cell.level-4 { background: var(--heat-4); }
+
+        .heatmap-cell.today-cell {
+            border: 2px solid var(--color-primary);
+            box-shadow: 0 0 14px rgba(255, 94, 58, 0.25);
+        }
+
+        .heatmap-legend {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 10px;
+            justify-content: flex-end;
+        }
+
+        .heatmap-legend .legend-label {
+            font-size: 0.6rem; color: var(--text-dim);
+        }
+
+        .heatmap-legend .legend-cell {
+            width: 12px; height: 12px; border-radius: 2px;
+        }
+
+        .heatmap-legend .legend-cell.l0 { background: var(--heat-0); }
+        .heatmap-legend .legend-cell.l1 { background: var(--heat-1); }
+        .heatmap-legend .legend-cell.l2 { background: var(--heat-2); }
+        .heatmap-legend .legend-cell.l3 { background: var(--heat-3); }
+        .heatmap-legend .legend-cell.l4 { background: var(--heat-4); }
+
+        /* ===== DIFFICULTY BREAKDOWN ===== */
+        .difficulty-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 18px 22px;
+            transition: all 0.3s ease;
+        }
+
+        .difficulty-card:hover { border-color: var(--border-hover); }
+
+        .difficulty-card .card-title {
+            font-size: 0.9rem; font-weight: 600; color: var(--text-main);
+            display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
+        }
+
+        .difficulty-card .card-title i { color: var(--color-primary); }
+
+        .difficulty-item {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 8px 0; border-bottom: 1px solid var(--border-color);
+        }
+
+        .difficulty-item:last-child { border-bottom: none; }
+
+        .difficulty-item .diff-left {
+            display: flex; align-items: center; gap: 10px;
+        }
+
+        .difficulty-item .diff-left .diff-dot {
+            width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+        }
+
+        .diff-dot.easy { background: var(--success); }
+        .diff-dot.medium { background: var(--warning); }
+        .diff-dot.hard { background: var(--danger); }
+
+        .difficulty-item .diff-left .diff-name {
+            font-size: 0.85rem; color: var(--text-muted);
+        }
+
+        .difficulty-item .diff-right {
+            display: flex; align-items: center; gap: 12px;
+        }
+
+        .difficulty-item .diff-right .diff-count {
+            font-weight: 600; color: var(--text-main); font-size: 0.85rem;
+        }
+
+        .difficulty-item .diff-right .diff-bar {
+            width: 80px; height: 5px;
+            background: var(--bg-main); border-radius: 4px; overflow: hidden;
+        }
+
+        .difficulty-item .diff-right .diff-bar .diff-fill {
+            height: 100%; border-radius: 4px; transition: width 0.6s ease;
+        }
+
+        .diff-fill.easy { background: var(--success); }
+        .diff-fill.medium { background: var(--warning); }
+        .diff-fill.hard { background: var(--danger); }
+
+        .difficulty-item .diff-right .diff-percent {
+            font-size: 0.7rem; color: var(--text-dim); min-width: 35px; text-align: right;
+        }
+
+        /* ===== RECENT SUBMISSIONS ===== */
+        .recent-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 18px 22px;
+            transition: all 0.3s ease;
+        }
+
+        .recent-card:hover { border-color: var(--border-hover); }
+
+        .recent-card .card-header {
+            display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;
+        }
+
+        .recent-card .card-header .card-title {
+            font-size: 0.9rem; font-weight: 600; color: var(--text-main);
+            display: flex; align-items: center; gap: 8px;
+        }
+
+        .recent-card .card-header .card-title i { color: var(--color-primary); }
+
+        .recent-card .card-header .view-all {
+            font-size: 0.75rem; color: var(--text-muted);
+            cursor: pointer; transition: color 0.2s ease;
+        }
+
+        .recent-card .card-header .view-all:hover { color: var(--color-primary); }
+
+        .submission-item {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 8px 0; border-bottom: 1px solid var(--border-color);
+        }
+
+        .submission-item:last-child { border-bottom: none; }
+
+        .submission-item .sub-left {
+            display: flex; align-items: center; gap: 10px;
+        }
+
+        .submission-item .sub-left .sub-status {
+            width: 28px; height: 28px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-size: 0.7rem;
+        }
+
+        .submission-item .sub-left .sub-status.accepted {
+            background: var(--success-dim); color: var(--success);
+        }
+        .submission-item .sub-left .sub-status.tle {
+            background: var(--warning-dim); color: var(--warning);
+        }
+        .submission-item .sub-left .sub-status.error {
+            background: var(--danger-dim); color: var(--danger);
+        }
+
+        .submission-item .sub-left .sub-info .sub-title {
+            font-size: 0.8rem; font-weight: 600; color: var(--text-main);
+        }
+
+        .submission-item .sub-left .sub-info .sub-meta {
+            font-size: 0.65rem; color: var(--text-dim);
+            display: flex; align-items: center; gap: 6px;
+        }
+
+        .submission-item .sub-left .sub-info .sub-meta .lang-tag {
+            padding: 1px 6px; border-radius: 8px; font-size: 0.5rem; font-weight: 600;
+        }
+
+        .lang-tag.java {
+            background: rgba(255, 152, 0, 0.12); color: #f59e0b;
+        }
+        .lang-tag.python {
+            background: rgba(55, 118, 171, 0.12); color: #3b82f6;
+        }
+        .lang-tag.cpp {
+            background: rgba(0, 89, 156, 0.12); color: #60a5fa;
+        }
+
+        .submission-item .sub-right { text-align: right; }
+
+        .submission-item .sub-right .sub-time {
+            font-size: 0.7rem; color: var(--text-dim);
+        }
+
+        .submission-item .sub-right .sub-result {
+            font-size: 0.65rem; font-weight: 600;
+            padding: 2px 8px; border-radius: 10px;
+        }
+
+        .sub-result.accepted {
+            color: var(--success); background: var(--success-dim);
+        }
+        .sub-result.tle {
+            color: var(--warning); background: var(--warning-dim);
+        }
+        .sub-result.error {
+            color: var(--danger); background: var(--danger-dim);
+        }
+
+        /* ===== EDIT PROFILE MODAL ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal-box {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 28px 32px;
+            max-width: 480px;
+            width: 90%;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .modal-box .modal-header {
+            display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;
+        }
+
+        .modal-box .modal-header h2 {
+            font-size: 1.1rem; font-weight: 700; color: var(--text-main);
+        }
+
+        .modal-box .modal-header .modal-close {
+            background: transparent; border: none;
+            color: var(--text-dim); font-size: 1.1rem;
+            cursor: pointer; transition: color 0.2s ease;
+        }
+
+        .modal-box .modal-header .modal-close:hover { color: var(--text-main); }
+
+        .modal-box .form-group { margin-bottom: 14px; }
+
+        .modal-box .form-group label {
+            display: block; font-size: 0.8rem; font-weight: 600;
+            color: var(--text-muted); margin-bottom: 4px;
+        }
+
+        .modal-box .form-group input,
+        .modal-box .form-group textarea {
+            width: 100%;
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 8px 12px;
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .modal-box .form-group input:focus,
+        .modal-box .form-group textarea:focus {
+            border-color: var(--color-primary);
+        }
+
+        .modal-box .form-group textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .modal-box .form-actions {
+            display: flex; gap: 10px; justify-content: flex-end; margin-top: 16px;
+        }
+
+        .modal-box .form-actions button {
+            padding: 8px 20px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            border: none;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.25s ease;
+        }
+
+        .modal-box .form-actions .btn-cancel {
+            background: var(--bg-surface-hover);
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+        }
+
+        .modal-box .form-actions .btn-cancel:hover {
+            border-color: var(--text-muted);
+            color: var(--text-main);
+        }
+
+        .modal-box .form-actions .btn-submit {
+            background: var(--color-primary);
+            color: #fff;
+        }
+
+        .modal-box .form-actions .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(255, 94, 58, 0.3);
+            opacity: 0.92;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .profile-layout { grid-template-columns: 1fr; }
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .admin-sidebar {
+                transform: translateX(-100%);
+                width: 260px;
+            }
+            .admin-sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; padding: 16px; }
+            .top-bar { flex-direction: column; align-items: stretch; gap: 12px; }
+            .top-bar .user-actions { flex-wrap: wrap; }
+            .profile-card { padding: 16px; }
+            .profile-card .avatar-wrapper .avatar-image {
+                width: 70px; height: 70px; font-size: 2rem;
+            }
+            .stats-row { grid-template-columns: 1fr 1fr; gap: 8px; }
+            .stat-card { padding: 10px 12px; }
+            .stat-card .stat-number { font-size: 1.1rem; }
+            .activity-card { padding: 14px 16px; }
+            .heatmap-grid {
+                min-width: 450px; gap: 2px;
+            }
+            .heatmap-cell { min-width: 9px; min-height: 9px; }
+            .difficulty-card { padding: 14px 16px; }
+            .recent-card { padding: 14px 16px; }
+            .difficulty-item .diff-right .diff-bar { width: 50px; }
+            .mobile-toggle { display: flex !important; }
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 0; left: 0;
+                width: 100%; height: 100%;
+                background: rgba(0, 0, 0, 0.6);
+                z-index: 99;
+                backdrop-filter: blur(4px);
+            }
+            .sidebar-overlay.active { display: block; }
+            .modal-box { padding: 20px; }
+        }
+
+        @media (max-width: 480px) {
+            .main-content { padding: 12px; }
+            .top-bar .page-title { font-size: 0.9rem; }
+            .profile-card .avatar-wrapper .avatar-image {
+                width: 60px; height: 60px; font-size: 1.6rem;
+            }
+            .stats-row { grid-template-columns: 1fr 1fr; gap: 6px; }
+            .stat-card { padding: 8px 10px; }
+            .stat-card .stat-number { font-size: 0.95rem; }
+            .stat-card .stat-label { font-size: 0.5rem; }
+            .heatmap-grid { min-width: 350px; }
+            .heatmap-cell { min-width: 7px; min-height: 7px; }
+            .heatmap-legend .legend-cell { width: 10px; height: 10px; }
+            .submission-item { flex-wrap: wrap; gap: 6px; }
+            .submission-item .sub-right {
+                width: 100%; display: flex; justify-content: space-between;
+            }
+            .modal-box { padding: 16px; }
+        }
+
+        /* ===== MOBILE TOGGLE ===== */
+        .mobile-toggle {
+            display: none;
+            position: fixed;
+            top: 14px; left: 14px;
+            z-index: 200;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            color: var(--text-main);
+            padding: 8px 12px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .mobile-toggle:hover { border-color: var(--color-primary); }
+
+        /* ===== TOAST ===== */
+        .custom-toast {
+            position: fixed;
+            bottom: 30px; right: 30px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            padding: 10px 20px;
+            border-radius: var(--radius-md);
+            color: var(--text-main);
+            font-size: 0.85rem;
+            z-index: 9999;
+            animation: slideUp 0.4s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            font-family: 'Inter', sans-serif;
+            backdrop-filter: blur(12px);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
-    <div class="admin-container">
-        <aside class="admin-sidebar">
-            <div class="sidebar-brand">CodeArena<span>.</span></div>
-            <ul class="sidebar-menu">
-                <li><a href="dashboard.html">Dashboard</a></li>
-                <li><a href="problems.html">Problems</a></li>
-                <li><a href="submissions.html">My Submissions</a></li>
-                <li><a href="leaderboard.html">Leaderboard</a></li>
-                <li class="active"><a href="profile.html">Profile</a></li>
-                <li style="margin-top: auto;"><a href="../login.html" style="color: var(--danger);">Logout</a></li>
-            </ul>
-        </aside>
 
-        <main class="main-content animate-fade-up">
-            <div class="profile-grid-box">
-                
-                
-                <div class="content-card" style="text-align: center; padding: 32px 24px;">
-                    <div style="width: 96px; height: 96px; background: var(--border-color); border-radius: 50%; margin: 0 auto 16px auto; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; border: 2px solid var(--color-primary);">👨‍💻</div>
-                    <h2 style="font-size: 1.3rem; margin-bottom: 4px;">alex_coder</h2>
-                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px;">alex.johnson@university.edu</p>
-                    <div style="background: rgba(255,255,255,0.02); padding: 12px; border-radius: var(--radius-md); text-align: left; font-size: 0.85rem;">
-                        <p style="margin-bottom: 6px; color: var(--text-muted);">Global Badge Rank: <strong style="color: var(--text-main); float: right;">#4</strong></p>
-                        <p>Total Coding Points: <strong style="color: var(--color-accent); float: right;">2,490 pts</strong></p>
+    <!-- ===== MOBILE TOGGLE ===== -->
+    <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle sidebar">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- ===== OVERLAY ===== -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="admin-sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <div class="logo-icon"><i class="fas fa-code"></i></div>
+            <div class="brand-text">Code<span>Arena</span></div>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="dashboard.html"><i class="fas fa-th-large"></i><span class="menu-label">Dashboard</span></a></li>
+            <li><a href="problems.html"><i class="fas fa-code"></i><span class="menu-label">Problems</span><span class="menu-badge">120</span></a></li>
+            <li><a href="submissions.html"><i class="fas fa-paper-plane"></i><span class="menu-label">My Submissions</span></a></li>
+            <li><a href="leaderboard.html"><i class="fas fa-trophy"></i><span class="menu-label">Leaderboard</span></a></li>
+            <li class="active"><a href="profile.html"><i class="fas fa-user"></i><span class="menu-label">Profile</span></a></li>
+            <li><a href="bookmarks.html"><i class="fas fa-bookmark"></i><span class="menu-label">Bookmarks</span><span class="menu-badge">4</span></a></li>
+            <li><a href="study-plan.html"><i class="fas fa-road"></i><span class="menu-label">Study Plan</span></a></li>
+            <li class="divider"></li>
+            <li class="logout-item"><a href="login.html"><i class="fas fa-sign-out-alt"></i><span class="menu-label">Logout</span></a></li>
+        </ul>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main-content">
+
+        <!-- ===== TOP BAR ===== -->
+        <div class="top-bar">
+            <div class="page-title">
+                <i class="fas fa-user"></i>
+                Profile
+                <span>/ My Portfolio</span>
+            </div>
+            <div class="user-actions">
+                <button class="theme-toggle-btn" id="themeToggle" aria-label="Toggle theme">
+                    🌙
+                </button>
+                <div class="user-profile">
+                    <div class="avatar">A</div>
+                    <span class="user-name">alex_coder</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== PROFILE LAYOUT ===== -->
+        <div class="profile-layout">
+
+            <!-- ===== LEFT COLUMN ===== -->
+            <div class="profile-card">
+                <button class="edit-profile-btn" onclick="openEditModal()">
+                    <i class="fas fa-pen"></i> Edit
+                </button>
+
+                <div class="avatar-wrapper">
+                    <div class="avatar-image" id="profileAvatar">👨‍💻</div>
+                    <div class="online-dot"></div>
+                </div>
+                <div class="display-name" id="profileDisplayName">Alex Johnson</div>
+                <div class="user-handle" id="profileHandle">@alex_coder</div>
+                <div class="user-email" id="profileEmail">alex.johnson@university.edu</div>
+                <div class="user-bio" id="profileBio">
+                    <i class="fas fa-quote-left"></i>
+                    Passionate about algorithms, system design, and building scalable solutions. 5+ years of coding experience.
+                </div>
+
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-value">84</div>
+                        <div class="info-label">Solved</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-value">7</div>
+                        <div class="info-label">Streak</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-value">92%</div>
+                        <div class="info-label">Accuracy</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-value">12</div>
+                        <div class="info-label">Languages</div>
                     </div>
                 </div>
 
-                <!-- Right Hand Contributions Activity Analytics Matrix -->
-                <div>
-                    <div class="content-card">
-                        <h3 style="font-size: 1.1rem; font-weight:600; margin-bottom: 4px;">Coding Activity Ledger</h3>
-                        <p style="color: var(--text-muted); font-size: 0.85rem;">Tracking algorithmic compilation trends over the last few active weeks.</p>
-                        
-                        <!-- Activity Grid Simulation Block Row -->
-                        <div class="heatmap-matrix-grid">
-                            <div class="heatmap-box-cell active-high"></div>
-                            <div class="heatmap-box-cell active-low"></div>
-                            <div class="heatmap-box-cell"></div>
-                            <div class="heatmap-box-cell active-medium"></div>
-                            <div class="heatmap-box-cell active-high"></div>
-                            <div class="heatmap-box-cell"></div>
-                            <div class="heatmap-box-cell active-low"></div>
-                            <div class="heatmap-box-cell active-medium"></div>
-                            <div class="heatmap-box-cell active-high"></div>
-                            <div class="heatmap-box-cell"></div>
-                            <div class="heatmap-box-cell active-low"></div>
-                            <div class="heatmap-box-cell active-high"></div>
-                            <!-- Extra padding blocks to balance layout design grids -->
-                            <div class="heatmap-box-cell active-medium"></div>
-                            <div class="heatmap-box-cell"></div>
-                            <div class="heatmap-box-cell active-low"></div>
-                            <div class="heatmap-box-cell active-high"></div>
-                            <div class="heatmap-box-cell active-high"></div>
-                            <div class="heatmap-box-cell active-low"></div>
-                            <div class="heatmap-box-cell"></div>
-                            <div class="heatmap-box-cell active-medium"></div>
-                            <div class="heatmap-box-cell active-high"></div>
-                            <div class="heatmap-box-cell"></div>
-                            <div class="heatmap-box-cell active-low"></div>
-                            <div class="heatmap-box-cell active-medium"></div>
+                <div class="rank-section">
+                    <span class="rank-label"><i class="fas fa-trophy" style="color: var(--color-primary);"></i> Global Rank</span>
+                    <span class="rank-value"><span class="rank-icon">🏆</span> #4</span>
+                </div>
+                <div class="rank-section">
+                    <span class="rank-label"><i class="fas fa-star" style="color: var(--gold);"></i> Total Points</span>
+                    <span class="rank-value" style="color: var(--gold);">2,490 pts</span>
+                </div>
+                <div class="rank-section" style="border-top: 1px solid var(--border-color); padding-top: 8px; margin-top: 6px;">
+                    <span class="rank-label"><i class="fas fa-code" style="color: var(--blue);"></i> Coding Score</span>
+                    <span class="rank-value" style="color: var(--blue);">1,840</span>
+                </div>
+            </div>
+
+            <!-- ===== RIGHT COLUMN ===== -->
+            <div class="profile-right">
+
+                <!-- ===== STATS ROW ===== -->
+                <div class="stats-row">
+                    <div class="stat-card">
+                        <div class="stat-number green">50</div>
+                        <div class="stat-label">Easy</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number yellow">30</div>
+                        <div class="stat-label">Medium</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number red">4</div>
+                        <div class="stat-label">Hard</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number purple">12</div>
+                        <div class="stat-label">Languages</div>
+                    </div>
+                </div>
+
+                <!-- ===== ACTIVITY HEATMAP ===== -->
+                <div class="activity-card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fas fa-calendar-alt"></i> Coding Activity
+                        </div>
+                        <div class="card-subtitle">Last 52 weeks</div>
+                    </div>
+
+                    <div class="heatmap-wrapper">
+                        <div class="heatmap-grid" id="heatmapGrid">
+                            <!-- Generated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <div class="heatmap-legend">
+                        <span class="legend-label">Less</span>
+                        <span class="legend-cell l0"></span>
+                        <span class="legend-cell l1"></span>
+                        <span class="legend-cell l2"></span>
+                        <span class="legend-cell l3"></span>
+                        <span class="legend-cell l4"></span>
+                        <span class="legend-label">More</span>
+                    </div>
+                </div>
+
+                <!-- ===== DIFFICULTY BREAKDOWN ===== -->
+                <div class="difficulty-card">
+                    <div class="card-title">
+                        <i class="fas fa-chart-pie"></i> Difficulty Breakdown
+                    </div>
+
+                    <div class="difficulty-item">
+                        <div class="diff-left">
+                            <span class="diff-dot easy"></span>
+                            <span class="diff-name">Easy</span>
+                        </div>
+                        <div class="diff-right">
+                            <span class="diff-count">50</span>
+                            <div class="diff-bar">
+                                <div class="diff-fill easy" style="width: 83%;"></div>
+                            </div>
+                            <span class="diff-percent">83%</span>
+                        </div>
+                    </div>
+
+                    <div class="difficulty-item">
+                        <div class="diff-left">
+                            <span class="diff-dot medium"></span>
+                            <span class="diff-name">Medium</span>
+                        </div>
+                        <div class="diff-right">
+                            <span class="diff-count">30</span>
+                            <div class="diff-bar">
+                                <div class="diff-fill medium" style="width: 60%;"></div>
+                            </div>
+                            <span class="diff-percent">60%</span>
+                        </div>
+                    </div>
+
+                    <div class="difficulty-item">
+                        <div class="diff-left">
+                            <span class="diff-dot hard"></span>
+                            <span class="diff-name">Hard</span>
+                        </div>
+                        <div class="diff-right">
+                            <span class="diff-count">4</span>
+                            <div class="diff-bar">
+                                <div class="diff-fill hard" style="width: 12%;"></div>
+                            </div>
+                            <span class="diff-percent">12%</span>
                         </div>
                     </div>
                 </div>
 
+                <!-- ===== RECENT SUBMISSIONS ===== -->
+                <div class="recent-card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fas fa-clock"></i> Recent Submissions
+                        </div>
+                        <span class="view-all">View all →</span>
+                    </div>
+
+                    <div class="submission-item">
+                        <div class="sub-left">
+                            <div class="sub-status accepted"><i class="fas fa-check"></i></div>
+                            <div class="sub-info">
+                                <div class="sub-title">Two Sum Problem Engine</div>
+                                <div class="sub-meta">
+                                    <span class="lang-tag java">Java 17</span>
+                                    <span>•</span>
+                                    <span>2h ago</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sub-right">
+                            <div class="sub-result accepted">Accepted</div>
+                            <div class="sub-time">42 ms</div>
+                        </div>
+                    </div>
+
+                    <div class="submission-item">
+                        <div class="sub-left">
+                            <div class="sub-status tle"><i class="fas fa-clock"></i></div>
+                            <div class="sub-info">
+                                <div class="sub-title">LRU Cache Structure Design</div>
+                                <div class="sub-meta">
+                                    <span class="lang-tag python">Python 3.10</span>
+                                    <span>•</span>
+                                    <span>1d ago</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sub-right">
+                            <div class="sub-result tle">TLE</div>
+                            <div class="sub-time">1000 ms</div>
+                        </div>
+                    </div>
+
+                    <div class="submission-item">
+                        <div class="sub-left">
+                            <div class="sub-status accepted"><i class="fas fa-check"></i></div>
+                            <div class="sub-info">
+                                <div class="sub-title">Binary Tree Level Order</div>
+                                <div class="sub-meta">
+                                    <span class="lang-tag python">Python 3.10</span>
+                                    <span>•</span>
+                                    <span>2d ago</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sub-right">
+                            <div class="sub-result accepted">Accepted</div>
+                            <div class="sub-time">68 ms</div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </main>
+        </div>
+    </main>
+
+    <!-- ===== EDIT PROFILE MODAL ===== -->
+    <div class="modal-overlay" id="editModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2><i class="fas fa-user-edit" style="color: var(--color-primary);"></i> Edit Profile</h2>
+                <button class="modal-close" onclick="closeEditModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="editProfileForm" onsubmit="saveProfile(event)">
+                <div class="form-group">
+                    <label for="editDisplayName">Full Name</label>
+                    <input type="text" id="editDisplayName" placeholder="Enter your full name">
+                </div>
+                <div class="form-group">
+                    <label for="editHandle">Handle</label>
+                    <input type="text" id="editHandle" placeholder="Enter your handle (e.g., @username)">
+                </div>
+                <div class="form-group">
+                    <label for="editEmail">Email</label>
+                    <input type="email" id="editEmail" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="editBio">Bio</label>
+                    <textarea id="editBio" placeholder="Tell us about yourself..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" onclick="closeEditModal()">Cancel</button>
+                    <button type="submit" class="btn-submit"><i class="fas fa-save"></i> Save Changes</button>
+                </div>
+            </form>
+        </div>
     </div>
-    
-    <!-- Core Client Scripts System Configuration -->
-    <script src="../js/config.js"></script>
-    <script src="../js/utils.js"></script>
-    <script src="../js/api.js"></script>
-    <script src="../js/auth.js"></script>
-    
+
+    <!-- ===== SCRIPTS ===== -->
+    <script>
+        // ===== MOBILE SIDEBAR =====
+        const mobileToggle = document.getElementById('mobileToggle');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+            const icon = mobileToggle.querySelector('i');
+            icon.className = sidebar.classList.contains('open') ? 'fas fa-times' : 'fas fa-bars';
+        }
+
+        mobileToggle.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+
+        document.querySelectorAll('.sidebar-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    sidebar.classList.remove('open');
+                    overlay.classList.remove('active');
+                    mobileToggle.querySelector('i').className = 'fas fa-bars';
+                }
+            });
+        });
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
+                mobileToggle.querySelector('i').className = 'fas fa-bars';
+            }
+        });
+
+        // ===== THEME TOGGLE =====
+        const themeToggle = document.getElementById('themeToggle');
+        let currentTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        themeToggle.textContent = currentTheme === 'dark' ? '🌙' : '☀️';
+
+        themeToggle.addEventListener('click', function() {
+            const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            themeToggle.textContent = newTheme === 'dark' ? '🌙' : '☀️';
+        });
+
+        // ===== HEATMAP GENERATOR =====
+        function generateHeatmap() {
+            const grid = document.getElementById('heatmapGrid');
+            grid.innerHTML = '';
+
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const today = new Date();
+            const dayLabels = ['', 'Mon', '', 'Wed', '', 'Fri', ''];
+
+            const totalWeeks = 53;
+            const totalDays = 7;
+
+            const firstRowEmpty = document.createElement('div');
+            firstRowEmpty.className = 'month-label';
+            firstRowEmpty.textContent = '';
+            grid.appendChild(firstRowEmpty);
+
+            let lastMonth = -1;
+            for (let week = 0; week < totalWeeks; week++) {
+                const weekDate = new Date(today);
+                weekDate.setDate(today.getDate() - (totalWeeks - week) * 7 + 1);
+                const month = weekDate.getMonth();
+
+                if (month !== lastMonth) {
+                    lastMonth = month;
+                    const label = document.createElement('div');
+                    label.className = 'month-label';
+                    label.textContent = months[month];
+                    grid.appendChild(label);
+                } else {
+                    const empty = document.createElement('div');
+                    empty.className = 'month-label';
+                    empty.textContent = '';
+                    grid.appendChild(empty);
+                }
+            }
+
+            for (let day = 0; day < totalDays; day++) {
+                const dayLabel = document.createElement('div');
+                dayLabel.className = 'day-label';
+                dayLabel.textContent = dayLabels[day];
+                grid.appendChild(dayLabel);
+
+                for (let week = 0; week < totalWeeks; week++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'heatmap-cell';
+
+                    const cellDate = new Date(today);
+                    cellDate.setDate(today.getDate() - (totalWeeks - week) * 7 + day);
+                    const isFuture = cellDate > today;
+
+                    let level = 0;
+                    if (!isFuture) {
+                        const random = Math.random();
+                        if (random < 0.3) level = 0;
+                        else if (random < 0.55) level = 1;
+                        else if (random < 0.75) level = 2;
+                        else if (random < 0.9) level = 3;
+                        else level = 4;
+
+                        if (day === 0 || day === 6) {
+                            level = Math.max(0, level - 1);
+                        }
+                        if (week > 40 && week < 48) {
+                            level = Math.min(4, level + 1);
+                        }
+                        if (cellDate.toDateString() === today.toDateString()) {
+                            cell.classList.add('today-cell');
+                        }
+                    }
+
+                    cell.classList.add(`level-${level}`);
+                    const activityText = ['No activity', 'Low', 'Medium', 'High', 'Very High'];
+                    cell.title = `${cellDate.toDateString()}: ${activityText[level]}`;
+
+                    grid.appendChild(cell);
+                }
+            }
+        }
+
+        generateHeatmap();
+
+        // ===== EDIT PROFILE FUNCTIONS =====
+        function openEditModal() {
+            const modal = document.getElementById('editModal');
+            document.getElementById('editDisplayName').value = document.getElementById('profileDisplayName').textContent;
+            document.getElementById('editHandle').value = document.getElementById('profileHandle').textContent;
+            document.getElementById('editEmail').value = document.getElementById('profileEmail').textContent;
+            document.getElementById('editBio').value = document.getElementById('profileBio').textContent.replace(/[^\w\s.,!?-]/g, '').trim();
+            modal.classList.add('active');
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').classList.remove('active');
+        }
+
+        function saveProfile(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('editDisplayName').value.trim();
+            const handle = document.getElementById('editHandle').value.trim();
+            const email = document.getElementById('editEmail').value.trim();
+            const bio = document.getElementById('editBio').value.trim();
+
+            if (!name || !handle || !email) {
+                showToast('⚠️ Please fill in all required fields');
+                return;
+            }
+
+            document.getElementById('profileDisplayName').textContent = name;
+            document.getElementById('profileHandle').textContent = handle;
+            document.getElementById('profileEmail').textContent = email;
+            document.getElementById('profileBio').innerHTML = `<i class="fas fa-quote-left"></i> ${bio || 'No bio provided'}`;
+
+            closeEditModal();
+            showToast('✅ Profile updated successfully!');
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeEditModal();
+            }
+        });
+
+        document.getElementById('editModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeEditModal();
+            }
+        });
+
+        // ===== TOAST =====
+        function showToast(message) {
+            const existing = document.querySelector('.custom-toast');
+            if (existing) existing.remove();
+
+            const toast = document.createElement('div');
+            toast.className = 'custom-toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.4s ease';
+                setTimeout(() => toast.remove(), 400);
+            }, 3000);
+        }
+
+        // ===== ADD TOAST STYLE =====
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideUp {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+
 </body>
 </html>
