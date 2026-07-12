@@ -70,74 +70,83 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-                .cors(cors -> {})
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
 
                 .authorizeHttpRequests(auth -> auth
 
-                        // Public Pages
+                        // Static frontend pages
                         .requestMatchers(
                                 "/",
                                 "/index.html",
                                 "/login.html",
                                 "/register.html",
                                 "/privacy.html",
-                                "/terms.html"
-                        ).permitAll()
-
-                        // Static Resources
-                        .requestMatchers(
+                                "/terms.html",
+                                "/student-dashboard.html",
                                 "/css/**",
                                 "/js/**",
                                 "/assets/**",
                                 "/images/**",
-                                "/fonts/**"
+                                "/fonts/**",
+                                "/admin/**",
+                                "/student/**"
                         ).permitAll()
 
-                        // Student Pages
-                        .requestMatchers("/student/**").permitAll()
+                        // Auth APIs
+                        .requestMatchers(
+                                "/api/v1/auth/register",
+                                "/api/v1/auth/login",
+                                "/api/v1/auth/**"
+                        ).permitAll()
 
-                        // Admin Pages
-                        .requestMatchers("/admin/**").permitAll()
-
-                        // Authentication APIs
-                        .requestMatchers("/api/v1/auth/**").permitAll()
-
-                        // Swagger
+                        // Swagger/OpenAPI
                         .requestMatchers(
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/swagger-ui.html"
                         ).permitAll()
 
-                        // Problems
-                        .requestMatchers(HttpMethod.GET,
-                                "/api/v1/problem/**")
-                        .hasAnyRole("USER", "ADMIN")
+                        // Problem view - USER and ADMIN
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/v1/problem",
+                                "/api/v1/problem/**"
+                        ).hasAnyRole("USER", "ADMIN")
 
-                        .requestMatchers(HttpMethod.POST,
-                                "/api/v1/problem/**")
-                        .hasRole("ADMIN")
+                        // Problem create/update/delete - ADMIN only
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/api/v1/problem",
+                                "/api/v1/problem/**"
+                        ).hasRole("ADMIN")
 
-                        .requestMatchers(HttpMethod.PUT,
-                                "/api/v1/problem/**")
-                        .hasRole("ADMIN")
+                        .requestMatchers(
+                                HttpMethod.PUT,
+                                "/api/v1/problem",
+                                "/api/v1/problem/**"
+                        ).hasRole("ADMIN")
 
-                        .requestMatchers(HttpMethod.DELETE,
-                                "/api/v1/problem/**")
-                        .hasRole("ADMIN")
+                        .requestMatchers(
+                                HttpMethod.DELETE,
+                                "/api/v1/problem",
+                                "/api/v1/problem/**"
+                        ).hasRole("ADMIN")
 
-                        // Submissions
-                        .requestMatchers("/api/v1/submissions/**")
-                        .authenticated()
+                        // Submissions - logged-in users
+                        .requestMatchers(
+                                "/api/v1/submissions",
+                                "/api/v1/submissions/**"
+                        ).authenticated()
 
-                        // Leaderboard
-                        .requestMatchers("/api/v1/leaderboard/**")
-                        .authenticated()
+                        // Leaderboard - logged-in users
+                        .requestMatchers(
+                                "/api/v1/leaderboard",
+                                "/api/v1/leaderboard/**"
+                        ).authenticated()
 
-                        // All Remaining APIs
+                        // Any other request needs login
                         .anyRequest().authenticated()
-
                 )
 
                 .sessionManagement(session ->
