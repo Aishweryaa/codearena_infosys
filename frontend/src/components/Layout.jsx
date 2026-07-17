@@ -20,6 +20,9 @@ export function UserLayout() {
 
         <nav className="top-navigation">
           <NavLink to="/dashboard">Dashboard</NavLink>
+          <NavLink to="/problems">Problems</NavLink>
+          <NavLink to="/submissions">Submissions</NavLink>
+          <NavLink to="/leaderboard">Leaderboard</NavLink>
           <NavLink to="/profile">Profile</NavLink>
 
           {isAdmin && (
@@ -91,7 +94,14 @@ export function AdminLayout() {
           <NavLink end to="/admin">
             Overview
           </NavLink>
+          <NavLink to="/admin/problems">Manage problems</NavLink>
+          <NavLink to="/admin/problems/create">
+            Create problem
+          </NavLink>
           <NavLink to="/admin/users">Manage users</NavLink>
+          <NavLink to="/admin/submissions">
+            Submissions
+          </NavLink>
         </nav>
 
         <div className="admin-sidebar-footer">
