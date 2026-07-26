@@ -3,6 +3,8 @@ import { GoogleLogin } from "@react-oauth/google";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { getErrorMessage } from "../api/http.js";
 import { Alert, Brand } from "../components/Common.jsx";
+import { Icon } from "../components/Icons.jsx";
+import { ThemeToggle } from "../components/UiEffects.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
 
 export default function LoginPage() {
@@ -79,55 +81,87 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="authentication-layout">
+    <main className="authentication-layout auth-page">
       <section className="authentication-visual">
-        <Brand />
+        <div className="auth-brand-row">
+          <Brand />
+          <span className="auth-secure-label">
+            <Icon name="shield" size={15} /> Secure platform
+          </span>
+        </div>
 
         <div className="visual-copy">
-          <p className="eyebrow">MILESTONE 2 · SECURE ACCESS</p>
+          <span className="hero-status-pill">
+            <span className="hero-status-dot" />
+            Code · Execute · Improve
+          </span>
+          <p className="eyebrow">WELCOME TO CODEARENA</p>
           <h1>
-            Enter the coding arena with secure authentication.
+            Build your coding confidence, one challenge at a time.
           </h1>
           <p>
-            CodeArena now supports protected user accounts,
-            Google sign-in, JWT sessions, and administrator-only
-            access.
+            Practice in a professional Monaco editor, execute code
+            securely through Docker, and track every accepted solution.
           </p>
 
-          <div className="security-preview">
-            <span className="security-icon">✓</span>
+          <div className="auth-feature-row">
             <div>
-              <strong>JWT protected sessions</strong>
-              <p>
-                Every protected request is authenticated using a
-                secure bearer token.
-              </p>
+              <Icon name="code" size={20} />
+              <span>
+                <strong>4 languages</strong>
+                <small>Java, Python, C++ and JavaScript</small>
+              </span>
+            </div>
+            <div>
+              <Icon name="shield" size={20} />
+              <span>
+                <strong>Secure execution</strong>
+                <small>Docker-isolated code evaluation</small>
+              </span>
             </div>
           </div>
+        </div>
 
-          <div className="security-preview">
-            <span className="security-icon">✓</span>
-            <div>
-              <strong>Role-based authorization</strong>
-              <p>
-                User and administrator pages are separated and
-                protected.
-              </p>
-            </div>
+        <div className="auth-code-window" aria-hidden="true">
+          <div className="auth-code-toolbar">
+            <span />
+            <span />
+            <span />
+            <strong>solution.cpp</strong>
+          </div>
+          <div className="auth-code-content">
+            <p><span>1</span><em>#include</em> &lt;iostream&gt;</p>
+            <p><span>2</span><em>using namespace</em> std;</p>
+            <p><span>3</span></p>
+            <p><span>4</span><em>int</em> main() &#123;</p>
+            <p><span>5</span>&nbsp;&nbsp;cout &lt;&lt; <b>"Hello, CodeArena!"</b>;</p>
+            <p><span>6</span>&nbsp;&nbsp;<em>return</em> 0;</p>
+            <p><span>7</span>&#125;</p>
+          </div>
+          <div className="auth-code-result">
+            <Icon name="check" size={16} />
+            Accepted · 42 ms
           </div>
         </div>
       </section>
 
       <section className="authentication-panel">
+        <div className="auth-theme-control">
+          <ThemeToggle />
+        </div>
+
         <div className="authentication-card">
           <div className="mobile-brand">
             <Brand />
           </div>
 
+          <span className="authentication-icon">
+            <Icon name="profile" size={23} />
+          </span>
           <p className="eyebrow">WELCOME BACK</p>
           <h2>Sign in to CodeArena</h2>
           <p className="muted">
-            Continue using your secure CodeArena account.
+            Enter your account details to continue practicing.
           </p>
 
           {message && <Alert>{message}</Alert>}
@@ -138,44 +172,58 @@ export default function LoginPage() {
           >
             <label className="form-field">
               <span>Email address</span>
-              <input
-                type="email"
-                value={form.email}
-                onChange={(event) =>
-                  setForm({
-                    ...form,
-                    email: event.target.value,
-                  })
-                }
-                placeholder="name@example.com"
-                autoComplete="email"
-                required
-              />
+              <span className="input-with-icon">
+                <Icon name="profile" size={17} />
+                <input
+                  type="email"
+                  value={form.email}
+                  onChange={(event) =>
+                    setForm({
+                      ...form,
+                      email: event.target.value,
+                    })
+                  }
+                  placeholder="name@example.com"
+                  autoComplete="email"
+                  required
+                />
+              </span>
             </label>
 
             <label className="form-field">
               <span>Password</span>
-              <input
-                type="password"
-                value={form.password}
-                onChange={(event) =>
-                  setForm({
-                    ...form,
-                    password: event.target.value,
-                  })
-                }
-                placeholder="Enter your password"
-                autoComplete="current-password"
-                required
-              />
+              <span className="input-with-icon">
+                <Icon name="shield" size={17} />
+                <input
+                  type="password"
+                  value={form.password}
+                  onChange={(event) =>
+                    setForm({
+                      ...form,
+                      password: event.target.value,
+                    })
+                  }
+                  placeholder="Enter your password"
+                  autoComplete="current-password"
+                  required
+                />
+              </span>
             </label>
 
             <button
-              className="button button-primary button-block"
+              className="button button-primary button-block auth-submit-button"
               type="submit"
               disabled={loading}
             >
-              {loading ? "Signing in..." : "Sign in"}
+              {loading ? (
+                <>
+                  <span className="button-spinner" /> Signing in...
+                </>
+              ) : (
+                <>
+                  Sign in <Icon name="arrow" size={18} />
+                </>
+              )}
             </button>
           </form>
 
