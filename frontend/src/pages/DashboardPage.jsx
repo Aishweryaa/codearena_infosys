@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { getUserDashboard } from "../api/userApi.js";
 import { getErrorMessage } from "../api/http.js";
@@ -7,6 +7,7 @@ import {
   Loader,
   StatCard,
 } from "../components/Common.jsx";
+import { Icon } from "../components/Icons.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
 
 export default function DashboardPage() {
@@ -30,47 +31,88 @@ export default function DashboardPage() {
       .finally(() => setLoading(false));
   }, []);
 
+  const completion = useMemo(() => {
+    const available = Number(dashboard?.availableProblems || 0);
+    const solved = Number(dashboard?.problemsSolved || 0);
+
+    if (!available) {
+      return 0;
+    }
+
+    return Math.min(100, Math.round((solved / available) * 100));
+  }, [dashboard]);
+
   if (loading) {
-    return <Loader message="Preparing your dashboard..." />;
+    return <Loader message="Preparing your coding workspace..." />;
   }
 
   return (
-    <div className="page-stack">
+    <div className="page-stack dashboard-page">
       <section className="dashboard-hero">
-        <div>
-          <p className="eyebrow">MILESTONE 2 DASHBOARD</p>
+        <div className="dashboard-hero-copy">
+          <span className="hero-status-pill">
+            <span className="hero-status-dot" />
+            Docker judge ready
+          </span>
+
+          <p className="eyebrow">YOUR CODING WORKSPACE</p>
           <h1>
             Welcome back, <span>{user?.username}</span>
           </h1>
           <p>
-            Your account is protected using JWT authentication
-            and role-based authorization.
+            Solve challenges, submit code in multiple languages,
+            and climb the CodeArena leaderboard.
           </p>
 
           <div className="hero-actions">
-            <Link
-              className="button button-primary"
-              to="/profile"
-            >
-              View my profile
+            <Link className="button button-primary" to="/problems">
+              <Icon name="problems" size={18} />
+              Start solving
+              <Icon name="arrow" size={17} />
+            </Link>
+
+            <Link className="button button-secondary" to="/submissions">
+              <Icon name="submissions" size={18} />
+              My submissions
             </Link>
 
             {isAdmin && (
-              <Link
-                className="button button-secondary"
-                to="/admin"
-              >
-                Open admin panel
+              <Link className="button button-ghost" to="/admin">
+                <Icon name="admin" size={18} />
+                Admin panel
               </Link>
             )}
           </div>
+
+          <div className="hero-tech-row">
+            <span>Java</span>
+            <span>Python</span>
+            <span>C++</span>
+            <span>JavaScript</span>
+          </div>
         </div>
 
-        <article className="security-status-card">
-          <span className="security-check">✓</span>
-          <div>
-            <strong>Session secured</strong>
-            <p>Authenticated using a valid JWT bearer token.</p>
+        <article className="dashboard-progress-card">
+          <div
+            className="progress-ring"
+            style={{ "--progress": `${completion * 3.6}deg` }}
+          >
+            <div>
+              <strong>{completion}%</strong>
+              <span>completed</span>
+            </div>
+          </div>
+
+          <div className="progress-card-copy">
+            <p className="eyebrow">YOUR PROGRESS</p>
+            <strong>
+              {dashboard?.problemsSolved ?? 0} of{" "}
+              {dashboard?.availableProblems ?? 0} solved
+            </strong>
+            <p>
+              Rank #{dashboard?.leaderboardRank || "—"} · Score{" "}
+              {dashboard?.score ?? 0}
+            </p>
           </div>
         </article>
       </section>
@@ -79,21 +121,25 @@ export default function DashboardPage() {
 
       <section className="statistics-grid">
         <StatCard
+          icon="problems"
           label="Available problems"
           value={dashboard?.availableProblems ?? 0}
-          detail="Problem foundation from Milestone 1"
+          detail="Challenges ready to solve"
         />
         <StatCard
+          icon="submissions"
           label="Total submissions"
           value={dashboard?.totalSubmissions ?? 0}
-          detail="Ready for execution milestone"
+          detail="All coding attempts"
         />
         <StatCard
+          icon="check"
           label="Problems solved"
           value={dashboard?.problemsSolved ?? 0}
-          detail="Accepted unique problems"
+          detail="Unique accepted challenges"
         />
         <StatCard
+          icon="trophy"
           label="Current score"
           value={dashboard?.score ?? 0}
           detail={`Leaderboard rank: ${
@@ -102,71 +148,109 @@ export default function DashboardPage() {
         />
       </section>
 
-      <section className="dashboard-content-grid">
-        <article className="panel-card">
-          <p className="eyebrow">COMPLETED IN MILESTONE 2</p>
-          <h2>Authentication and authorization</h2>
-
-          <div className="checklist">
+      <section className="dashboard-content-grid dashboard-modern-grid">
+        <article className="panel-card journey-card">
+          <div className="panel-heading-row">
             <div>
-              <span>✓</span>
+              <p className="eyebrow">HOW CODEARENA WORKS</p>
+              <h2>Your solution journey</h2>
+            </div>
+            <span className="panel-heading-icon">
+              <Icon name="activity" size={22} />
+            </span>
+          </div>
+
+          <div className="journey-timeline">
+            <div>
+              <span className="journey-step">01</span>
+              <span className="journey-icon">
+                <Icon name="search" size={19} />
+              </span>
               <div>
-                <strong>Local registration and login</strong>
-                <p>
-                  New users can register and log in using email
-                  and password.
-                </p>
+                <strong>Choose a challenge</strong>
+                <p>Search and filter the problem library.</p>
               </div>
             </div>
 
             <div>
-              <span>✓</span>
+              <span className="journey-step">02</span>
+              <span className="journey-icon">
+                <Icon name="code" size={19} />
+              </span>
               <div>
-                <strong>Google authentication</strong>
-                <p>
-                  Google ID tokens are verified by the backend.
-                </p>
+                <strong>Write your solution</strong>
+                <p>Use the Monaco editor with language highlighting.</p>
               </div>
             </div>
 
             <div>
-              <span>✓</span>
+              <span className="journey-step">03</span>
+              <span className="journey-icon">
+                <Icon name="shield" size={19} />
+              </span>
               <div>
-                <strong>JWT protected APIs</strong>
-                <p>
-                  Protected endpoints require a valid bearer
-                  token.
-                </p>
+                <strong>Run in Docker</strong>
+                <p>Your code executes inside an isolated container.</p>
               </div>
             </div>
 
             <div>
-              <span>✓</span>
+              <span className="journey-step">04</span>
+              <span className="journey-icon">
+                <Icon name="trophy" size={19} />
+              </span>
               <div>
-                <strong>USER and ADMIN roles</strong>
-                <p>
-                  Administrator resources are restricted by
-                  Spring Security.
-                </p>
+                <strong>Earn your rank</strong>
+                <p>Accepted solutions update your leaderboard score.</p>
               </div>
             </div>
           </div>
         </article>
 
-        <article className="panel-card next-milestone-card">
-          <p className="eyebrow">NEXT DEVELOPMENT PHASE</p>
-          <h2>Milestone 3 readiness</h2>
-          <p>
-            Your entity, repository, authentication, and role
-            foundation is ready for problem CRUD, test cases, and
-            submissions.
-          </p>
+        <article className="panel-card quick-action-panel">
+          <div className="panel-heading-row">
+            <div>
+              <p className="eyebrow">QUICK ACTIONS</p>
+              <h2>Continue your practice</h2>
+            </div>
+            <span className="panel-heading-icon">
+              <Icon name="sparkles" size={22} />
+            </span>
+          </div>
 
-          <div className="readiness-list">
-            <span>Problem entity and repository</span>
-            <span>Test-case entity and repository</span>
-            <span>Submission entity and repository</span>
-            <span>Leaderboard entity and repository</span>
+          <div className="quick-action-list">
+            <Link to="/problems">
+              <span className="quick-action-icon">
+                <Icon name="problems" size={20} />
+              </span>
+              <span>
+                <strong>Browse problems</strong>
+                <small>Find your next coding challenge</small>
+              </span>
+              <Icon name="arrow" size={18} />
+            </Link>
+
+            <Link to="/submissions">
+              <span className="quick-action-icon">
+                <Icon name="submissions" size={20} />
+              </span>
+              <span>
+                <strong>Review submissions</strong>
+                <small>Inspect verdicts and test results</small>
+              </span>
+              <Icon name="arrow" size={18} />
+            </Link>
+
+            <Link to="/leaderboard">
+              <span className="quick-action-icon">
+                <Icon name="leaderboard" size={20} />
+              </span>
+              <span>
+                <strong>View leaderboard</strong>
+                <small>Compare your progress with other coders</small>
+              </span>
+              <Icon name="arrow" size={18} />
+            </Link>
           </div>
         </article>
       </section>

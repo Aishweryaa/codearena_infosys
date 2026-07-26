@@ -309,7 +309,12 @@ public class SubmissionService {
 
         List<LeaderboardEntry> entries =
                 leaderboardEntryRepository
-                        .findAllByOrderByScoreDescProblemsSolvedDescUpdatedAtAsc();
+                        .findAllByOrderByScoreDescProblemsSolvedDescUpdatedAtAsc()
+                        .stream()
+                        .filter(entry ->
+                                isRegularUser(entry.getUser())
+                        )
+                        .toList();
 
         List<LeaderboardResponse> responses =
                 new ArrayList<>();
@@ -346,6 +351,21 @@ public class SubmissionService {
     }
 
     private void updateLeaderboard(User user) {
+
+        /*
+         * Only normal USER accounts should have leaderboard entries.
+         * ADMIN accounts may test problems, but they must not appear
+         * in the public rankings.
+         */
+        if (!isRegularUser(user)) {
+            leaderboardEntryRepository
+                    .findByUserId(user.getId())
+                    .ifPresent(
+                            leaderboardEntryRepository::delete
+                    );
+
+            return;
+        }
 
         int totalSubmissions =
                 Math.toIntExact(
@@ -401,6 +421,15 @@ public class SubmissionService {
         );
 
         leaderboardEntryRepository.save(entry);
+    }
+
+    private boolean isRegularUser(User user) {
+
+        return user != null
+                && user.getRole() != null
+                && "USER".equalsIgnoreCase(
+                        String.valueOf(user.getRole())
+                );
     }
 
     private SubmissionResponse

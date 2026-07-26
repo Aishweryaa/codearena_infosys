@@ -22,10 +22,13 @@ import SubmissionDetailPage from "./pages/SubmissionDetailPage.jsx";
 import LeaderboardPage from "./pages/LeaderboardPage.jsx";
 import AdminSubmissionsPage from "./pages/AdminSubmissionsPage.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
+import { UiEffects } from "./components/UiEffects.jsx";
 
 export default function App() {
   return (
-    <Routes>
+    <>
+      <UiEffects />
+      <Routes>
       <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
@@ -68,7 +71,8 @@ export default function App() {
         </Route>
       </Route>
 
-      <Route path="*" element={<NotFoundPage />} />
-    </Routes>
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </>
   );
 }

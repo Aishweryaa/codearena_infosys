@@ -11,6 +11,7 @@ import {
 } from "../components/ProblemCommon.jsx";
 import { getErrorMessage } from "../api/http.js";
 import { getProblems } from "../api/problemApi.js";
+import { Icon } from "../components/Icons.jsx";
 
 export default function ProblemsPage() {
   const [problems, setProblems] = useState([]);
@@ -65,6 +66,7 @@ export default function ProblemsPage() {
         </div>
 
         <article className="problem-count-card">
+          <span className="problem-count-icon"><Icon name="code" size={20} /></span>
           <strong>{filteredProblems.length}</strong>
           <span>problems shown</span>
         </article>
@@ -72,7 +74,7 @@ export default function ProblemsPage() {
 
       <section className="problem-toolbar">
         <label className="problem-search-field">
-          <span>⌕</span>
+          <Icon name="search" size={19} />
           <input
             type="search"
             value={query}
@@ -82,7 +84,7 @@ export default function ProblemsPage() {
         </label>
 
         <label className="problem-filter-field">
-          <span>Difficulty</span>
+          <span><Icon name="filter" size={15} /> Difficulty</span>
           <select
             value={difficulty}
             onChange={(event) =>
@@ -111,11 +113,15 @@ export default function ProblemsPage() {
       )}
 
       <section className="problem-card-grid">
-        {filteredProblems.map((problem) => {
+        {filteredProblems.map((problem, index) => {
           const problemId = getProblemId(problem);
 
           return (
-            <article className="coding-problem-card" key={problemId}>
+            <article
+              className="coding-problem-card"
+              key={problemId}
+              style={{ "--card-index": index }}
+            >
               <div className="coding-problem-card-top">
                 <ProblemDifficultyBadge
                   difficulty={problem.difficulty}
@@ -144,6 +150,7 @@ export default function ProblemsPage() {
                 to={`/problems/${problemId}`}
               >
                 View challenge
+                <Icon name="arrow" size={17} />
               </Link>
             </article>
           );
