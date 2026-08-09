@@ -13,6 +13,7 @@ import AdminProblemsPage from "./pages/AdminProblemsPage.jsx";
 import AdminUsersPage from "./pages/AdminUsersPage.jsx";
 import DashboardPage from "./pages/DashboardPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
+import LandingPage from "./pages/LandingPage.jsx";
 import NotFoundPage from "./pages/NotFoundPage.jsx";
 import ProblemDetailPage from "./pages/ProblemDetailPage.jsx";
 import ProblemsPage from "./pages/ProblemsPage.jsx";
@@ -29,7 +30,7 @@ export default function App() {
     <>
       <UiEffects />
       <Routes>
-      <Route path="/" element={<Navigate to="/login" replace />} />
+      <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
 

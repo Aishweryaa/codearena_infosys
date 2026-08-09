@@ -1,17 +1,22 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+
 import { getUserDashboard } from "../api/userApi.js";
 import { getErrorMessage } from "../api/http.js";
+
 import {
   Alert,
   Loader,
   StatCard,
 } from "../components/Common.jsx";
+
 import { Icon } from "../components/Icons.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
 
 export default function DashboardPage() {
   const { user, isAdmin } = useAuth();
+  const { t } = useTranslation();
 
   const [dashboard, setDashboard] = useState(null);
   const [message, setMessage] = useState("");
@@ -24,7 +29,7 @@ export default function DashboardPage() {
         setMessage(
           getErrorMessage(
             error,
-            "Unable to load dashboard information"
+            t("dashboardLoadError")
           )
         )
       )
@@ -32,54 +37,93 @@ export default function DashboardPage() {
   }, []);
 
   const completion = useMemo(() => {
-    const available = Number(dashboard?.availableProblems || 0);
-    const solved = Number(dashboard?.problemsSolved || 0);
+    const available = Number(
+      dashboard?.availableProblems || 0
+    );
+
+    const solved = Number(
+      dashboard?.problemsSolved || 0
+    );
 
     if (!available) {
       return 0;
     }
 
-    return Math.min(100, Math.round((solved / available) * 100));
+    return Math.min(
+      100,
+      Math.round(
+        (solved / available) * 100
+      )
+    );
   }, [dashboard]);
 
   if (loading) {
-    return <Loader message="Preparing your coding workspace..." />;
+    return <Loader />;
   }
 
   return (
-    <div className="page-stack dashboard-page">
+    <div className="page-stack">
       <section className="dashboard-hero">
-        <div className="dashboard-hero-copy">
+        <div>
           <span className="hero-status-pill">
             <span className="hero-status-dot" />
-            Docker judge ready
+            {t("dockerJudgeReady")}
           </span>
 
-          <p className="eyebrow">YOUR CODING WORKSPACE</p>
+          <p className="eyebrow">
+            {t("codingWorkspace")}
+          </p>
+
           <h1>
-            Welcome back, <span>{user?.username}</span>
+            {t("welcomeBackPrefix")}{" "}
+            <span>{user?.username}</span>
           </h1>
+
           <p>
-            Solve challenges, submit code in multiple languages,
-            and climb the CodeArena leaderboard.
+            {t("dashboardHeroDescription")}
           </p>
 
           <div className="hero-actions">
-            <Link className="button button-primary" to="/problems">
-              <Icon name="problems" size={18} />
-              Start solving
-              <Icon name="arrow" size={17} />
+            <Link
+              className="button button-primary"
+              to="/problems"
+            >
+              <Icon
+                name="problems"
+                size={18}
+              />
+
+              {t("startSolving")}
+
+              <Icon
+                name="arrow"
+                size={17}
+              />
             </Link>
 
-            <Link className="button button-secondary" to="/submissions">
-              <Icon name="submissions" size={18} />
-              My submissions
+            <Link
+              className="button button-secondary"
+              to="/submissions"
+            >
+              <Icon
+                name="submissions"
+                size={18}
+              />
+
+              {t("mySubmissions")}
             </Link>
 
             {isAdmin && (
-              <Link className="button button-ghost" to="/admin">
-                <Icon name="admin" size={18} />
-                Admin panel
+              <Link
+                className="button button-ghost"
+                to="/admin"
+              >
+                <Icon
+                  name="admin"
+                  size={18}
+                />
+
+                {t("adminPanel")}
               </Link>
             )}
           </div>
@@ -95,56 +139,106 @@ export default function DashboardPage() {
         <article className="dashboard-progress-card">
           <div
             className="progress-ring"
-            style={{ "--progress": `${completion * 3.6}deg` }}
+            style={{
+              "--progress":
+                `${completion * 3.6}deg`,
+            }}
           >
             <div>
-              <strong>{completion}%</strong>
-              <span>completed</span>
+              <strong>
+                {completion}%
+              </strong>
+
+              <span>
+                {t("completed")}
+              </span>
             </div>
           </div>
 
           <div className="progress-card-copy">
-            <p className="eyebrow">YOUR PROGRESS</p>
+            <p className="eyebrow">
+              {t("yourProgress")}
+            </p>
+
             <strong>
-              {dashboard?.problemsSolved ?? 0} of{" "}
-              {dashboard?.availableProblems ?? 0} solved
+              {t("solvedOutOf", {
+                solved:
+                  dashboard?.problemsSolved ??
+                  0,
+                available:
+                  dashboard?.availableProblems ??
+                  0,
+              })}
             </strong>
+
             <p>
-              Rank #{dashboard?.leaderboardRank || "—"} · Score{" "}
-              {dashboard?.score ?? 0}
+              {t("rankAndScore", {
+                rank:
+                  dashboard?.leaderboardRank ||
+                  "—",
+                score:
+                  dashboard?.score ?? 0,
+              })}
             </p>
           </div>
         </article>
       </section>
 
-      {message && <Alert>{message}</Alert>}
+      {message && (
+        <Alert>
+          {message}
+        </Alert>
+      )}
 
       <section className="statistics-grid">
         <StatCard
           icon="problems"
-          label="Available problems"
-          value={dashboard?.availableProblems ?? 0}
-          detail="Challenges ready to solve"
+          label={t("availableProblems")}
+          value={
+            dashboard?.availableProblems ??
+            0
+          }
+          detail={t(
+            "availableProblemsDetail"
+          )}
         />
+
         <StatCard
           icon="submissions"
-          label="Total submissions"
-          value={dashboard?.totalSubmissions ?? 0}
-          detail="All coding attempts"
+          label={t("totalSubmissions")}
+          value={
+            dashboard?.totalSubmissions ??
+            0
+          }
+          detail={t(
+            "totalSubmissionsDetail"
+          )}
         />
+
         <StatCard
           icon="check"
-          label="Problems solved"
-          value={dashboard?.problemsSolved ?? 0}
-          detail="Unique accepted challenges"
+          label={t("problemsSolved")}
+          value={
+            dashboard?.problemsSolved ??
+            0
+          }
+          detail={t(
+            "problemsSolvedDetail"
+          )}
         />
+
         <StatCard
           icon="trophy"
-          label="Current score"
+          label={t("currentScore")}
           value={dashboard?.score ?? 0}
-          detail={`Leaderboard rank: ${
-            dashboard?.leaderboardRank || "—"
-          }`}
+          detail={t(
+            "leaderboardRankDetail",
+            {
+              rank:
+                dashboard?.leaderboardRank ||
+                "—",
+            }
+          )}
         />
       </section>
 
@@ -152,56 +246,115 @@ export default function DashboardPage() {
         <article className="panel-card journey-card">
           <div className="panel-heading-row">
             <div>
-              <p className="eyebrow">HOW CODEARENA WORKS</p>
-              <h2>Your solution journey</h2>
+              <p className="eyebrow">
+                {t("howCodeArenaWorks")}
+              </p>
+
+              <h2>
+                {t("solutionJourney")}
+              </h2>
             </div>
+
             <span className="panel-heading-icon">
-              <Icon name="activity" size={22} />
+              <Icon
+                name="activity"
+                size={22}
+              />
             </span>
           </div>
 
           <div className="journey-timeline">
             <div>
-              <span className="journey-step">01</span>
-              <span className="journey-icon">
-                <Icon name="search" size={19} />
+              <span className="journey-step">
+                01
               </span>
+
+              <span className="journey-icon">
+                <Icon
+                  name="search"
+                  size={19}
+                />
+              </span>
+
               <div>
-                <strong>Choose a challenge</strong>
-                <p>Search and filter the problem library.</p>
+                <strong>
+                  {t("chooseChallenge")}
+                </strong>
+
+                <p>
+                  {t(
+                    "chooseChallengeDashboardText"
+                  )}
+                </p>
               </div>
             </div>
 
             <div>
-              <span className="journey-step">02</span>
-              <span className="journey-icon">
-                <Icon name="code" size={19} />
+              <span className="journey-step">
+                02
               </span>
+
+              <span className="journey-icon">
+                <Icon
+                  name="code"
+                  size={19}
+                />
+              </span>
+
               <div>
-                <strong>Write your solution</strong>
-                <p>Use the Monaco editor with language highlighting.</p>
+                <strong>
+                  {t("writeSolution")}
+                </strong>
+
+                <p>
+                  {t("writeSolutionText")}
+                </p>
               </div>
             </div>
 
             <div>
-              <span className="journey-step">03</span>
-              <span className="journey-icon">
-                <Icon name="shield" size={19} />
+              <span className="journey-step">
+                03
               </span>
+
+              <span className="journey-icon">
+                <Icon
+                  name="shield"
+                  size={19}
+                />
+              </span>
+
               <div>
-                <strong>Run in Docker</strong>
-                <p>Your code executes inside an isolated container.</p>
+                <strong>
+                  {t("runInDocker")}
+                </strong>
+
+                <p>
+                  {t("runInDockerText")}
+                </p>
               </div>
             </div>
 
             <div>
-              <span className="journey-step">04</span>
-              <span className="journey-icon">
-                <Icon name="trophy" size={19} />
+              <span className="journey-step">
+                04
               </span>
+
+              <span className="journey-icon">
+                <Icon
+                  name="trophy"
+                  size={19}
+                />
+              </span>
+
               <div>
-                <strong>Earn your rank</strong>
-                <p>Accepted solutions update your leaderboard score.</p>
+                <strong>
+                  {t("earnRank")}
+                </strong>
+
+                <p>
+                  {t("earnRankText")}
+                </p>
               </div>
             </div>
           </div>
@@ -210,46 +363,100 @@ export default function DashboardPage() {
         <article className="panel-card quick-action-panel">
           <div className="panel-heading-row">
             <div>
-              <p className="eyebrow">QUICK ACTIONS</p>
-              <h2>Continue your practice</h2>
+              <p className="eyebrow">
+                {t("quickActions")}
+              </p>
+
+              <h2>
+                {t("continuePractice")}
+              </h2>
             </div>
+
             <span className="panel-heading-icon">
-              <Icon name="sparkles" size={22} />
+              <Icon
+                name="sparkles"
+                size={22}
+              />
             </span>
           </div>
 
           <div className="quick-action-list">
             <Link to="/problems">
               <span className="quick-action-icon">
-                <Icon name="problems" size={20} />
+                <Icon
+                  name="problems"
+                  size={20}
+                />
               </span>
+
               <span>
-                <strong>Browse problems</strong>
-                <small>Find your next coding challenge</small>
+                <strong>
+                  {t("browseProblems")}
+                </strong>
+
+                <small>
+                  {t("browseProblemsText")}
+                </small>
               </span>
-              <Icon name="arrow" size={18} />
+
+              <Icon
+                name="arrow"
+                size={18}
+              />
             </Link>
 
             <Link to="/submissions">
               <span className="quick-action-icon">
-                <Icon name="submissions" size={20} />
+                <Icon
+                  name="submissions"
+                  size={20}
+                />
               </span>
+
               <span>
-                <strong>Review submissions</strong>
-                <small>Inspect verdicts and test results</small>
+                <strong>
+                  {t(
+                    "reviewSubmissions"
+                  )}
+                </strong>
+
+                <small>
+                  {t(
+                    "reviewSubmissionsText"
+                  )}
+                </small>
               </span>
-              <Icon name="arrow" size={18} />
+
+              <Icon
+                name="arrow"
+                size={18}
+              />
             </Link>
 
             <Link to="/leaderboard">
               <span className="quick-action-icon">
-                <Icon name="leaderboard" size={20} />
+                <Icon
+                  name="leaderboard"
+                  size={20}
+                />
               </span>
+
               <span>
-                <strong>View leaderboard</strong>
-                <small>Compare your progress with other coders</small>
+                <strong>
+                  {t("viewLeaderboard")}
+                </strong>
+
+                <small>
+                  {t(
+                    "viewLeaderboardText"
+                  )}
+                </small>
               </span>
-              <Icon name="arrow" size={18} />
+
+              <Icon
+                name="arrow"
+                size={18}
+              />
             </Link>
           </div>
         </article>
