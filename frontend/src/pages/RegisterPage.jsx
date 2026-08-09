@@ -1,10 +1,37 @@
 import { useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
-import { getErrorMessage } from "../api/http.js";
-import { Alert, Brand } from "../components/Common.jsx";
-import { Icon } from "../components/Icons.jsx";
-import { ThemeToggle } from "../components/UiEffects.jsx";
-import { useAuth } from "../context/AuthContext.jsx";
+
+import {
+  Link,
+  Navigate,
+  useNavigate,
+} from "react-router-dom";
+
+import {
+  useTranslation,
+} from "react-i18next";
+
+import {
+  getErrorMessage,
+} from "../api/http.js";
+
+import {
+  Alert,
+  Brand,
+} from "../components/Common.jsx";
+
+import {
+  Icon,
+} from "../components/Icons.jsx";
+
+import {
+  ThemeToggle,
+} from "../components/UiEffects.jsx";
+
+import LanguageSwitcher from "../components/LanguageSwitcher.jsx";
+
+import {
+  useAuth,
+} from "../context/AuthContext.jsx";
 
 export default function RegisterPage() {
   const {
@@ -13,22 +40,38 @@ export default function RegisterPage() {
     isAdmin,
   } = useAuth();
 
+  const { t } = useTranslation();
+
   const navigate = useNavigate();
 
-  const [form, setForm] = useState({
+  const [
+    form,
+    setForm,
+  ] = useState({
     username: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
 
-  const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [
+    message,
+    setMessage,
+  ] = useState("");
+
+  const [
+    loading,
+    setLoading,
+  ] = useState(false);
 
   if (isAuthenticated) {
     return (
       <Navigate
-        to={isAdmin ? "/admin" : "/dashboard"}
+        to={
+          isAdmin
+            ? "/admin"
+            : "/dashboard"
+        }
         replace
       />
     );
@@ -37,16 +80,26 @@ export default function RegisterPage() {
   function changeField(event) {
     setForm({
       ...form,
-      [event.target.name]: event.target.value,
+      [event.target.name]:
+        event.target.value,
     });
+
     setMessage("");
   }
 
-  async function handleSubmit(event) {
+  async function handleSubmit(
+    event
+  ) {
     event.preventDefault();
 
-    if (form.password !== form.confirmPassword) {
-      setMessage("Passwords do not match");
+    if (
+      form.password !==
+      form.confirmPassword
+    ) {
+      setMessage(
+        t("passwordsDoNotMatch")
+      );
+
       return;
     }
 
@@ -54,19 +107,29 @@ export default function RegisterPage() {
       setLoading(true);
       setMessage("");
 
-      const user = await register(
-        form.username.trim(),
-        form.email.trim(),
-        form.password
-      );
+      const user =
+        await register(
+          form.username.trim(),
+          form.email.trim(),
+          form.password
+        );
 
       navigate(
-        user.role === "ADMIN" ? "/admin" : "/dashboard",
-        { replace: true }
+        user.role === "ADMIN"
+          ? "/admin"
+          : "/dashboard",
+        {
+          replace: true,
+        }
       );
     } catch (error) {
       setMessage(
-        getErrorMessage(error, "Registration failed")
+        getErrorMessage(
+          error,
+          t(
+            "registrationFailed"
+          )
+        )
       );
     } finally {
       setLoading(false);
@@ -74,70 +137,147 @@ export default function RegisterPage() {
   }
 
   return (
-    <main className="authentication-layout auth-page register-auth-page">
+    <main className="authentication-layout auth-page">
       <section className="authentication-visual">
         <div className="auth-brand-row">
           <Brand />
+
           <span className="auth-secure-label">
-            <Icon name="shield" size={15} /> Secure registration
+            <Icon
+              name="shield"
+              size={16}
+            />
+
+            {t(
+              "secureRegistration"
+            )}
           </span>
         </div>
 
         <div className="visual-copy">
           <span className="hero-status-pill">
             <span className="hero-status-dot" />
-            Start your developer journey
+
+            {t(
+              "registerHeroStatus"
+            )}
           </span>
-          <p className="eyebrow">CREATE YOUR ACCOUNT</p>
-          <h1>Join the arena and turn practice into progress.</h1>
+
+          <p className="eyebrow">
+            {t(
+              "createYourAccountEyebrow"
+            )}
+          </p>
+
+          <h1>
+            {t(
+              "registerHeroTitle"
+            )}
+          </h1>
+
           <p>
-            Build problem-solving consistency, learn from every verdict,
-            and improve your position on the leaderboard.
+            {t(
+              "registerHeroText"
+            )}
           </p>
 
           <div className="feature-grid modern-feature-grid">
             <article>
               <span className="feature-icon">
-                <Icon name="shield" size={20} />
+                <Icon
+                  name="shield"
+                  size={20}
+                />
               </span>
+
               <div>
-                <strong>Secure identity</strong>
-                <span>BCrypt hashing and JWT-protected sessions.</span>
+                <strong>
+                  {t(
+                    "secureIdentity"
+                  )}
+                </strong>
+
+                <span>
+                  {t(
+                    "secureIdentityText"
+                  )}
+                </span>
               </div>
             </article>
 
             <article>
               <span className="feature-icon">
-                <Icon name="code" size={20} />
+                <Icon
+                  name="code"
+                  size={20}
+                />
               </span>
+
               <div>
-                <strong>Professional editor</strong>
-                <span>Write solutions using the Monaco code editor.</span>
+                <strong>
+                  {t(
+                    "professionalEditor"
+                  )}
+                </strong>
+
+                <span>
+                  {t(
+                    "professionalEditorText"
+                  )}
+                </span>
               </div>
             </article>
 
             <article>
               <span className="feature-icon">
-                <Icon name="leaderboard" size={20} />
+                <Icon
+                  name="leaderboard"
+                  size={20}
+                />
               </span>
+
               <div>
-                <strong>Visible progress</strong>
-                <span>Track submissions, solved problems, and score.</span>
+                <strong>
+                  {t(
+                    "visibleProgress"
+                  )}
+                </strong>
+
+                <span>
+                  {t(
+                    "visibleProgressText"
+                  )}
+                </span>
               </div>
             </article>
           </div>
         </div>
 
-        <div className="auth-floating-badges" aria-hidden="true">
-          <span className="language-badge language-java">Java</span>
-          <span className="language-badge language-python">Python</span>
-          <span className="language-badge language-cpp">C++</span>
-          <span className="language-badge language-js">JavaScript</span>
+        <div
+          className="auth-floating-badges"
+          aria-hidden="true"
+        >
+          <span className="language-badge language-java">
+            Java
+          </span>
+
+          <span className="language-badge language-python">
+            Python
+          </span>
+
+          <span className="language-badge language-cpp">
+            C++
+          </span>
+
+          <span className="language-badge language-js">
+            JavaScript
+          </span>
         </div>
       </section>
 
       <section className="authentication-panel">
-        <div className="auth-theme-control">
+        <div className="auth-page-controls">
+          <LanguageSwitcher compact />
           <ThemeToggle />
         </div>
 
@@ -147,26 +287,58 @@ export default function RegisterPage() {
           </div>
 
           <span className="authentication-icon">
-            <Icon name="sparkles" size={23} />
+            <Icon
+              name="sparkles"
+              size={23}
+            />
           </span>
-          <p className="eyebrow">JOIN CODEARENA</p>
-          <h2>Create your account</h2>
-          <p className="muted">
-            Your first coding challenge is only a minute away.
+
+          <p className="eyebrow">
+            {t("joinCodeArena")}
           </p>
 
-          {message && <Alert>{message}</Alert>}
+          <h2>
+            {t("registerTitle")}
+          </h2>
 
-          <form className="form-stack" onSubmit={handleSubmit}>
+          <p className="muted">
+            {t(
+              "registerDescription"
+            )}
+          </p>
+
+          {message && (
+            <Alert>
+              {message}
+            </Alert>
+          )}
+
+          <form
+            className="form-stack"
+            onSubmit={handleSubmit}
+          >
             <label className="form-field">
-              <span>Username</span>
+              <span>
+                {t("username")}
+              </span>
+
               <span className="input-with-icon">
-                <Icon name="profile" size={17} />
+                <Icon
+                  name="profile"
+                  size={17}
+                />
+
                 <input
                   name="username"
-                  value={form.username}
-                  onChange={changeField}
-                  placeholder="Choose a username"
+                  value={
+                    form.username
+                  }
+                  onChange={
+                    changeField
+                  }
+                  placeholder={t(
+                    "usernamePlaceholder"
+                  )}
                   minLength="3"
                   maxLength="50"
                   autoComplete="username"
@@ -176,15 +348,28 @@ export default function RegisterPage() {
             </label>
 
             <label className="form-field">
-              <span>Email address</span>
+              <span>
+                {t(
+                  "emailAddress"
+                )}
+              </span>
+
               <span className="input-with-icon">
-                <Icon name="profile" size={17} />
+                <Icon
+                  name="profile"
+                  size={17}
+                />
+
                 <input
                   name="email"
                   type="email"
                   value={form.email}
-                  onChange={changeField}
-                  placeholder="name@example.com"
+                  onChange={
+                    changeField
+                  }
+                  placeholder={t(
+                    "emailPlaceholder"
+                  )}
                   autoComplete="email"
                   required
                 />
@@ -192,14 +377,25 @@ export default function RegisterPage() {
             </label>
 
             <label className="form-field">
-              <span>Password</span>
+              <span>
+                {t("password")}
+              </span>
+
               <span className="input-with-icon">
-                <Icon name="shield" size={17} />
+                <Icon
+                  name="shield"
+                  size={17}
+                />
+
                 <input
                   name="password"
                   type="password"
-                  value={form.password}
-                  onChange={changeField}
+                  value={
+                    form.password
+                  }
+                  onChange={
+                    changeField
+                  }
                   placeholder="Example: Code@123"
                   minLength="8"
                   autoComplete="new-password"
@@ -209,15 +405,30 @@ export default function RegisterPage() {
             </label>
 
             <label className="form-field">
-              <span>Confirm password</span>
+              <span>
+                {t(
+                  "confirmPassword"
+                )}
+              </span>
+
               <span className="input-with-icon">
-                <Icon name="check" size={17} />
+                <Icon
+                  name="check"
+                  size={17}
+                />
+
                 <input
                   name="confirmPassword"
                   type="password"
-                  value={form.confirmPassword}
-                  onChange={changeField}
-                  placeholder="Enter the password again"
+                  value={
+                    form.confirmPassword
+                  }
+                  onChange={
+                    changeField
+                  }
+                  placeholder={t(
+                    "confirmPasswordPlaceholder"
+                  )}
                   minLength="8"
                   autoComplete="new-password"
                   required
@@ -232,24 +443,44 @@ export default function RegisterPage() {
             >
               {loading ? (
                 <>
-                  <span className="button-spinner" /> Creating account...
+                  <span className="button-spinner" />
+
+                  {t(
+                    "creatingAccount"
+                  )}
                 </>
               ) : (
                 <>
-                  Create account <Icon name="arrow" size={18} />
+                  {t(
+                    "createAccountButton"
+                  )}
+
+                  <Icon
+                    name="arrow"
+                    size={18}
+                  />
                 </>
               )}
             </button>
           </form>
 
           <p className="password-note">
-            <Icon name="shield" size={14} />
-            Use uppercase, lowercase, number, and special character.
+            <Icon
+              name="shield"
+              size={14}
+            />
+
+            {t("passwordNote")}
           </p>
 
           <p className="authentication-switch">
-            Already registered?{" "}
-            <Link to="/login">Sign in</Link>
+            {t(
+              "alreadyRegistered"
+            )}{" "}
+
+            <Link to="/login">
+              {t("signIn")}
+            </Link>
           </p>
         </div>
       </section>

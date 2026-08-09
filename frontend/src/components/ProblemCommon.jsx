@@ -1,3 +1,6 @@
+import { useTranslation } from "react-i18next";
+import i18n from "../i18n.js";
+
 export function getProblemId(problem) {
   return problem?.id ?? problem?.problemId ?? null;
 }
@@ -10,7 +13,7 @@ export function getProblemSummary(problem) {
   const description = problem?.description?.trim();
 
   if (!description) {
-    return "Open the challenge to read its complete problem statement.";
+    return i18n.t("problemSummaryFallback");
   }
 
   return description.length > 180
@@ -19,13 +22,23 @@ export function getProblemSummary(problem) {
 }
 
 export function ProblemDifficultyBadge({ difficulty }) {
-  const value = String(difficulty || "EASY").toUpperCase();
+  const { t } = useTranslation();
+
+  const value = String(
+    difficulty || "EASY"
+  ).toUpperCase();
+
+  const difficultyLabels = {
+    EASY: t("easy"),
+    MEDIUM: t("medium"),
+    HARD: t("hard"),
+  };
 
   return (
     <span
       className={`problem-difficulty problem-difficulty-${value.toLowerCase()}`}
     >
-      {value}
+      {difficultyLabels[value] || value}
     </span>
   );
 }

@@ -20,6 +20,15 @@ function normalizeRole(role) {
     .toUpperCase();
 }
 
+function profilePictureStorageKey(data) {
+  const identity = data?.userId ?? data?.id ?? data?.email ?? "default";
+  return `codearena_profile_picture_${identity}`;
+}
+
+function getSavedProfilePicture(data) {
+  return localStorage.getItem(profilePictureStorageKey(data));
+}
+
 function userFromResponse(data) {
   return {
     userId: data.userId ?? data.id ?? null,
@@ -27,7 +36,7 @@ function userFromResponse(data) {
     email: data.email ?? "",
     role: normalizeRole(data.role),
     authProvider: data.authProvider ?? "LOCAL",
-    profilePicture: data.profilePicture ?? null,
+    profilePicture: getSavedProfilePicture(data) || data.profilePicture || null,
     createdAt: data.createdAt ?? null,
   };
 }
@@ -71,6 +80,36 @@ export function AuthProvider({ children }) {
     localStorage.removeItem("codearena_user");
     setToken(null);
     setUser(null);
+  }
+
+  function updateProfilePicture(profilePicture) {
+    setUser((currentUser) => {
+      if (currentUser) {
+        const storageKey = profilePictureStorageKey(currentUser);
+
+        if (profilePicture) {
+          localStorage.setItem(storageKey, profilePicture);
+        } else {
+          localStorage.removeItem(storageKey);
+        }
+      }
+
+      if (!currentUser) {
+        return currentUser;
+      }
+
+      const updatedUser = {
+        ...currentUser,
+        profilePicture: profilePicture || null,
+      };
+
+      localStorage.setItem(
+        "codearena_user",
+        JSON.stringify(updatedUser)
+      );
+
+      return updatedUser;
+    });
   }
 
   useEffect(() => {
@@ -123,6 +162,7 @@ export function AuthProvider({ children }) {
       googleLogin: async (credential) =>
         saveAuthentication(await loginWithGoogle(credential)),
       logout,
+      updateProfilePicture,
     }),
     [token, user, initializing]
   );
